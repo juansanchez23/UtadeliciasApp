@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "134392115042",
+    "project_id": "primerfirebase-f9dab",
+    "storage_bucket": "primerfirebase-f9dab.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:134392115042:android:0635762db66f7b32a9863b",
+        "android_client_info": {
+          "package_name": "com.appmoviles.utadeliciasapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBqPuQECTX4an6pUF2pVoBYLejp0coEx_U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
