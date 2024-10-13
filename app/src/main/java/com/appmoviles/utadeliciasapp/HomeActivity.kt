@@ -10,6 +10,7 @@ import com.appmoviles.utadeliciasapp.databinding.ActivityNavegacionBinding
 
 class HomeActivity : AppCompatActivity() {
 
+
     private lateinit var binding: ActivityNavegacionBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
