@@ -9,7 +9,8 @@ import androidx.fragment.app.Fragment
 import com.appmoviles.utadeliciasapp.databinding.ActivityMainBinding
 import com.appmoviles.utadeliciasapp.databinding.ActivityNavegacionBinding
 
-class MainActivity : AppCompatActivity() {
+class Navegacion : AppCompatActivity() {
+
     private lateinit var binding: ActivityNavegacionBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
