@@ -7,4 +7,9 @@
     <string name="Productos">Productos</string>
     <string name="Ajustes">Ajustes</string>
     <string name="Cupones">Cupones</string>
+
+    <string name="productsSale">Productos a la venta</string>
+    <string name="AddProduct">Añadir Producto</string>
+    <string name="DelProduct">Eliminar producto</string>
+    <string name="WhatDoYouWantToDelete">¿Qué deseas eliminar?</string>
 </resources>
