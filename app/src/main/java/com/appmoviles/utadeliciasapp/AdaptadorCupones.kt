@@ -3,18 +3,37 @@ package com.appmoviles.utadeliciasapp
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView.OnItemClickListener
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class AdaptadorCupones : RecyclerView.Adapter<AdaptadorCupones.ViewHolder> (){
+class AdaptadorCupones(private val itemClickListener: OnItemClickListener) : RecyclerView.Adapter<AdaptadorCupones.ViewHolder> (){
 
     private var datos: List<Cupones> = ArrayList()
-    class ViewHolder (itemView: View) : RecyclerView.ViewHolder(itemView){
+
+    interface  OnItemClickListener{
+        fun onItemClick(tuModelo : Cupones)
+    }
+
+
+
+
+
+    inner class ViewHolder (itemView: View) : RecyclerView.ViewHolder(itemView){
         val txtId: TextView = itemView.findViewById(R.id.txtId)
         val txtnombre: TextView = itemView.findViewById(R.id.txtnombre)
         val txtDescripcion: TextView = itemView.findViewById(R.id.txtdescripcion)
 
-
+        init{
+            itemView.setOnClickListener{
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION   )
+                {
+                    val tuModelo = datos[position]
+                    itemClickListener.onItemClick(tuModelo)
+                }
+            }
+        }
 
     }
 
@@ -26,6 +45,14 @@ class AdaptadorCupones : RecyclerView.Adapter<AdaptadorCupones.ViewHolder> (){
 
     override fun getItemCount(): Int {
         return datos.size
+    }
+
+    fun setDatos(datos : List<Cupones>)
+    {
+        this.datos= datos
+        notifyDataSetChanged()
+
+
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

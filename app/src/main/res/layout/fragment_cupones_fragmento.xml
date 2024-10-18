@@ -35,7 +35,7 @@
         android:text="Nombre" />
 
     <TextView
-        android:id="@+id/textDescripcion"
+        android:id="@+id/txtDescripcion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="230dp"
@@ -54,7 +54,7 @@
         android:text="Name" />
 
     <EditText
-        android:id="@+id/editTextText2"
+        android:id="@+id/txt_Nombre"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -64,7 +64,7 @@
         android:text="Name" />
 
     <EditText
-        android:id="@+id/editTextText3"
+        android:id="@+id/txt_Descripcion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -74,17 +74,26 @@
         android:text="Name" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/btnAgregarCupon"
         android:layout_width="wrap_content"
-        android:layout_marginTop="350dp"
-        android:layout_marginStart="180dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="180dp"
+        android:layout_marginTop="300dp"
         android:text="Agregar cupon" />
 
+    <Button
+        android:id="@+id/btnEliminarCupon"
+        android:layout_width="156dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="300dp"
+        android:text="Refrescar cupon" />
+
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_marginTop="350dp"
-        android:layout_marginStart="180dp"
+        android:id="@+id/rDatos"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_marginStart="120dp"
+        android:layout_marginTop="354dp" />
 
 </FrameLayout>
