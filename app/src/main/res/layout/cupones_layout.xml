@@ -1,34 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    android:layout_margin="10dp"
-    tools:context=".cupones_fragmento">
+    android:layout_margin="8dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="4dp">
 
-
-    <TextView
-        android:id="@+id/txtId"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="11111"
-        android:layout_marginTop="5dp"
-    />
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:background="@color/teal_200">
 
+        <TextView
+            android:id="@+id/txtId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ID: 11111"
+            android:textColor="@color/purple_200"
+            android:textSize="12sp" />
 
-    <TextView
-        android:id="@+id/txtnombre"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="22222"
-        android:layout_marginTop="5dp"
-        />
-    <TextView
-        android:id="@+id/txtdescripcion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="33333"
-        android:layout_marginTop="5dp"
-        />
-</LinearLayout>
+        <TextView
+            android:id="@+id/txtnombre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Nombre del Cupón"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtdescripcion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Descripción del cupón aquí. Puede ser una descripción más larga que ocupe varias líneas."
+            android:textColor="@android:color/darker_gray"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

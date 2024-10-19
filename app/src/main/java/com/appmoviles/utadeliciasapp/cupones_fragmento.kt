@@ -1,5 +1,6 @@
 package com.appmoviles.utadeliciasapp
 
+import android.app.AlertDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -37,16 +38,100 @@ class cupones_fragmento : Fragment(), AdaptadorCupones.OnItemClickListener {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         adapter = AdaptadorCupones(this)
         recyclerView.adapter = adapter
-        val btnConsultar : Button = view.findViewById(R.id.btnAgregarCupon)
+        val btnConsultar: Button = view.findViewById(R.id.btnAgregarCupon)
+        val btnEliminar : Button = view.findViewById(R.id.btnRefrescar)
+        val btnUpdate : Button = view.findViewById(R.id.btnActualizar)
+        val btnDelete : Button = view.findViewById(R.id.btnEliminar)
+
+        btnDelete.setOnClickListener {
+            val txt_nombre : TextView = requireView().findViewById(R.id.txt_Nombre)
+            val txt_descripcion : TextView =  requireView().findViewById(R.id.txt_Descripcion)
+            val txt_id: TextView = requireView().findViewById(R.id.textId)
+            val IDD: String = txt_id.text.toString().trim()
+            var nom : String = txt_nombre.text.toString()
+            var des : String = txt_descripcion.text.toString()
 
 
-        val btnEliminar : Button = view.findViewById(R.id.btnEliminarCupon)
+            // Validación 1: Verificar si el campo de ID está vacío
+            if (IDD.isEmpty()) {
+                Toast.makeText(requireContext(), "El campo de ID está vacío", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 
+            // Validación 2: Verificar si el ID es válido
+            if (IDD.length < 5) {
+                Toast.makeText(requireContext(), "El ID del cupón no es válido.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 
+            // Confirmación de eliminación
+            AlertDialog.Builder(requireContext())
+                .setTitle("Confirmar eliminación")
+                .setMessage("¿Estás seguro de que deseas eliminar el cupón con ID: $IDD?")
+                .setPositiveButton("Sí") { dialog, which ->
+                    tuColeccion.document(IDD)
+                        .delete()
+                        .addOnSuccessListener {
+                            Toast.makeText(requireContext(), "Cupón eliminado exitosamente", Toast.LENGTH_SHORT).show()
+
+                            // Consultar la colección nuevamente después de la eliminación
+                            consultarColeccion()
+
+                            // Limpiar el campo de ID después de la eliminación
+                            txt_id.text = ""
+
+                            // Verificar si no quedan cupones y limpiar la pantalla o los campos
+                            tuColeccion.get()
+                                .addOnSuccessListener { querySnapshot ->
+                                    if (querySnapshot.isEmpty) {
+                                        // Limpiar los campos si no hay más cupones
+                                        txt_id.text = ""
+                                        txt_nombre.text = ""
+                                        txt_id.text = ""
+                                        Toast.makeText(requireContext(), "No quedan cupones", Toast.LENGTH_SHORT).show()
+                                    }
+                                }
+                        }
+                        .addOnFailureListener { e ->
+                            Toast.makeText(requireContext(), "Error al eliminar el cupón: ${e.message}", Toast.LENGTH_SHORT).show()
+                        }
+                }
+                .setNegativeButton("No", null)
+                .show()
+        }
+
+        btnUpdate.setOnClickListener{
+            val txt_nombre : TextView = view.findViewById(R.id.txt_Nombre)
+            val txt_id : TextView = requireView().findViewById(R.id.textId)
+
+            val txt_descripcion : TextView = view.findViewById(R.id.txt_Descripcion)
+            var nom : String = txt_nombre.text.toString()
+            var des : String = txt_descripcion.text.toString()
+            var IDD : String = txt_id.text.toString()
+
+            val docActualizado = hashMapOf<String ,Any>()
+            docActualizado["Nombre"]=nom
+            docActualizado["Descripcion"]=des
+            tuColeccion.document(IDD)
+
+                .update(docActualizado)
+                .addOnSuccessListener {
+                    Toast.makeText(requireContext(), "Actualización Exitosa :)", Toast.LENGTH_SHORT).show()
+                    consultarColeccion()
+                }
+                .addOnFailureListener{
+                    Toast.makeText(requireContext(), "Error, intentalo de nuevo " , Toast.LENGTH_SHORT).show()
+
+                }
+
+        }
         btnEliminar.setOnClickListener()
         {
             consultarColeccion()
         }
+
+
+
 
         btnConsultar.setOnClickListener()
         {
