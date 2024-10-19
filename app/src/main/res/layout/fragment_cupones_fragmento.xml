@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".cupones_fragmento"
-    android:background="@color/teal_700">
+    android:background="@drawable/fondoapp">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
