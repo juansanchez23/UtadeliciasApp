@@ -9,9 +9,9 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.Firebase
 import com.google.firebase.firestore.FirebaseFirestore
 
 
@@ -20,6 +20,8 @@ class cupones_fragmento : Fragment(), AdaptadorCupones.OnItemClickListener {
     private val tuColeccion = db.collection("Cupones")
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter :AdaptadorCupones
+    private lateinit var viewModel: SharedCuponesViewModel
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,14 +34,20 @@ class cupones_fragmento : Fragment(), AdaptadorCupones.OnItemClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel = ViewModelProvider(requireActivity())[SharedCuponesViewModel::class.java]
+
 
         // Ahora puedes acceder a la vista
         recyclerView = view.findViewById(R.id.rDatos)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         adapter = AdaptadorCupones(this)
         recyclerView.adapter = adapter
-        val btnConsultar: Button = view.findViewById(R.id.btnAgregarCupon)
-        val btnEliminar : Button = view.findViewById(R.id.btnRefrescar)
+
+        viewModel.cupones.observe(viewLifecycleOwner) { cupones ->
+            adapter.setDatos(cupones)
+        }
+        val btnAgregar: Button = view.findViewById(R.id.btnAgregarCupon)
+        val btnConsultar : Button = view.findViewById(R.id.btnRefrescar)
         val btnUpdate : Button = view.findViewById(R.id.btnActualizar)
         val btnDelete : Button = view.findViewById(R.id.btnEliminar)
 
@@ -50,6 +58,7 @@ class cupones_fragmento : Fragment(), AdaptadorCupones.OnItemClickListener {
             val IDD: String = txt_id.text.toString().trim()
             var nom : String = txt_nombre.text.toString()
             var des : String = txt_descripcion.text.toString()
+
 
 
             // Validación 1: Verificar si el campo de ID está vacío
@@ -73,6 +82,8 @@ class cupones_fragmento : Fragment(), AdaptadorCupones.OnItemClickListener {
                         .delete()
                         .addOnSuccessListener {
                             Toast.makeText(requireContext(), "Cupón eliminado exitosamente", Toast.LENGTH_SHORT).show()
+                            viewModel.getCupones()  // Refresh the data after adding
+
 
                             // Consultar la colección nuevamente después de la eliminación
                             consultarColeccion()
@@ -118,6 +129,8 @@ class cupones_fragmento : Fragment(), AdaptadorCupones.OnItemClickListener {
                 .addOnSuccessListener {
                     Toast.makeText(requireContext(), "Actualización Exitosa :)", Toast.LENGTH_SHORT).show()
                     consultarColeccion()
+                    viewModel.getCupones()  // Refresh the data after adding
+
                 }
                 .addOnFailureListener{
                     Toast.makeText(requireContext(), "Error, intentalo de nuevo " , Toast.LENGTH_SHORT).show()
@@ -125,15 +138,17 @@ class cupones_fragmento : Fragment(), AdaptadorCupones.OnItemClickListener {
                 }
 
         }
-        btnEliminar.setOnClickListener()
+        btnConsultar.setOnClickListener()
         {
             consultarColeccion()
+            viewModel.getCupones()  // Refresh the data after adding
+
         }
 
 
 
 
-        btnConsultar.setOnClickListener()
+        btnAgregar.setOnClickListener()
         {
             val db= FirebaseFirestore.getInstance()
             val txt_nombre : TextView = view.findViewById(R.id.txt_Nombre)
@@ -148,6 +163,8 @@ class cupones_fragmento : Fragment(), AdaptadorCupones.OnItemClickListener {
                 .addOnSuccessListener { documentReference ->
                     Toast.makeText(requireContext(), "Registro del cupón Exitoso <3", Toast.LENGTH_SHORT).show()
                     consultarColeccion()
+                    viewModel.getCupones()  // Refresh the data after adding
+
                 }
 
                 .addOnFailureListener { e ->
@@ -178,6 +195,8 @@ class cupones_fragmento : Fragment(), AdaptadorCupones.OnItemClickListener {
                 }
 
                 adapter.setDatos(listaTuModelo)
+                viewModel.getCupones()  // Refresh the data after adding
+
             }
     }
 

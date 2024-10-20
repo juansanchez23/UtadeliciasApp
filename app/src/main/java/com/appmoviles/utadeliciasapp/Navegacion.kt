@@ -22,11 +22,11 @@ class Navegacion : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        replaceFragment(inicio_fragmento())
+        replaceFragment(fragment_inicio_fragmento())
         binding.bottomNavigationView.setOnItemSelectedListener {
 
             when(it.itemId){
-                R.id.home -> replaceFragment(inicio_fragmento())
+                R.id.home -> replaceFragment(fragment_inicio_fragmento())
                 R.id.notification -> replaceFragment(notificaciones_fragmento())
                 R.id.productos -> replaceFragment(productos_fragmentos())
                 R.id.descuentos -> replaceFragment(cupones_fragmento())

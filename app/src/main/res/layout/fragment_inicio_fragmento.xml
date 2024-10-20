@@ -2,6 +2,47 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/teal_700"
+    android:background="@color/white"
     tools:context=".cupones_fragmento">
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView2"
+        android:layout_width="398dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="85dp">
+
+        <TextView
+            android:id="@+id/Cupones_Disponibles"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="#FF2459"
+            android:fontFamily="serif"
+            android:gravity="center"
+            android:text="Cupones disponibles "
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rDatosInicio"
+        android:layout_width="395dp"
+        android:layout_height="569dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="150dp"
+        android:backgroundTint="@color/colorSecondary"
+        android:textColor="@color/black" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="219dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="115dp"
+        android:layout_marginTop="750dp"
+        android:backgroundTint="@color/colorSecondary"
+        android:text="VER MIS PRODUCTOS" />
 </FrameLayout>
