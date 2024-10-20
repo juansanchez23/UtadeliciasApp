@@ -90,6 +90,8 @@ class cupones_fragmento : Fragment(), AdaptadorCupones.OnItemClickListener {
 
                             // Limpiar el campo de ID después de la eliminación
                             txt_id.text = ""
+                            txt_nombre.text=""
+                            txt_descripcion.text=""
 
                             // Verificar si no quedan cupones y limpiar la pantalla o los campos
                             tuColeccion.get()
@@ -184,6 +186,8 @@ class cupones_fragmento : Fragment(), AdaptadorCupones.OnItemClickListener {
                 val listaTuModelo = mutableListOf<Cupones>()
                 for (document in querySnapshot)
                 {
+
+
                         val nombre = document.getString("Nombre")
                         val descripcion = document.getString("Descripcion")
                         val ID = document.id
