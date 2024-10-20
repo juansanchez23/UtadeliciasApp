@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".notificaciones_fragmento"
-    android:background="@color/purple_500">
+    android:background="@drawable/fondo"
+    >
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
