@@ -29,6 +29,7 @@ class HomeActivity : AppCompatActivity() {
         val provider = bundle?.getString("provider")
 
         replaceFragment(fragment_inicio_fragmento())
+        binding.bottomNavigationView.selectedItemId = R.id.home
 
         binding.bottomNavigationView.setOnItemSelectedListener { menuItem ->
             when (menuItem.itemId) {

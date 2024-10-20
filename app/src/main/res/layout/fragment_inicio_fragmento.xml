@@ -45,4 +45,13 @@
         android:layout_marginTop="750dp"
         android:backgroundTint="@color/colorSecondary"
         android:text="VER MIS PRODUCTOS" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/boton_scanner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="75dp"
+        android:layout_marginEnd="30dp"
+        android:src="@drawable/scanner_qr"/>
 </FrameLayout>
