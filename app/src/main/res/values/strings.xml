@@ -12,4 +12,8 @@
     <string name="AddProduct">Añadir Producto</string>
     <string name="DelProduct">Eliminar producto</string>
     <string name="WhatDoYouWantToDelete">¿Qué deseas eliminar?</string>
+    <string name="TextProductAdd">¿Qué Productos deseas agregar hoy?</string>
+    <string name="name">Nombre:</string>
+    <string name="Description">Descripción:</string>
+    <string name="Image">Image:</string>
 </resources>
