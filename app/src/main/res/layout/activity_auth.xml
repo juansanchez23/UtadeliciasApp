@@ -5,25 +5,26 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/fondo"
     tools:context=".AuthActivity">
 
     <ImageView
         android:id="@+id/imageView3"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
         android:layout_marginTop="44dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@mipmap/ic_launcher" />
+        app:srcCompat="@drawable/logosinfondo" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="50dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="32dp"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -51,20 +52,7 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/signUpButton"
-                style="@style/ButtonPrimary"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Registrar" />
-
-            <Space
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.7" />
-
-            <Button
-                android:id="@+id/logOutbutton"
+                android:id="@+id/logInbutton"
                 style="@style/ButtonSecondary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -72,5 +60,17 @@
                 android:text="Ingresar" />
         </LinearLayout>
     </LinearLayout>
+
+    <Button
+        android:id="@+id/signUpButton"
+        style="@style/ButtonPrimary"
+        android:layout_width="240dp"
+        android:layout_height="49dp"
+        android:layout_marginTop="30dp"
+        android:layout_weight="1"
+        android:text="Registrar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
