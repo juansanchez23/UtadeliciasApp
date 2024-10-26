@@ -15,5 +15,7 @@
     <string name="TextProductAdd">¿Qué Productos deseas agregar hoy?</string>
     <string name="name">Nombre:</string>
     <string name="Description">Descripción:</string>
-    <string name="Image">Image:</string>
+    <string name="Image">Imagen:</string>
+    <string name="addName">Añade un nombre</string>
+    <string name="addDescription">Añade la descripcion del producto</string>
 </resources>
