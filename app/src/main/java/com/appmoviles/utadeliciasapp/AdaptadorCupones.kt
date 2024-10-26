@@ -4,8 +4,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView.OnItemClickListener
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 
 class AdaptadorCupones(private val itemClickListener: OnItemClickListener) : RecyclerView.Adapter<AdaptadorCupones.ViewHolder> (){
 
@@ -23,6 +25,7 @@ class AdaptadorCupones(private val itemClickListener: OnItemClickListener) : Rec
         val txtId: TextView = itemView.findViewById(R.id.txtId)
         val txtnombre: TextView = itemView.findViewById(R.id.txtnombre)
         val txtDescripcion: TextView = itemView.findViewById(R.id.txtdescripcion)
+        val imagenCupon: ImageView = itemView.findViewById(R.id.imagenCupon) // Añade este ImageView en tu layout
 
         init{
             itemView.setOnClickListener{
@@ -60,6 +63,13 @@ class AdaptadorCupones(private val itemClickListener: OnItemClickListener) : Rec
         holder.txtId.text=item.id.toString()
         holder.txtnombre.text = item.nombre
         holder.txtDescripcion.text = item.descripcion
+
+
+        if (item.imagenUrl.isNotEmpty()) {
+            Glide.with(holder.itemView.context)
+                .load(item.imagenUrl)
+                .into(holder.imagenCupon)
+        }
     }
 
 }
