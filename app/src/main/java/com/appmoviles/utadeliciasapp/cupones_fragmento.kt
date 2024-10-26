@@ -74,7 +74,7 @@ class cupones_fragmento : Fragment(), AdaptadorCupones.OnItemClickListener {
 
             // Confirmación de eliminación
             AlertDialog.Builder(requireContext())
-                .setTitle("Confirmar eliminación")
+                .setTitle("Confirmar eliminación del cupón")
                 .setMessage("¿Estás seguro de que deseas eliminar el cupón con ID: $IDD?")
                 .setPositiveButton("Sí") { dialog, which ->
                     tuColeccion.document(IDD)
