@@ -47,7 +47,6 @@ class cupones_fragmento : Fragment(), AdaptadorCupones.OnItemClickListener {
             adapter.setDatos(cupones)
         }
         val btnAgregar: Button = view.findViewById(R.id.btnAgregarCupon)
-        val btnConsultar : Button = view.findViewById(R.id.btnRefrescar)
         val btnUpdate : Button = view.findViewById(R.id.btnActualizar)
         val btnDelete : Button = view.findViewById(R.id.btnEliminar)
 
@@ -136,12 +135,6 @@ class cupones_fragmento : Fragment(), AdaptadorCupones.OnItemClickListener {
                     Toast.makeText(requireContext(), "Error, intentalo de nuevo " , Toast.LENGTH_SHORT).show()
 
                 }
-
-        }
-        btnConsultar.setOnClickListener()
-        {
-            consultarColeccion()
-            viewModel.getCupones()  // Refresh the data after adding
 
         }
 
