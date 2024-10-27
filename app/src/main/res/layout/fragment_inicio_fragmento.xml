@@ -31,22 +31,24 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rDatosInicio"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="348dp"
+        android:layout_height="457dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:layout_marginTop="120dp"
         android:backgroundTint="@color/colorSecondary"
         android:textColor="@color/black" />
 
+
     <Button
         android:id="@+id/btnProductos"
         android:layout_width="219dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="115dp"
-        android:layout_marginTop="750dp"
+        android:layout_marginTop="600dp"
         android:backgroundTint="@color/colorSecondary"
-        android:text="VER MIS PRODUCTOS" />
+        android:text="VER MIS PRODUCTOS"
+        android:textSize="20sp" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/boton_scanner"
@@ -55,6 +57,6 @@
         android:layout_gravity="bottom|end"
         android:layout_marginEnd="30dp"
         android:layout_marginBottom="75dp"
-        android:src="@drawable/scanner_qr"
         tools:ignore="SpeakableTextPresentCheck" />
+
 </FrameLayout>

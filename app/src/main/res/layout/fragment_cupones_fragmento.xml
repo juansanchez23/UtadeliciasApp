@@ -34,7 +34,8 @@
                     android:text="@string/cupones_ofertados"
                     android:textColor="@color/white"
                     android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:contentDescription="Título: Cupones ofertados" />
             </androidx.cardview.widget.CardView>
 
             <!-- Campos de texto -->
@@ -54,7 +55,9 @@
                 android:layout_height="48dp"
                 android:hint="@string/ingresa_el_id_del_cup_n"
                 android:padding="8dp"
-                android:textColorHint="#80AAAAAA"  />
+                android:textColorHint="#80AAAAAA"
+                android:importantForAccessibility="yes"
+                android:accessibilityLiveRegion="polite" />
 
             <TextView
                 android:id="@+id/textNombre"
@@ -72,14 +75,16 @@
                 android:layout_height="48dp"
                 android:hint="@string/ingresa_el_nombre_del_cup_n"
                 android:padding="8dp"
-                android:textColorHint="#80AAAAAA" />
+                android:textColorHint="#80AAAAAA"
+                android:importantForAccessibility="yes"
+                android:accessibilityLiveRegion="polite" />
 
             <TextView
                 android:id="@+id/txtDescripcion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="@string/Description"
+                android:text="Descripción"
                 android:textSize="20sp"
                 android:textColor="@color/colorSecondary"
                 android:textStyle="bold"/>
@@ -90,7 +95,26 @@
                 android:layout_height="48dp"
                 android:hint="@string/ingresa_la_descripci_n_del_cup_n"
                 android:padding="8dp"
-                android:textColorHint="#80AAAAAA" />
+                android:textColorHint="#80AAAAAA"
+                android:importantForAccessibility="yes"
+                android:accessibilityLiveRegion="polite" />
+
+            <!-- Campo de imagen y botón de selección más arriba -->
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_margin="16dp"
+                android:scaleType="centerCrop"
+                android:contentDescription="Imagen del cupón" />
+
+            <Button
+                android:id="@+id/btnSelectImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Seleccionar Imagen"
+                android:layout_gravity="center"
+                android:contentDescription="Botón para seleccionar una imagen del cupón" />
 
             <!-- RecyclerView -->
             <androidx.recyclerview.widget.RecyclerView
@@ -98,38 +122,40 @@
                 android:layout_width="match_parent"
                 android:layout_height="292dp"
                 android:layout_marginTop="20dp"
-                android:layout_marginEnd="16dp"
                 android:background="@android:color/transparent"
-                android:scrollbars="vertical" />
+                android:scrollbars="vertical"
+                android:contentDescription="Lista de cupones ofertados" />
 
-            <!-- Botones -->
+            <!-- Botones con mejor accesibilidad agrupados al final -->
             <Button
                 android:id="@+id/btnAgregarCupon"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="48dp"
                 android:layout_marginTop="20dp"
                 android:backgroundTint="@color/colorSecondary"
-                android:text="@string/agregar_cup_n"
-                android:textColor="@color/white" />
-
+                android:text="Agregar cupón"
+                android:textColor="@color/white"
+                android:contentDescription="Botón para agregar un cupón" />
 
             <Button
                 android:id="@+id/btnEliminar"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="48dp"
                 android:layout_marginTop="15dp"
                 android:backgroundTint="@color/colorSecondary"
-                android:text="@string/eliminar_cup_nes"
-                android:textColor="@color/white" />
+                android:text="Eliminar cupones"
+                android:textColor="@color/white"
+                android:contentDescription="Botón para eliminar cupones" />
 
             <Button
                 android:id="@+id/btnActualizar"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="48dp"
                 android:layout_marginTop="20dp"
                 android:backgroundTint="@color/colorSecondary"
-                android:text="@string/editar_cup_n"
-                android:textColor="@color/white" />
+                android:text="Editar cupón"
+                android:textColor="@color/white"
+                android:contentDescription="Botón para editar cupones" />
 
         </LinearLayout>
     </ScrollView>

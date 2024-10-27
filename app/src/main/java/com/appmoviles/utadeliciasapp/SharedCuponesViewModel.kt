@@ -19,7 +19,10 @@ class SharedCuponesViewModel : ViewModel() {
                     val id = document.id
                     val nombre = document.getString("Nombre") ?: ""
                     val descripcion = document.getString("Descripcion") ?: ""
-                    cuponesLista.add(Cupones(id, nombre, descripcion))
+                    val imagenUrl = document.getString("imagenUrl") ?: ""
+
+                    cuponesLista.add(Cupones(id, nombre, descripcion,imagenUrl))
+
                 }
                 _cupones.value = cuponesLista
             }
