@@ -1,5 +1,6 @@
 package com.appmoviles.utadeliciasapp
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,19 +22,28 @@ class AdaptadorCupones(private val itemClickListener: OnItemClickListener) : Rec
 
 
 
-    inner class ViewHolder (itemView: View) : RecyclerView.ViewHolder(itemView){
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val txtId: TextView = itemView.findViewById(R.id.txtId)
         val txtnombre: TextView = itemView.findViewById(R.id.txtnombre)
         val txtDescripcion: TextView = itemView.findViewById(R.id.txtdescripcion)
-        val imagenCupon: ImageView = itemView.findViewById(R.id.imagenCupon) // Añade este ImageView en tu layout
+        val imagenCupon: ImageView = itemView.findViewById(R.id.imagenCupon)
 
-        init{
-            itemView.setOnClickListener{
+        init {
+            itemView.setOnClickListener {
                 val position = adapterPosition
-                if (position != RecyclerView.NO_POSITION   )
-                {
-                    val tuModelo = datos[position]
-                    itemClickListener.onItemClick(tuModelo)
+                if (position != RecyclerView.NO_POSITION) {
+                    val cupon = datos[position]
+
+                    // Iniciar la actividad de detalle
+                    val intent = Intent(itemView.context, DetalleCuponActivity::class.java).apply {
+                        putExtra("nombre", cupon.nombre)
+                        putExtra("descripcion", cupon.descripcion)
+                        putExtra("imagenUrl", cupon.imagenUrl)
+                    }
+                    itemView.context.startActivity(intent)
+
+                    // Mantener el callback original
+                    itemClickListener.onItemClick(cupon)
                 }
             }
         }
@@ -60,10 +70,9 @@ class AdaptadorCupones(private val itemClickListener: OnItemClickListener) : Rec
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = datos[position]
-        holder.txtId.text=item.id.toString()
+        holder.txtId.text = item.id.toString()
         holder.txtnombre.text = item.nombre
         holder.txtDescripcion.text = item.descripcion
-
 
         if (item.imagenUrl.isNotEmpty()) {
             Glide.with(holder.itemView.context)
