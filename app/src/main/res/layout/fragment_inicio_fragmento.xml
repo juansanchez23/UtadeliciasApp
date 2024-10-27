@@ -62,7 +62,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_marginEnd="20dp"
-        android:layout_marginBottom="90dp"
+        android:layout_marginBottom="85dp"
         android:backgroundTint="@color/teal_200"
         android:contentDescription="Botón para escanear código QR"
         android:src="@drawable/scanner_qr"

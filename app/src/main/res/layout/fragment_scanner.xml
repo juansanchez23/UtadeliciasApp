@@ -31,7 +31,8 @@
         android:max="30"
         android:min="1"
         android:layout_margin="60dp"
-        android:layout_gravity="bottom"/>
+        android:layout_gravity="bottom"
+        android:thumbTint="@color/colorSecondary"/>
 
 
 </FrameLayout>
