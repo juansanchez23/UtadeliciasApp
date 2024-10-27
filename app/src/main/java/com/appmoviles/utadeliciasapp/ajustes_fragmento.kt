@@ -21,19 +21,25 @@ class ajustes_fragmento : Fragment() {
         val bundle = arguments
         val email = bundle?.getString("email")
         val provider = bundle?.getString("provider")
-        setup(view, email ?: "", provider ?: "")
+        val name = bundle?.getString("name")
+        val lastname =bundle?.getString("lastname")
+        setup(view, email ?: "", provider ?: "", name ?: "",lastname ?: "")
 
         return view
     }
 
-    private fun setup(view: View, email: String, provider: String) {
+    private fun setup(view: View, email: String, provider: String, name: String,lastname: String) {
         val emailTextView = view.findViewById<TextView>(R.id.emailTextView)
         val providerTextView = view.findViewById<TextView>(R.id.providerTextView)
+        val nameTextView = view.findViewById<TextView>(R.id.nameTextView)
+        val lastnameTextView = view.findViewById<TextView>(R.id.lastnameTextView)
         val logOutButton = view.findViewById<TextView>(R.id.logOutbutton)
 
         // Mostrar el correo y el tipo de autenticación
         emailTextView.text = email
         providerTextView.text = provider
+        nameTextView.text =name
+        lastnameTextView.text= lastname
 
         // Cerrar sesión
         logOutButton.setOnClickListener {
@@ -44,11 +50,13 @@ class ajustes_fragmento : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(email: String, provider: String) =
+        fun newInstance(email: String, provider: String,name: String, lastname: String) =
             ajustes_fragmento().apply {
                 arguments = Bundle().apply {
                     putString("email", email)
                     putString("provider", provider)
+                    putString("name", name)
+                    putString("lastname", lastname)
                 }
             }
     }

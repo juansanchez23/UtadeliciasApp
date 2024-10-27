@@ -56,7 +56,7 @@
             android:id="@+id/swich_comercio"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Activar si eres comercio"
+            android:text="@string/activar_si_eres_comercio"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
         <Button

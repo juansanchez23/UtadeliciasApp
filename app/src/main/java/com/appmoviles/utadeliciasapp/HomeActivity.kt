@@ -27,6 +27,8 @@ class HomeActivity : AppCompatActivity() {
         val bundle = intent.extras
         val email = bundle?.getString("email")
         val provider = bundle?.getString("provider")
+        val name = bundle?.getString("name")
+        val lastname = bundle?.getString("lastname")
 //        val name = bundle?.getString("name")
 //        val lastname = bundle?.getString("lastname")
         //Mirar si se puede colocar en la linea R.id.settings -> replaceFragment(ajustes_fragmento.newInstance(email ?: "", provider ?: ""))
@@ -40,7 +42,7 @@ class HomeActivity : AppCompatActivity() {
                 R.id.notification -> replaceFragment(notificaciones_fragmento())
                 R.id.productos -> replaceFragment(productos_fragmentos())
                 R.id.descuentos -> replaceFragment(cupones_fragmento())
-                R.id.settings -> replaceFragment(ajustes_fragmento.newInstance(email ?: "", provider ?: ""))
+                R.id.settings -> replaceFragment(ajustes_fragmento.newInstance(email ?: "", provider ?: "", name ?: "",lastname ?:""))
                 else -> false
             }
             true

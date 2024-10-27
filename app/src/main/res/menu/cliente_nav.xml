@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="@string/Notifiacion"
+        android:id="@+id/notification_cliente"
+        android:icon="@drawable/bell"/>
+    <item android:title="@string/Productos"
+        android:id="@+id/productos_cliente"
+        android:icon="@drawable/hamburger_soda"/>
+    <item android:title="@string/Inicio"
+        android:id="@+id/home_cliente"
+        android:icon="@drawable/home"/>
+    <item android:title="@string/Cupones"
+        android:id="@+id/descuentos_clientes"
+        android:icon="@drawable/brand"/>
+    <item android:title="@string/Ajustes"
+        android:id="@+id/settings_cliente"
+        android:icon="@drawable/settings"/>
+</menu>

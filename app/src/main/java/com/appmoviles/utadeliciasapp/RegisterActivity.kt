@@ -1,5 +1,6 @@
 package com.appmoviles.utadeliciasapp
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -9,12 +10,9 @@ import android.widget.Switch
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.ktx.Firebase
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -31,6 +29,7 @@ class RegisterActivity : AppCompatActivity() {
         setup()
     }
 
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
     private fun setup() {
         title = "Ingresar"
         val signUpButtonRegister = findViewById<Button>(R.id.signUpButtonRegister)
@@ -68,7 +67,7 @@ class RegisterActivity : AppCompatActivity() {
                             db.collection("user-info").document(uid)
                                 .set(userData)
                                 .addOnSuccessListener {
-                                    showHome(emailEditText.text.toString(), ProviderType.BASIC)
+                                    showHome(emailEditText.text.toString(), ProviderType.BASIC, nameEditText.text.toString(), lastnameEditText.text.toString(), esComercio)
                                 }
                                 .addOnFailureListener { e ->
                                     showAlert()
@@ -92,12 +91,25 @@ class RegisterActivity : AppCompatActivity() {
         dialog.show()
     }
 
-    private fun showHome(email: String, provider: ProviderType) {
-        val homeIntent = Intent(this, HomeActivity::class.java).apply {
-            putExtra("email", email)
-            putExtra("provider", provider.name)
+    private fun showHome(email: String, provider: ProviderType, name: String, lastname: String, esComercio: Boolean) {
+        if (esComercio) {
+            // Si es comercio, redirigir a la actividad correspondiente para dueños de comercio
+            val homeIntent = Intent(this, HomeActivity::class.java).apply {
+                putExtra("email", email)
+                putExtra("provider", provider.name)
+                putExtra("name", name)
+                putExtra("lastname", lastname)
+            }
+            startActivity(homeIntent)
+        } else {
+            // Si no es comercio, redirigir a la actividad con barra de navegación
+            val homeIntent = Intent(this, NavCliente::class.java).apply {
+                putExtra("email", email)
+                putExtra("provider", provider.name)
+                putExtra("name", name)
+                putExtra("lastname", lastname)
+            }
+            startActivity(homeIntent)
         }
-        startActivity(homeIntent)
     }
 }
-
