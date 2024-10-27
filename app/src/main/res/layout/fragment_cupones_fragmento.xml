@@ -4,127 +4,134 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/fondo"
-
     tools:context=".cupones_fragmento">
 
-    <!-- TODO: Update blank fragment layout -->
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView2"
-        android:layout_width="359dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="85dp"
-        android:layout_marginEnd="20dp">
+    <!-- ScrollView envuelve todos los elementos que deben ser desplazables -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/doble_guerrero2"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:background="#FF2459"
-            android:fontFamily="serif"
-            android:gravity="center"
-            android:text="Cupones disponibles "
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Tarjeta de título -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp">
+
+                <TextView
+                    android:id="@+id/doble_guerrero2"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="#FF2459"
+                    android:fontFamily="serif"
+                    android:gravity="center"
+                    android:text="Cupones ofertados"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+            </androidx.cardview.widget.CardView>
+
+            <!-- Campos de texto -->
+            <TextView
+                android:id="@+id/textId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Id"
+                android:textSize="20sp"
+                android:textColor="@color/colorSecondary"
+                android:textStyle="bold"/>
+
+            <EditText
+                android:id="@+id/text_Id"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:hint="Ingresa el ID del cupón"
+                android:padding="8dp"
+                android:textColorHint="#80AAAAAA"  />
+
+            <TextView
+                android:id="@+id/textNombre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Nombre"
+                android:textSize="20sp"
+                android:textColor="@color/colorSecondary"
+                android:textStyle="bold"/>
+
+            <EditText
+                android:id="@+id/txt_Nombre"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:hint="Ingresa el nombre del cupón"
+                android:padding="8dp"
+                android:textColorHint="#80AAAAAA" />
+
+            <TextView
+                android:id="@+id/txtDescripcion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Descripcion"
+                android:textSize="20sp"
+                android:textColor="@color/colorSecondary"
+                android:textStyle="bold"/>
+
+            <EditText
+                android:id="@+id/txt_Descripcion"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:hint="Ingresa la descripción del cupón"
+                android:padding="8dp"
+                android:textColorHint="#80AAAAAA" />
+
+            <!-- RecyclerView -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rDatos"
+                android:layout_width="match_parent"
+                android:layout_height="292dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="16dp"
+                android:background="@android:color/transparent"
+                android:scrollbars="vertical" />
+
+            <!-- Botones -->
+            <Button
+                android:id="@+id/btnAgregarCupon"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="20dp"
+                android:backgroundTint="@color/colorSecondary"
+                android:text="Agregar cupón"
+                android:textColor="@color/white" />
 
 
-    </androidx.cardview.widget.CardView>
+            <Button
+                android:id="@+id/btnEliminar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
+                android:backgroundTint="@color/colorSecondary"
+                android:text="Eliminar cupónes"
+                android:textColor="@color/white" />
 
-    <EditText
-        android:id="@+id/txt_Nombre"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="180dp"
-        android:layout_marginTop="230dp"
-        android:ems="10"
-        android:inputType="text"
-        android:text="" />
+            <Button
+                android:id="@+id/btnActualizar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="20dp"
+                android:backgroundTint="@color/colorSecondary"
+                android:text="Editar cupón"
+                android:textColor="@color/white" />
 
-    <EditText
-        android:id="@+id/txt_Descripcion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="180dp"
-        android:layout_marginTop="295dp"
-        android:ems="10"
-        android:inputType="text"
-        android:text="" />
-
-    <TextView
-        android:id="@+id/textNombre"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="240dp"
-        android:text="Nombre"
-        android:textSize="20sp" />
-
-    <TextView
-        android:id="@+id/textId"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="180dp"
-        android:text="Id"
-        android:textSize="20sp" />
-
-    <TextView
-        android:id="@+id/txtDescripcion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="310dp"
-        android:text="Descripcion"
-        android:textSize="20sp" />
-
-    <Button
-        android:id="@+id/btnAgregarCupon"
-        android:layout_width="150dp"
-        android:layout_height="64dp"
-        android:layout_marginStart="240dp"
-        android:layout_marginTop="650dp"
-        android:backgroundTint="@color/colorSecondary"
-        android:text="Agregar cupon"
-        android:textColor="@color/black" />
-
-    <Button
-        android:id="@+id/btnRefrescar"
-        android:layout_width="150dp"
-        android:layout_height="64dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="740dp"
-        android:backgroundTint="@color/colorSecondary"
-        android:text="Refrescar cupon"
-        android:textColor="@color/black" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rDatos"
-        android:layout_width="375dp"
-        android:layout_height="253dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="380dp"
-        android:backgroundTint="@color/colorSecondary"
-        android:textColor="@color/black" />
-
-    <Button
-        android:id="@+id/btnActualizar"
-        android:layout_width="150dp"
-        android:layout_height="62dp"
-        android:layout_marginStart="240dp"
-        android:layout_marginTop="740dp"
-        android:text="Actualizar"
-        android:backgroundTint="@color/colorSecondary"
-        android:textColor="@color/black"/>
-
-    <Button
-        android:id="@+id/btnEliminar"
-        android:layout_width="150dp"
-        android:layout_height="67dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="650dp"
-        android:backgroundTint="@color/colorSecondary"
-        android:text="Elimar cupon"
-        android:textColor="@color/black" />
+        </LinearLayout>
+    </ScrollView>
 
 </FrameLayout>

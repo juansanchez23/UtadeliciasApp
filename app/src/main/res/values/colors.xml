@@ -11,4 +11,10 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="redApp">#FF2459</color>
+    <color name="redBtn">#D60035</color>
+    <color name="blueBtn">#02EBB5</color>
+    <color name="SecundaryBackground">#A1E8E5</color>
+
 </resources>

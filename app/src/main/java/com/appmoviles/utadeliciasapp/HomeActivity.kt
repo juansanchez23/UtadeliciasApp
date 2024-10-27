@@ -40,7 +40,7 @@ class HomeActivity : AppCompatActivity() {
             when (menuItem.itemId) {
                 R.id.home -> replaceFragment(fragment_inicio_fragmento())
                 R.id.notification -> replaceFragment(notificaciones_fragmento())
-                R.id.productos -> replaceFragment(productos_fragmentos())
+                R.id.productos -> replaceFragment(ProductosFragmentos())
                 R.id.descuentos -> replaceFragment(cupones_fragmento())
                 R.id.settings -> replaceFragment(ajustes_fragmento.newInstance(email ?: "", provider ?: "", name ?: "",lastname ?:""))
                 else -> false
