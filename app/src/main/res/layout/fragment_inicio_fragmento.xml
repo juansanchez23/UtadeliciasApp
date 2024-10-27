@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/fondo"
     tools:context=".cupones_fragmento">
 
@@ -19,9 +20,8 @@
             android:layout_width="match_parent"
             android:layout_height="45dp"
             android:background="#FF2459"
-            android:fontFamily="serif"
             android:gravity="center"
-            android:text="Cupones disponibles "
+            android:text="Cupones disponibles"
             android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -40,23 +40,33 @@
         android:textColor="@color/black" />
 
 
-    <Button
-        android:id="@+id/btnProductos"
-        android:layout_width="219dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="115dp"
-        android:layout_marginTop="600dp"
-        android:backgroundTint="@color/colorSecondary"
-        android:text="VER MIS PRODUCTOS"
-        android:textSize="20sp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
+        <Button
+            android:id="@+id/btnProductos"
+            android:layout_width="219dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="650dp"
+            android:backgroundTint="@color/colorSecondary"
+            android:text="Ver productos"
+            android:textSize="20sp" />
+    </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/boton_scanner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_marginEnd="30dp"
-        android:layout_marginBottom="75dp"
-        tools:ignore="SpeakableTextPresentCheck" />
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="90dp"
+        android:backgroundTint="@color/teal_200"
+        android:contentDescription="Botón para escanear código QR"
+        android:src="@drawable/scanner_qr"
+        app:maxImageSize="30dp" />
+
 
 </FrameLayout>
