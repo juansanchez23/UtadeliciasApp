@@ -18,6 +18,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 
@@ -32,6 +35,8 @@ class cupones_fragmento : Fragment(), AdaptadorCupones.OnItemClickListener {
     private val PICK_IMAGE_REQUEST = 71
     private var imageUri: Uri? = null
     private lateinit var imageView: ImageView
+    private val auth = FirebaseAuth.getInstance()
+    private lateinit var currentUserCuponesRef: CollectionReference
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,6 +47,13 @@ class cupones_fragmento : Fragment(), AdaptadorCupones.OnItemClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        auth.currentUser?.let { user ->
+            currentUserCuponesRef = db
+                .collection("usuarios_comercio")
+                .document(user.uid)
+                .collection("cupones")
+        }
+
         viewModel = ViewModelProvider(requireActivity())[SharedCuponesViewModel::class.java]
 
         // Inicializar vistas
@@ -90,7 +102,7 @@ class cupones_fragmento : Fragment(), AdaptadorCupones.OnItemClickListener {
                         .delete()
                         .addOnSuccessListener {
                             Toast.makeText(requireContext(), "Cupón eliminado exitosamente", Toast.LENGTH_SHORT).show()
-                            viewModel.getCupones()  // Refresh the data after adding
+                            viewModel.getCuponesForCurrentUser()  // Refresh the data after adding
 
 
                             // Consultar la colección nuevamente después de la eliminación
@@ -139,7 +151,7 @@ class cupones_fragmento : Fragment(), AdaptadorCupones.OnItemClickListener {
                 .addOnSuccessListener {
                     Toast.makeText(requireContext(), "Actualización Exitosa :)", Toast.LENGTH_SHORT).show()
                     consultarColeccion()
-                    viewModel.getCupones()  // Refresh the data after adding
+                    viewModel.getCuponesForCurrentUser()  // Refresh the data after adding
 
                 }
                 .addOnFailureListener{
@@ -167,7 +179,7 @@ class cupones_fragmento : Fragment(), AdaptadorCupones.OnItemClickListener {
                 .addOnSuccessListener { documentReference ->
                     Toast.makeText(requireContext(), "Registro del cupón Exitoso <3", Toast.LENGTH_SHORT).show()
                     consultarColeccion()
-                    viewModel.getCupones()  // Refresh the data after adding
+                    viewModel.getCuponesForCurrentUser()  // Refresh the data after adding
 
                 }
 
@@ -194,7 +206,11 @@ class cupones_fragmento : Fragment(), AdaptadorCupones.OnItemClickListener {
         // Botón agregar
         val btnAgregar: Button = view.findViewById(R.id.btnAgregarCupon)
         btnAgregar.setOnClickListener {
-            uploadImageAndData()
+            auth.currentUser?.let { user ->
+                uploadImageAndDataForUser(user.uid)
+            } ?: run {
+                Toast.makeText(requireContext(), "Debes iniciar sesión como comercio", Toast.LENGTH_SHORT).show()
+            }
         }
 
         // Botón actualizar
@@ -209,6 +225,8 @@ class cupones_fragmento : Fragment(), AdaptadorCupones.OnItemClickListener {
             deleteCupon()
         }
     }
+
+
 
     private fun selectImage() {
         val intent = Intent()
@@ -231,7 +249,7 @@ class cupones_fragmento : Fragment(), AdaptadorCupones.OnItemClickListener {
         }
     }
 
-    private fun uploadImageAndData() {
+    private fun uploadImageAndDataForUser(userId: String) {
         val txt_nombre: TextView = requireView().findViewById(R.id.txt_Nombre)
         val txt_descripcion: TextView = requireView().findViewById(R.id.txt_Descripcion)
         val nom: String = txt_nombre.text.toString()
@@ -246,7 +264,7 @@ class cupones_fragmento : Fragment(), AdaptadorCupones.OnItemClickListener {
         progressDialog.setTitle("Subiendo... espera un momento")
         progressDialog.show()
 
-        val imageRef = storageRef.child("cupones_imagenes/${System.currentTimeMillis()}_${imageUri!!.lastPathSegment}")
+        val imageRef = storageRef.child("usuarios_comercio/$userId/cupones/${System.currentTimeMillis()}_${imageUri!!.lastPathSegment}")
 
         imageRef.putFile(imageUri!!)
             .addOnSuccessListener { taskSnapshot ->
@@ -254,16 +272,18 @@ class cupones_fragmento : Fragment(), AdaptadorCupones.OnItemClickListener {
                     val data = hashMapOf(
                         "Nombre" to nom,
                         "Descripcion" to des,
-                        "imagenUrl" to uri.toString()
+                        "imagenUrl" to uri.toString(),
+                        "userId" to userId,
+                        "createdAt" to FieldValue.serverTimestamp()
                     )
 
-                    db.collection("Cupones")
+                    currentUserCuponesRef
                         .add(data)
                         .addOnSuccessListener { documentReference ->
                             progressDialog.dismiss()
-                            Toast.makeText(requireContext(), "Registro del cupón exitoso", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(requireContext(), "Cupón agregado exitosamente", Toast.LENGTH_SHORT).show()
                             clearFields()
-                            consultarColeccion()
+                            viewModel.getCuponesForCurrentUser()
                         }
                         .addOnFailureListener { e ->
                             progressDialog.dismiss()
@@ -275,67 +295,65 @@ class cupones_fragmento : Fragment(), AdaptadorCupones.OnItemClickListener {
                 progressDialog.dismiss()
                 Toast.makeText(requireContext(), "Error al subir la imagen: ${e.message}", Toast.LENGTH_SHORT).show()
             }
-            .addOnProgressListener { taskSnapshot ->
-                val progress = (100.0 * taskSnapshot.bytesTransferred / taskSnapshot.totalByteCount)
-                progressDialog.setMessage("Subiendo ${progress.toInt()}%")
-            }
     }
 
     private fun updateCupon(view: View) {
-        val txt_nombre: TextView = view.findViewById(R.id.txt_Nombre)
-        val txt_id: TextView = requireView().findViewById(R.id.textId)
-        val txt_descripcion: TextView = view.findViewById(R.id.txt_Descripcion)
-        val nom: String = txt_nombre.text.toString()
-        val des: String = txt_descripcion.text.toString()
-        val IDD: String = txt_id.text.toString()
+        auth.currentUser?.let { user ->
+            val txt_nombre: TextView = view.findViewById(R.id.txt_Nombre)
+            val txt_id: TextView = requireView().findViewById(R.id.textId)
+            val txt_descripcion: TextView = view.findViewById(R.id.txt_Descripcion)
+            val nom: String = txt_nombre.text.toString()
+            val des: String = txt_descripcion.text.toString()
+            val IDD: String = txt_id.text.toString()
 
-        val docActualizado = hashMapOf<String, Any>(
-            "Nombre" to nom,
-            "Descripcion" to des,
-        )
+            val docActualizado = hashMapOf<String, Any>(
+                "Nombre" to nom,
+                "Descripcion" to des,
+                "updatedAt" to FieldValue.serverTimestamp()
+            )
 
-        tuColeccion.document(IDD)
-            .update(docActualizado)
-            .addOnSuccessListener {
-                Toast.makeText(requireContext(), "Actualización Exitosa :)", Toast.LENGTH_SHORT).show()
-                consultarColeccion()
-            }
-            .addOnFailureListener {
-                Toast.makeText(requireContext(), "Error, inténtalo de nuevo", Toast.LENGTH_SHORT).show()
-            }
+            currentUserCuponesRef
+                .document(IDD)
+                .update(docActualizado)
+                .addOnSuccessListener {
+                    Toast.makeText(requireContext(), "Actualización Exitosa", Toast.LENGTH_SHORT).show()
+                    consultarColeccion()
+                }
+                .addOnFailureListener {
+                    Toast.makeText(requireContext(), "Error al actualizar", Toast.LENGTH_SHORT).show()
+                }
+        }
     }
 
     private fun deleteCupon() {
-        val txt_id: TextView = requireView().findViewById(R.id.textId)
-        val IDD: String = txt_id.text.toString().trim()
+        auth.currentUser?.let { user ->
+            val txt_id: TextView = requireView().findViewById(R.id.textId)
+            val IDD: String = txt_id.text.toString().trim()
 
-        if (IDD.isEmpty()) {
-            Toast.makeText(requireContext(), "El campo de ID está vacío", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        if (IDD.length < 5) {
-            Toast.makeText(requireContext(), "El ID del cupón no es válido.", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        AlertDialog.Builder(requireContext())
-            .setTitle("Confirmar eliminación")
-            .setMessage("¿Estás seguro de que deseas eliminar el cupón con ID: $IDD?")
-            .setPositiveButton("Sí") { _, _ ->
-                tuColeccion.document(IDD)
-                    .delete()
-                    .addOnSuccessListener {
-                        Toast.makeText(requireContext(), "Cupón eliminado exitosamente", Toast.LENGTH_SHORT).show()
-                        clearFields()
-                        consultarColeccion()
-                    }
-                    .addOnFailureListener { e ->
-                        Toast.makeText(requireContext(), "Error al eliminar el cupón: ${e.message}", Toast.LENGTH_SHORT).show()
-                    }
+            if (IDD.isEmpty()) {
+                Toast.makeText(requireContext(), "El campo de ID está vacío", Toast.LENGTH_SHORT).show()
+                return
             }
-            .setNegativeButton("No", null)
-            .show()
+
+            AlertDialog.Builder(requireContext())
+                .setTitle("Confirmar eliminación")
+                .setMessage("¿Estás seguro de que deseas eliminar este cupón?")
+                .setPositiveButton("Sí") { _, _ ->
+                    currentUserCuponesRef
+                        .document(IDD)
+                        .delete()
+                        .addOnSuccessListener {
+                            Toast.makeText(requireContext(), "Cupón eliminado exitosamente", Toast.LENGTH_SHORT).show()
+                            clearFields()
+                            consultarColeccion()
+                        }
+                        .addOnFailureListener { e ->
+                            Toast.makeText(requireContext(), "Error al eliminar el cupón: ${e.message}", Toast.LENGTH_SHORT).show()
+                        }
+                }
+                .setNegativeButton("No", null)
+                .show()
+        }
     }
 
     private fun clearFields() {
@@ -349,23 +367,25 @@ class cupones_fragmento : Fragment(), AdaptadorCupones.OnItemClickListener {
     }
 
     private fun consultarColeccion() {
-        tuColeccion.get()
-            .addOnSuccessListener { querySnapshot ->
-                val listaTuModelo = mutableListOf<Cupones>()
-
-                for (document in querySnapshot) {
-                    val nombre = document.getString("Nombre")
-                    val descripcion = document.getString("Descripcion")
-                    val imagenUrl = document.getString("imagenUrl") ?: ""
-                    val ID = document.id
-                    if (nombre != null && descripcion != null) {
-                        val tuModelo = Cupones(ID, nombre, descripcion, imagenUrl)
-                        listaTuModelo.add(tuModelo)
+        auth.currentUser?.let { user ->
+            currentUserCuponesRef
+                .get()
+                .addOnSuccessListener { querySnapshot ->
+                    val listaTuModelo = mutableListOf<Cupones>()
+                    for (document in querySnapshot) {
+                        val nombre = document.getString("Nombre")
+                        val descripcion = document.getString("Descripcion")
+                        val imagenUrl = document.getString("imagenUrl") ?: ""
+                        val ID = document.id
+                        if (nombre != null && descripcion != null) {
+                            val tuModelo = Cupones(ID, nombre, descripcion, imagenUrl)
+                            listaTuModelo.add(tuModelo)
+                        }
                     }
+                    adapter.setDatos(listaTuModelo)
+                    viewModel.getCuponesForCurrentUser()
                 }
-                adapter.setDatos(listaTuModelo)
-                viewModel.getCupones()
-            }
+        }
     }
 
     override fun onItemClick(tuModelo: Cupones) {

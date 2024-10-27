@@ -44,7 +44,7 @@ class fragment_inicio_fragmento : Fragment() {
         }
 
         // Asegúrate de que los datos se carguen cuando se crea el fragmento
-        viewModel.getCupones()
+        viewModel.getCuponesForCurrentUser()
 
         val botonScanner: FloatingActionButton = view.findViewById(R.id.boton_scanner)
         botonScanner.setOnClickListener {
