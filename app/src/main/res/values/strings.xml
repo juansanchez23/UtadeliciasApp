@@ -1,13 +1,10 @@
 <resources>
     <string name="app_name">UtadeliciasApp</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="Inicio">Inicio</string>
     <string name="Notifiacion">Notificaciones</string>
     <string name="Productos">Productos</string>
     <string name="Ajustes">Ajustes</string>
     <string name="Cupones">Cupones</string>
-
     <string name="productsSale">Productos a la venta</string>
     <string name="AddProduct">Añadir Producto</string>
     <string name="DelProduct">Eliminar producto</string>
@@ -18,4 +15,33 @@
     <string name="Image">Imagen:</string>
     <string name="addName">Añade un nombre</string>
     <string name="addDescription">Añade la descripcion del producto</string>
+    <string name="email">Email</string>
+    <string name="contrase_a">Contraseña</string>
+    <string name="ingresar">Ingresar</string>
+    <string name="registrar">Registrar</string>
+    <string name="nombre">Nombre</string>
+    <string name="apellido">Apellido</string>
+    <string name="activar_si_eres_comercio">Activar si eres comercio</string>
+    <string name="registro2">REGISTRO</string>
+    <string name="id_11111">ID: 11111</string>
+    <string name="nombre_del_cup_n">Nombre del Cupón</string>
+    <string name="descripcion_larga">Descripción del cupón aquí. Puede ser una descripción más larga que ocupe varias líneas.</string>
+    <string name="imagen_seleccionada">Imagen seleccionada</string>
+    <string name="tomar_foto">Tomar foto</string>
+    <string name="proveedor">Proveedor</string>
+    <string name="cerrar_sesi_n">Cerrar Sesión</string>
+    <string name="seccion_ajustes_clientes">seccion ajustes clientes</string>
+    <string name="seccion_cupones_cliente">seccion cupones cliente</string>
+    <string name="cupones_ofertados">Cupones ofertados</string>
+    <string name="id">Id</string>
+    <string name="ingresa_el_id_del_cup_n">Ingresa el ID del cupón</string>
+    <string name="ingresa_el_nombre_del_cup_n">Ingresa el nombre del cupón</string>
+    <string name="ingresa_la_descripci_n_del_cup_n">Ingresa la descripción del cupón</string>
+    <string name="agregar_cup_n">Agregar cupón</string>
+    <string name="eliminar_cup_nes">Eliminar cupónes</string>
+    <string name="editar_cup_n">Editar cupón</string>
+    <string name="seccion_inicio">seccion inicio</string>
+    <string name="seccion_notificaciones">seccion notificaciones</string>
+    <string name="seccion_notificaciones_cliente">seccion notificaciones</string>
+    <string name="seccion_productos_cliente">seccion productos_cliente</string>
 </resources>

@@ -25,25 +25,25 @@
             android:id="@+id/emailTextView"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:text="Email" />
+            android:text="@string/email" />
 
         <TextView
             android:id="@+id/providerTextView"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:text="Proveedor" />
+            android:text="@string/proveedor" />
 
         <TextView
             android:id="@+id/nameTextView"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:text="Nombre" />
+            android:text="@string/nombre" />
 
         <TextView
             android:id="@+id/lastnameTextView"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:text="Apellido" />
+            android:text="@string/apellido" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -52,11 +52,11 @@
 
             <Button
                 android:id="@+id/logOutbutton"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="#000000"
-                android:text="Cerrar Sesión"
+                android:text="@string/cerrar_sesi_n"
                 android:textColor="@android:color/white" />
         </LinearLayout>
     </LinearLayout>

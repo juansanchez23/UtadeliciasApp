@@ -25,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Nombre"
+            android:hint="@string/nombre"
             android:inputType="text" />
 
         <EditText
@@ -33,7 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Apellido"
+            android:hint="@string/apellido"
             android:inputType="text" />
 
         <EditText
@@ -41,7 +41,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Email"
+            android:hint="@string/email"
             android:inputType="textEmailAddress" />
 
         <EditText
@@ -49,7 +49,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Contraseña"
+            android:hint="@string/contrase_a"
             android:inputType="textPassword" />
 
         <Switch
@@ -57,16 +57,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/activar_si_eres_comercio"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
 
         <Button
             android:id="@+id/signUpButtonRegister"
             style="@style/ButtonPrimary"
             android:layout_width="match_parent"
-            android:layout_height="49dp"
+            android:layout_height="0dp"
             android:layout_marginTop="30dp"
             android:layout_weight="1"
-            android:text="Registrar"
+            android:text="@string/registrar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
@@ -93,7 +94,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:text="REGISTRO"
+        android:text="@string/registro2"
         android:textColor="@color/colorPrimary"
         android:textSize="35sp"
         android:textStyle="normal|bold"

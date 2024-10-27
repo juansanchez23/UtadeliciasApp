@@ -10,13 +10,11 @@ import android.widget.SeekBar
 import com.budiyev.android.codescanner.CodeScanner
 
 import android.widget.Toast
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.budiyev.android.codescanner.AutoFocusMode
 import com.budiyev.android.codescanner.CodeScannerView
 import com.budiyev.android.codescanner.DecodeCallback
 import com.budiyev.android.codescanner.ErrorCallback
-import com.appmoviles.utadeliciasapp.R
 
 class Scanner : Fragment() {
 

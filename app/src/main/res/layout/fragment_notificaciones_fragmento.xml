@@ -11,8 +11,8 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="seccion notificaciones"
-        android:textSize="26dp"
+        android:text="@string/seccion_notificaciones_cliente"
+        android:textSize="26sp"
         android:layout_gravity="center"/>
 
 </FrameLayout>

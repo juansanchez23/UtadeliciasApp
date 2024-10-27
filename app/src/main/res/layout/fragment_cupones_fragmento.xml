@@ -31,7 +31,7 @@
                     android:background="#FF2459"
                     android:fontFamily="serif"
                     android:gravity="center"
-                    android:text="Cupones ofertados"
+                    android:text="@string/cupones_ofertados"
                     android:textColor="@color/white"
                     android:textSize="20sp"
                     android:textStyle="bold" />
@@ -43,7 +43,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="Id"
+                android:text="@string/id"
                 android:textSize="20sp"
                 android:textColor="@color/colorSecondary"
                 android:textStyle="bold"/>
@@ -52,7 +52,7 @@
                 android:id="@+id/text_Id"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:hint="Ingresa el ID del cupón"
+                android:hint="@string/ingresa_el_id_del_cup_n"
                 android:padding="8dp"
                 android:textColorHint="#80AAAAAA"  />
 
@@ -61,7 +61,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="Nombre"
+                android:text="@string/nombre"
                 android:textSize="20sp"
                 android:textColor="@color/colorSecondary"
                 android:textStyle="bold"/>
@@ -70,7 +70,7 @@
                 android:id="@+id/txt_Nombre"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:hint="Ingresa el nombre del cupón"
+                android:hint="@string/ingresa_el_nombre_del_cup_n"
                 android:padding="8dp"
                 android:textColorHint="#80AAAAAA" />
 
@@ -79,7 +79,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="Descripcion"
+                android:text="@string/Description"
                 android:textSize="20sp"
                 android:textColor="@color/colorSecondary"
                 android:textStyle="bold"/>
@@ -88,7 +88,7 @@
                 android:id="@+id/txt_Descripcion"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:hint="Ingresa la descripción del cupón"
+                android:hint="@string/ingresa_la_descripci_n_del_cup_n"
                 android:padding="8dp"
                 android:textColorHint="#80AAAAAA" />
 
@@ -109,7 +109,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginTop="20dp"
                 android:backgroundTint="@color/colorSecondary"
-                android:text="Agregar cupón"
+                android:text="@string/agregar_cup_n"
                 android:textColor="@color/white" />
 
 
@@ -119,7 +119,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginTop="15dp"
                 android:backgroundTint="@color/colorSecondary"
-                android:text="Eliminar cupónes"
+                android:text="@string/eliminar_cup_nes"
                 android:textColor="@color/white" />
 
             <Button
@@ -128,7 +128,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginTop="20dp"
                 android:backgroundTint="@color/colorSecondary"
-                android:text="Editar cupón"
+                android:text="@string/editar_cup_n"
                 android:textColor="@color/white" />
 
         </LinearLayout>
