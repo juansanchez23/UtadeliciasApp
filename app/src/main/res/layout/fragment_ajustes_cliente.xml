@@ -1,17 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ajustes_cliente"
-    android:background="@drawable/fondo">
+    android:background="@drawable/fondo"
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="wrap_content"
+    tools:context=".ajustes_cliente">
+
+    <LinearLayout
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/seccion_ajustes_clientes"
-        android:textSize="26sp"
-        android:layout_gravity="center"/>
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-</FrameLayout>
+        <TextView
+            android:id="@+id/emailTextViewcl"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="@string/email" />
+
+
+        <TextView
+            android:id="@+id/nameTextViewcl"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="@string/nombre" />
+
+        <TextView
+            android:id="@+id/lastnameTextViewcl"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="@string/apellido" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/logOutbuttoncl"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="#000000"
+                android:text="@string/cerrar_sesi_n"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
