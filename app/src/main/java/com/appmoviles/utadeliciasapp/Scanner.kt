@@ -1,20 +1,21 @@
 package com.appmoviles.utadeliciasapp
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
-import com.budiyev.android.codescanner.CodeScanner
-
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import com.budiyev.android.codescanner.AutoFocusMode
-import com.budiyev.android.codescanner.CodeScannerView
-import com.budiyev.android.codescanner.DecodeCallback
-import com.budiyev.android.codescanner.ErrorCallback
+import com.budiyev.android.codescanner.*
 
 class Scanner : Fragment() {
 
@@ -25,77 +26,87 @@ class Scanner : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Infla el layout para este fragmento
         return inflater.inflate(R.layout.fragment_scanner, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
         super.onViewCreated(view, savedInstanceState)
 
         val scannerView = view.findViewById<CodeScannerView>(R.id.scanner_view)
 
-        // Inicializa CodeScanner
-        codeScanner = CodeScanner(requireContext(), scannerView)
+        codeScanner = CodeScanner(requireContext(), scannerView).apply {
+            camera = CodeScanner.CAMERA_BACK
+            formats = CodeScanner.ALL_FORMATS
+            autoFocusMode = AutoFocusMode.SAFE
+            isAutoFocusEnabled = true
+            isFlashEnabled = false
 
-        // Configura los parámetros
-        codeScanner.camera = CodeScanner.CAMERA_BACK // o CAMERA_FRONT
-        codeScanner.formats = CodeScanner.ALL_FORMATS
-        codeScanner.autoFocusMode = AutoFocusMode.SAFE
-        codeScanner.isAutoFocusEnabled = true
-        codeScanner.isFlashEnabled = false
+            // Callback de decodificación
+            decodeCallback = DecodeCallback { result ->
+                requireActivity().runOnUiThread {
+                    val textoQR = result.text
 
-        // Callbacks
-        codeScanner.decodeCallback = DecodeCallback {
-            requireActivity().runOnUiThread {
-                Toast.makeText(requireContext(), "Scan result: ${it.text}", Toast.LENGTH_LONG).show()
+                    Log.d("ScannerFragment", "Texto escaneado: $textoQR")
+
+                    if (textoQR.startsWith("CUPON:")) {
+                        parentFragmentManager.beginTransaction()
+                            .replace(R.id.frame_layout, ConfirmacionExitosa())  // Asegúrate de usar el ID correcto
+                            .addToBackStack(null)
+                            .commit()
+                    } else if (textoQR.startsWith("http://") || textoQR.startsWith("https://")) {
+                        // Abrir el enlace automáticamente si es un URL válido
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(textoQR))
+                        startActivity(intent)
+                    } else {
+                        // Copiar al portapapeles si no es un enlace
+                        copiarAlPortapapeles(textoQR)
+                    }
+                }
+            }
+
+            // Callback de error
+            errorCallback = ErrorCallback { error ->
+                requireActivity().runOnUiThread {
+                    Toast.makeText(requireContext(), "Error al inicializar la cámara: ${error.message}",
+                        Toast.LENGTH_LONG).show()
+                }
             }
         }
-        codeScanner.errorCallback = ErrorCallback {
-            requireActivity().runOnUiThread {
-                Toast.makeText(requireContext(), "Camera initialization error: ${it.message}",
-                    Toast.LENGTH_LONG).show()
-            }
-        }
 
-        // Inicia el escaneo cuando se toca el scannerView
-        scannerView.setOnClickListener {
-            codeScanner.startPreview()
-        }
+        scannerView.setOnClickListener { codeScanner.startPreview() }
 
-        val seekBar = view.findViewById<SeekBar>(R.id.seekBar)
-
-        seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+        view.findViewById<SeekBar>(R.id.seekBar).setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                codeScanner.zoom=progress
+                codeScanner.zoom = progress
             }
 
-            override fun onStartTrackingTouch(seekBar: SeekBar?) {
-                // Manejo cuando empieza a tocar
-            }
-
-            override fun onStopTrackingTouch(seekBar: SeekBar?) {
-                // Manejo cuando deja de tocar
-            }
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
         })
 
-        checkPermission(android.Manifest.permission.CAMERA,200 )
+        checkPermission(android.Manifest.permission.CAMERA, 200)
+    }
+
+    private fun copiarAlPortapapeles(texto: String) {
+        val clipboard = requireActivity().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        val clip = ClipData.newPlainText("Texto QR", texto)
+        clipboard.setPrimaryClip(clip)
+        Toast.makeText(requireContext(), "Texto copiado al portapapeles", Toast.LENGTH_SHORT).show()
     }
 
     override fun onResume() {
         super.onResume()
-        codeScanner.startPreview() // Reinicia el preview al volver
+        codeScanner.startPreview()
     }
 
     override fun onPause() {
-        codeScanner.releaseResources() // Libera recursos de la cámara al pausar
+        codeScanner.releaseResources()
         super.onPause()
     }
 
-    fun checkPermission(permission: String, reqCode: Int) {
+    private fun checkPermission(permission: String, reqCode: Int) {
         if (ContextCompat.checkSelfPermission(requireContext(), permission) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(arrayOf(permission), reqCode)
         }
     }
-
 }

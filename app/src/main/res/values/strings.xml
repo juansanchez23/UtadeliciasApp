@@ -44,4 +44,6 @@
     <string name="seccion_notificaciones">seccion notificaciones</string>
     <string name="seccion_notificaciones_cliente">seccion notificaciones</string>
     <string name="seccion_productos_cliente">seccion productos_cliente</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

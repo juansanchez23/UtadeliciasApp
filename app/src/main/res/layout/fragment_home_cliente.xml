@@ -1,41 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".home_cliente"
     android:background="@drawable/fondo">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView2"
-        android:layout_width="371dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="60dp"
-        android:layout_marginEnd="20dp">
-
-        <TextView
-            android:id="@+id/Cupones_Disponibles"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:background="#FF2459"
-            android:gravity="center"
-            android:text="Cupones disponibles"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-
-    </androidx.cardview.widget.CardView>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rDatosInicio"
-        android:layout_width="348dp"
-        android:layout_height="457dp"
-        android:layout_marginStart="20dp"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/boton_scannercl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
         android:layout_marginEnd="20dp"
-        android:layout_marginTop="120dp"
+        android:layout_marginBottom="85dp"
         android:backgroundTint="@color/colorSecondary"
-        android:textColor="@color/black" />
-
+        android:contentDescription="Botón para generar código QR"
+        android:src="@drawable/generatetokens"
+        app:maxImageSize="30dp" />
 </FrameLayout>

@@ -12,7 +12,7 @@ class NavCliente : AppCompatActivity() {
         binding2=ActivityNavCliente2Binding.inflate(layoutInflater)
         setContentView(binding2.root)
         replaceFragment2(home_cliente())
-
+        binding2.bottomNavigationView2.selectedItemId = R.id.home_cliente
 
         binding2.bottomNavigationView2.setOnItemSelectedListener {
             when(it.itemId){
