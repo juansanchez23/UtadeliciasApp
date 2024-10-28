@@ -78,6 +78,11 @@ dependencies {
 
     //Codigo Qr
     implementation ("com.github.yuriy-budiyev:code-scanner:2.3.0")
+    implementation ("com.journeyapps:zxing-android-embedded:4.3.0")
+    implementation "com.google.zxing:core:3.4.1"
+
+
+
 
     implementation("com.google.firebase:firebase-storage-ktx:20.3.0")
     implementation("com.github.bumptech.glide:glide:4.16.0")
