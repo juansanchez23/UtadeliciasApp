@@ -10,7 +10,7 @@ import android.widget.ImageView
 
 class AddProductsFragment : Fragment() {
 
-    private lateinit var ivBack_add: ImageView
+    private lateinit var ivBackAdd: ImageView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -24,10 +24,10 @@ class AddProductsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // Inicializar el ImageView de retroceso
-        ivBack_add = view.findViewById(R.id.ivBack_add)
+        ivBackAdd = view.findViewById(R.id.ivBack_add)
 
         // Configurar el listener para el ImageView
-        ivBack_add.setOnClickListener {
+        ivBackAdd.setOnClickListener {
             parentFragmentManager.popBackStack() // Vuelve al fragmento anterior en la pila
         }
     }

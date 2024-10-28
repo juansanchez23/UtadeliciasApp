@@ -5,11 +5,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 
 
 class DeleteProductFragment : Fragment() {
 
-
+    private lateinit var ivBackDel: ImageView
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -17,5 +18,13 @@ class DeleteProductFragment : Fragment() {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_delete_product, container, false)
     }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
+        ivBackDel = view.findViewById(R.id.ivBack)
+
+        ivBackDel.setOnClickListener {
+            parentFragmentManager.popBackStack()
+        }
+    }
 }

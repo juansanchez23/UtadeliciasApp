@@ -16,6 +16,7 @@
             android:layout_width="131dp"
             android:layout_height="73dp"
             android:layout_gravity="center"
+            android:text="Hola!    Noah Lee"
             android:textColor="@color/black"
             android:textSize="26sp"
             android:textStyle="bold"
@@ -24,8 +25,19 @@
             app:layout_constraintHorizontal_bias="0.114"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.155"
-            android:text="Hola!    Noah Lee" />
+            app:layout_constraintVertical_bias="0.196" />
+
+        <ImageView
+            android:id="@+id/ivBack"
+            android:layout_width="45dp"
+            android:layout_height="37dp"
+            android:src="@drawable/back_icon"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.043"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.023" />
 
         <TextView
             android:id="@+id/tvWhishDel"
@@ -42,31 +54,30 @@
             app:layout_constraintHorizontal_bias="0.336"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.266" />
+            app:layout_constraintVertical_bias="0.316" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvproducts"
             android:layout_width="374dp"
             android:layout_height="385dp"
-            android:layout_marginTop="24dp"
             android:background="@android:color/transparent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.432"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvWhishDel"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintVertical_bias="0.207" />
 
         <ImageView
             android:id="@+id/ivUser"
-            android:layout_width="79dp"
-            android:layout_height="71dp"
+            android:layout_width="64dp"
+            android:layout_height="56dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.096"
+            app:layout_constraintHorizontal_bias="0.092"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.046"
+            app:layout_constraintVertical_bias="0.097"
             tools:src="@tools:sample/avatars" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
