@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ProductosFragmentos">
+    tools:context=".DeleteProductFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -25,7 +25,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.155"
-            tools:text="Hola!    Noah Lee" />
+            android:text="Hola!    Noah Lee" />
 
         <TextView
             android:id="@+id/tvWhishDel"
