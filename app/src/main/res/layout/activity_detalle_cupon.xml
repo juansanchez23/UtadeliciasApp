@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true">
+    android:fillViewport="true"
+    android:background="@drawable/fondo">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -50,10 +51,23 @@
             android:id="@+id/btnVolver"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="404dp"
+            android:layout_marginTop="408dp"
             android:backgroundTint="@color/colorSecondary"
             android:text="Volver"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.178"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvDescripcionDetalle" />
+
+        <Button
+            android:id="@+id/btnGenerarCupon"
+            android:layout_width="150dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="408dp"
+            android:backgroundTint="@color/colorSecondary"
+            android:text="Genera el cupon andresito"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.769"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvDescripcionDetalle" />
 

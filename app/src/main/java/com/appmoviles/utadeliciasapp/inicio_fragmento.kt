@@ -11,10 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.appmoviles.utadeliciasapp.databinding.ActivityNavegacionBinding
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+
 
 
 class fragment_inicio_fragmento : Fragment() {
@@ -34,12 +31,12 @@ class fragment_inicio_fragmento : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         adapter = AdaptadorCupones(object : AdaptadorCupones.OnItemClickListener {
             override fun onItemClick(cupon: Cupones) {
-                // Manejar el clic si es necesario
+                // No se necesita implementar nada aquí, ya que la lógica se encuentra en el adaptador
             }
         })
         recyclerView.adapter = adapter
 
-        viewModel.cupones.observe(viewLifecycleOwner) { cupones ->
+        viewModel.userCupones.observe(viewLifecycleOwner) { cupones ->
             adapter.setDatos(cupones)
         }
 
