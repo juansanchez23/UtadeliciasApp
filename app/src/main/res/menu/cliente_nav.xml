@@ -10,9 +10,9 @@
     <item android:title="@string/Inicio"
         android:id="@+id/home_cliente"
         android:icon="@drawable/home"/>
-    <item android:title="@string/Cupones"
-        android:id="@+id/descuentos_clientes"
-        android:icon="@drawable/brand"/>
+    <item android:title="@string/carrito_compras"
+        android:id="@+id/carrito"
+        android:icon="@drawable/shopping_cart"/>
     <item android:title="@string/Ajustes"
         android:id="@+id/settings_cliente"
         android:icon="@drawable/settings"/>

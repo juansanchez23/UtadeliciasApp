@@ -30,6 +30,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:menu="@menu/cliente_nav"/>
+            app:menu="@menu/cliente_nav"
+            app:labelVisibilityMode="labeled"
+            android:background="@color/white"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
