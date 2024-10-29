@@ -64,7 +64,7 @@ class cupones_fragmento : Fragment(), AdaptadorCupones.OnItemClickListener {
         recyclerView.adapter = adapter
 
         // Observar cambios en los cupones
-        viewModel.cupones.observe(viewLifecycleOwner) { cupones ->
+        viewModel.userCupones.observe(viewLifecycleOwner) { cupones ->
             adapter.setDatos(cupones)
         }
         val btnAgregar: Button = view.findViewById(R.id.btnAgregarCupon)

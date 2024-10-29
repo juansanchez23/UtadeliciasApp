@@ -10,17 +10,13 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 
-class AdaptadorCupones(private val itemClickListener: OnItemClickListener) : RecyclerView.Adapter<AdaptadorCupones.ViewHolder> (){
+class AdaptadorCupones(private val itemClickListener: OnItemClickListener) : RecyclerView.Adapter<AdaptadorCupones.ViewHolder>() {
 
     private var datos: List<Cupones> = ArrayList()
 
-    interface  OnItemClickListener{
-        fun onItemClick(tuModelo : Cupones)
+    interface OnItemClickListener {
+        fun onItemClick(cupon: Cupones)
     }
-
-
-
-
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val txtId: TextView = itemView.findViewById(R.id.txtId)
@@ -33,44 +29,30 @@ class AdaptadorCupones(private val itemClickListener: OnItemClickListener) : Rec
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
                     val cupon = datos[position]
-
-                    // Iniciar la actividad de detalle
-                    val intent = Intent(itemView.context, DetalleCuponActivity::class.java).apply {
-                        putExtra("nombre", cupon.nombre)
-                        putExtra("descripcion", cupon.descripcion)
-                        putExtra("imagenUrl", cupon.imagenUrl)
-                    }
-                    itemView.context.startActivity(intent)
-
-                    // Mantener el callback original
+                    // Aquí puedes iniciar la actividad de detalle del cupón
                     itemClickListener.onItemClick(cupon)
                 }
             }
         }
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view =LayoutInflater.from(parent.context).inflate(R.layout.cupones_layout,parent,false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.cupones_layout, parent, false)
         return ViewHolder(view)
-
     }
 
     override fun getItemCount(): Int {
         return datos.size
     }
 
-    fun setDatos(datos : List<Cupones>)
-    {
-        this.datos= datos
+    fun setDatos(datos: List<Cupones>) {
+        this.datos = datos
         notifyDataSetChanged()
-
-
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = datos[position]
-        holder.txtId.text = item.id.toString()
+        holder.txtId.text = item.id
         holder.txtnombre.text = item.nombre
         holder.txtDescripcion.text = item.descripcion
 
@@ -80,5 +62,4 @@ class AdaptadorCupones(private val itemClickListener: OnItemClickListener) : Rec
                 .into(holder.imagenCupon)
         }
     }
-
 }
