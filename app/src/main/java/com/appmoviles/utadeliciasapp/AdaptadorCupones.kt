@@ -29,8 +29,11 @@ class AdaptadorCupones(private val itemClickListener: OnItemClickListener) : Rec
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
                     val cupon = datos[position]
-                    // Aquí puedes iniciar la actividad de detalle del cupón
-                    itemClickListener.onItemClick(cupon)
+                    val intent = Intent(itemView.context, DetalleCuponActivity::class.java)
+                    intent.putExtra("nombre", cupon.nombre)
+                    intent.putExtra("descripcion", cupon.descripcion)
+                    intent.putExtra("imagenUrl", cupon.imagenUrl)
+                    itemView.context.startActivity(intent)
                 }
             }
         }
