@@ -1,59 +1,81 @@
 package com.appmoviles.utadeliciasapp
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.fragment.app.Fragment
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [ajustes_cliente.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ajustes_cliente : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private lateinit var db: FirebaseFirestore
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_ajustes_cliente, container, false)
+        val view = inflater.inflate(R.layout.fragment_ajustes_cliente, container, false)
+        db = FirebaseFirestore.getInstance()
+        auth = FirebaseAuth.getInstance()
+
+        // Llama a la función para obtener y mostrar la información del cliente
+        obtenerInfoCliente(view)
+
+        return view
+    }
+
+    private fun obtenerInfoCliente(view: View) {
+        val currentUser = auth.currentUser
+        if (currentUser != null) {
+            val userId = currentUser.uid
+
+            // Acceder al documento en Firestore correspondiente al usuario actual
+            db.collection("user-info").document(userId)
+                .get()
+                .addOnSuccessListener { document ->
+                    if (document != null && document.exists()) {
+                        val nombre = document.getString("nombre") ?: "Sin nombre"
+                        val apellido = document.getString("apellido") ?: "Sin apellido"
+                        val email = document.getString("email") ?: "Sin email"
+
+                        // Mostrar los datos en la interfaz
+                        setupCliente(view, email, nombre, apellido)
+                    } else {
+                        setupCliente(view, "Sin email", "Usuario no encontrado", "")
+                    }
+                }
+                .addOnFailureListener {
+                    setupCliente(view, "Error", "Error al obtener datos", "")
+                }
+        } else {
+            setupCliente(view, "Sin usuario", "No hay sesión", "")
+        }
+    }
+
+    private fun setupCliente(view: View, email: String, name: String, lastname: String) {
+        val emailTextView = view.findViewById<TextView>(R.id.emailTextViewcl)
+        val nameTextView = view.findViewById<TextView>(R.id.nameTextViewcl)
+        val lastnameTextView = view.findViewById<TextView>(R.id.lastnameTextViewcl)
+        val logOutButton = view.findViewById<TextView>(R.id.logOutbuttoncl)
+
+        // Mostrar el correo, nombre y apellido
+        emailTextView.text = email
+        nameTextView.text = name
+        lastnameTextView.text = lastname
+
+        // Cerrar sesión
+        logOutButton.setOnClickListener {
+            FirebaseAuth.getInstance().signOut()
+            activity?.onBackPressed()
+        }
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ajustes_cliente.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ajustes_cliente().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+        fun newInstance() = ajustes_cliente()
     }
 }
