@@ -31,7 +31,8 @@ class SharedCuponesViewModel : ViewModel() {
                         val nombre = document.getString("Nombre") ?: ""
                         val descripcion = document.getString("Descripcion") ?: ""
                         val imagenUrl = document.getString("imagenUrl") ?: ""
-                        cuponesLista.add(Cupones(id, nombre, descripcion, imagenUrl))
+                        val userId = document.getString("userId") ?: ""
+                        cuponesLista.add(Cupones(id, nombre, descripcion, imagenUrl,userId))
                     }
                     _userCupones.value = cuponesLista
                 }
@@ -67,7 +68,8 @@ class SharedCuponesViewModel : ViewModel() {
                                 val nombre = document.getString("Nombre") ?: ""
                                 val descripcion = document.getString("Descripcion") ?: ""
                                 val imagenUrl = document.getString("imagenUrl") ?: ""
-                                cuponesLista.add(Cupones(id, nombre, descripcion, imagenUrl))
+                                val userId = document.getString("userId") ?: ""
+                                cuponesLista.add(Cupones(id, nombre, descripcion, imagenUrl, userId))
                             }
 
                             completedTasks++

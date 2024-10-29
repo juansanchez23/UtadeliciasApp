@@ -33,6 +33,7 @@ class AdaptadorCupones(private val itemClickListener: OnItemClickListener) : Rec
                     intent.putExtra("nombre", cupon.nombre)
                     intent.putExtra("descripcion", cupon.descripcion)
                     intent.putExtra("imagenUrl", cupon.imagenUrl)
+                    intent.putExtra("userId",cupon.userId)
                     itemView.context.startActivity(intent)
                 }
             }

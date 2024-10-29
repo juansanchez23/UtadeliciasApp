@@ -376,9 +376,10 @@ class cupones_fragmento : Fragment(), AdaptadorCupones.OnItemClickListener {
                         val nombre = document.getString("Nombre")
                         val descripcion = document.getString("Descripcion")
                         val imagenUrl = document.getString("imagenUrl") ?: ""
+                        val userId = document.getString("userId") ?: ""
                         val ID = document.id
                         if (nombre != null && descripcion != null) {
-                            val tuModelo = Cupones(ID, nombre, descripcion, imagenUrl)
+                            val tuModelo = Cupones(ID, nombre, descripcion, imagenUrl, userId)
                             listaTuModelo.add(tuModelo)
                         }
                     }
