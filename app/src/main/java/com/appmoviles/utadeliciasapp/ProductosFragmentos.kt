@@ -1,49 +1,47 @@
 package com.appmoviles.utadeliciasapp
 
 import android.os.Bundle
+import android.text.Editable
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.firebase.Firebase
 import com.google.firebase.firestore.FirebaseFirestore
 
-class ProductosFragmentos : Fragment() {
+class ProductosFragmentos : Fragment(), ProductsAdapter.OnItemClickListener {
 
+    // Variables y configuración básica
     private lateinit var btnAddProduct: Button
-    private lateinit var btnDelProduct: Button
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: ProductsAdapter
+    private lateinit var add: AddProductsFragment
 
-
-    private val db =FirebaseFirestore.getInstance()
-    private val ProductosColeccion= db.collection("Products")
-
+    private val db = FirebaseFirestore.getInstance()
+    private val productosColeccion = db.collection("Products")
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflamos el diseño y devolvemos la vista raíz
         return inflater.inflate(R.layout.fragment_productos_fragmentos, container, false)
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
+        add = AddProductsFragment()
         btnAddProduct = view.findViewById(R.id.btnaddProduct)
-        btnDelProduct = view.findViewById(R.id.btnDelProduct)
         recyclerView = view.findViewById(R.id.rvproducts)
-        recyclerView.layoutManager=LinearLayoutManager(requireContext())
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        adapter = ProductsAdapter(this)
+        recyclerView.adapter = adapter
 
+        consultarColeccion()
 
+        // Navegar a agregar producto
         btnAddProduct.setOnClickListener {
             parentFragmentManager.beginTransaction()
                 .replace(R.id.frame_layout, AddProductsFragment())
@@ -51,12 +49,48 @@ class ProductosFragmentos : Fragment() {
                 .commit()
         }
 
-        btnDelProduct.setOnClickListener {
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.frame_layout, DeleteProductFragment())
-                .addToBackStack(null)
-                .commit()
-        }
 
 
-}}
+    }
+
+    private fun consultarColeccion() {
+        productosColeccion.get()
+            .addOnSuccessListener { querySnapshot ->
+                val listaProductos = mutableListOf<Products>()
+                for (document in querySnapshot) {
+                    val nombre = document.getString("Nombre")
+                    val descripcion = document.getString("Descripción")
+                    val imagenUrl = document.getString("ImagenUrl") ?: ""
+                    val ID = document.id
+                    if (nombre != null && descripcion != null) {
+                        val producto = Products(ID, nombre, descripcion, imagenUrl)
+                        listaProductos.add(producto)
+                    }
+                }
+                adapter.setDatos(listaProductos)
+            }
+    }
+
+    // Implementar los métodos de la interfaz
+    override fun onEditItemClick(product: Products) {
+        add.etName.text = Editable.Factory.getInstance().newEditable(product.nombre)
+        add.etDescription.text = Editable.Factory.getInstance().newEditable(product.descripcion)
+        add.txtIdproduct.text = Editable.Factory.getInstance().newEditable(product.id)
+
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.frame_layout, add)
+            .addToBackStack(null)
+            .commit()
+    }
+
+    override fun onDeleteItemClick(productId: String) {
+        productosColeccion.document(productId).delete()
+            .addOnSuccessListener {
+                consultarColeccion()  // Actualizar lista
+            }
+            .addOnFailureListener { e ->
+                // Manejar el error en caso de fallo en la eliminación
+            }
+    }
+}
+
