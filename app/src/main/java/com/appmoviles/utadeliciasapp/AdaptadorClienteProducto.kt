@@ -27,11 +27,11 @@ class AdaptadorClienteProducto: RecyclerView.Adapter<AdaptadorClienteProducto.Vi
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val nombreTextView: TextView = itemView.findViewById(R.id.txtNombre)
-        private val descripcionTextView: TextView = itemView.findViewById(R.id.txtDescripcion)
+
 
         fun bind(product: Products) {
             nombreTextView.text = product.nombre
-            descripcionTextView.text = product.descripcion
+
         }
     }
 

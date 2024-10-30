@@ -31,7 +31,7 @@ class productos_cliente : Fragment() {
 
         add = AddProductsFragment()
         recyclerView = view.findViewById(R.id.rvproductsCliente)
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
         adapter = AdaptadorClienteProducto()
         recyclerView.adapter = adapter
 
