@@ -7,11 +7,12 @@
     android:background="@drawable/fondo">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/seccion_productos_cliente"
-        android:textSize="26sp"
-        android:layout_gravity="center"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvproductsCliente"
+        android:layout_width="318dp"
+        android:layout_height="418dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginStart="50dp"/>
 
 </FrameLayout>

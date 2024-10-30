@@ -25,7 +25,6 @@ class cupones_cliente : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         adapter = AdaptadorCupones(object : AdaptadorCupones.OnItemClickListener {
             override fun onItemClick(cupon: Cupones) {
-                // No se necesita implementar nada aquí, ya que la lógica se encuentra en el adaptador
             }
         })
         recyclerView.adapter = adapter
