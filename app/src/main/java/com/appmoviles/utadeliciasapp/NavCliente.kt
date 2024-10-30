@@ -18,7 +18,7 @@ class NavCliente : AppCompatActivity() {
             when(it.itemId){
                 R.id.home_cliente -> replaceFragment2(home_cliente())
                 R.id.productos_cliente -> replaceFragment2(ProductosFragmentos())
-                R.id.descuentos_clientes -> replaceFragment2(cupones_cliente())
+                R.id.carrito -> replaceFragment2(cupones_cliente())
                 R.id.settings_cliente -> replaceFragment2(ajustes_cliente())
                 R.id.notification_cliente -> replaceFragment2(notificacion_cliente())
                 else ->{
