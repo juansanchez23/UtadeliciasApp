@@ -71,18 +71,6 @@ class ProductosFragmentos : Fragment(), ProductsAdapter.OnItemClickListener {
             }
     }
 
-    // Implementar los métodos de la interfaz
-    override fun onEditItemClick(product: Products) {
-        add.etName.text = Editable.Factory.getInstance().newEditable(product.nombre)
-        add.etDescription.text = Editable.Factory.getInstance().newEditable(product.descripcion)
-        add.txtIdproduct.text = Editable.Factory.getInstance().newEditable(product.id)
-
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.frame_layout, add)
-            .addToBackStack(null)
-            .commit()
-    }
-
     override fun onDeleteItemClick(productId: String) {
         productosColeccion.document(productId).delete()
             .addOnSuccessListener {

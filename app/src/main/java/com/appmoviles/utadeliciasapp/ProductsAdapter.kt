@@ -17,7 +17,6 @@ class ProductsAdapter(
     private val productosList = mutableListOf<Products>()
 
     interface OnItemClickListener {
-        fun onEditItemClick(product: Products)
         fun onDeleteItemClick(productId: String)
     }
 

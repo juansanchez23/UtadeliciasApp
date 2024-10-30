@@ -46,6 +46,7 @@
             app:layout_constraintTop_toBottomOf="@+id/tvpruductos"
             app:layout_constraintVertical_bias="0.168" />
 
+
         <Button
             android:id="@+id/btnaddProduct"
             android:layout_width="wrap_content"
@@ -57,27 +58,10 @@
             android:textSize="11sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.163"
+            app:layout_constraintHorizontal_bias="0.464"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.609" />
-
-        <Button
-            android:id="@+id/btnDelProduct"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="55dp"
-            android:layout_marginTop="509dp"
-            android:backgroundTint="@color/redBtn"
-            android:text="@string/DelProduct"
-            android:textColor="@color/black"
-            android:textSize="11sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/btnaddProduct"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.609" />
+            app:layout_constraintVertical_bias="0.425" />
 
         <ImageView
             android:id="@+id/ivBack"

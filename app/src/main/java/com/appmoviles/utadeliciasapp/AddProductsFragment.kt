@@ -12,13 +12,13 @@ import android.widget.ImageView
 import android.widget.Toast
 import com.google.firebase.firestore.FirebaseFirestore
 
+
 class AddProductsFragment : Fragment() {
 
     private lateinit var ivBackAdd: ImageView
     private lateinit var btnAddProduct: Button
     lateinit var etDescription:EditText
     lateinit var etName:EditText
-    lateinit var txtIdproduct : EditText
     private lateinit var btnSelectImage: Button
     private lateinit var ivProduct: ImageView
 
@@ -39,7 +39,6 @@ class AddProductsFragment : Fragment() {
         btnAddProduct = view.findViewById(R.id.btnAddProduct)
         etDescription = view.findViewById(R.id.etDescription)
         etName = view.findViewById(R.id.etName)
-        txtIdproduct = view.findViewById(R.id.txtIdproduct)
         btnSelectImage = view.findViewById(R.id.btnSelectImage)
         ivProduct = view.findViewById(R.id.ivProduct)
 
