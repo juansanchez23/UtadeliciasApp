@@ -16,6 +16,8 @@ import android.widget.SeekBar
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.budiyev.android.codescanner.*
+import com.google.firebase.auth.FirebaseAuth
+
 
 class Scanner : Fragment() {
 
@@ -34,6 +36,8 @@ class Scanner : Fragment() {
 
         val scannerView = view.findViewById<CodeScannerView>(R.id.scanner_view)
 
+
+
         codeScanner = CodeScanner(requireContext(), scannerView).apply {
             camera = CodeScanner.CAMERA_BACK
             formats = CodeScanner.ALL_FORMATS
@@ -45,10 +49,14 @@ class Scanner : Fragment() {
             decodeCallback = DecodeCallback { result ->
                 requireActivity().runOnUiThread {
                     val textoQR = result.text
-
                     Log.d("ScannerFragment", "Texto escaneado: $textoQR")
 
-                    if (textoQR.startsWith("CUPON:")) {
+                    // Obtener el userId de la sesión actual
+                    val userId = FirebaseAuth.getInstance().currentUser?.uid
+                    Log.d("ScannerFragment", "userId de la sesión actual: $userId")
+
+                    // Asegúrate de que el texto escaneado sea un cupón y que el `userId` coincida
+                    if (textoQR.startsWith("CUPON:") && textoQR.contains(userId.toString())) {
                         parentFragmentManager.beginTransaction()
                             .replace(R.id.frame_layout, ConfirmacionExitosa())  // Asegúrate de usar el ID correcto
                             .addToBackStack(null)
@@ -57,12 +65,19 @@ class Scanner : Fragment() {
                         // Abrir el enlace automáticamente si es un URL válido
                         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(textoQR))
                         startActivity(intent)
+                    } else if (textoQR.startsWith("CUPON:")) {
+                        // Si el texto es un cupón pero el userId no coincide
+                        parentFragmentManager.beginTransaction()
+                            .replace(R.id.frame_layout, ConfirmacionErronea())  // Asegúrate de usar el ID correcto
+                            .addToBackStack(null)
+                            .commit()
                     } else {
                         // Copiar al portapapeles si no es un enlace
                         copiarAlPortapapeles(textoQR)
                     }
                 }
             }
+
 
             // Callback de error
             errorCallback = ErrorCallback { error ->
