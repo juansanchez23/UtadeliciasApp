@@ -57,12 +57,14 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="350dp"
-            android:layout_marginBottom="684dp"
+            android:layout_marginBottom="70dp"
             android:src="@drawable/back_icon"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.056" />
 
         <TextView
             android:id="@+id/tvDescrition"
@@ -86,8 +88,8 @@
             android:layout_height="101dp"
             android:layout_marginTop="8dp"
             android:background="@color/SecundaryBackground"
-            android:maxLines="4"
             android:hint="@string/addDescription"
+            android:maxLines="4"
             android:padding="16dp"
             android:singleLine="false"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -117,30 +119,16 @@
             android:id="@+id/tvImage"
             android:layout_width="110dp"
             android:layout_height="23dp"
-            android:layout_marginBottom="8dp"
             android:text="@string/Image"
             android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.119"
+            app:layout_constraintHorizontal_bias="0.126"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvTitleAddProduct"
-            app:layout_constraintVertical_bias="0.528" />
-
-        <ImageView
-            android:id="@+id/ivProduct"
-            android:layout_width="331dp"
-            android:layout_height="112dp"
-            android:backgroundTint="@color/SecundaryBackground"
-            android:contentDescription="@string/imagen_seleccionada"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.425"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etDescription"
-            app:layout_constraintVertical_bias="0.287" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.744" />
 
         <Button
             android:id="@+id/btnSelectImage"
@@ -149,25 +137,66 @@
             android:backgroundTint="@color/SecundaryBackground"
             android:text="@string/tomar_foto"
             android:textColor="@color/black"
-            app:layout_constraintBottom_toBottomOf="@+id/ivProduct"
-            app:layout_constraintEnd_toEndOf="@+id/ivProduct"
-            app:layout_constraintHorizontal_bias="0.01"
-            app:layout_constraintStart_toStartOf="@+id/ivProduct"
-            app:layout_constraintTop_toTopOf="@+id/ivProduct"
-            app:layout_constraintVertical_bias="0.203" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.122"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvImage"
+            app:layout_constraintVertical_bias="0.0" />
 
         <Button
             android:id="@+id/btnAddProduct"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="68dp"
             android:backgroundTint="@color/redBtn"
             android:text="@string/AddProduct"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/tvQuantity"
+            android:layout_width="110dp"
+            android:layout_height="23dp"
+            android:text="Cantidad"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/etQuantity"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.119"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ivProduct"
-            app:layout_constraintVertical_bias="0.153" />
+            app:layout_constraintTop_toBottomOf="@+id/etDescription"
+            app:layout_constraintVertical_bias="0.812" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/etQuantity"
+            android:layout_width="324dp"
+            android:layout_height="53dp"
+            android:background="@color/SecundaryBackground"
+            android:hint="Ingresa la cantidad"
+            android:inputType="number"
+            android:padding="16dp"
+            app:layout_constraintBottom_toTopOf="@+id/tvImage"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.413"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.959" />
+
+        <ImageView
+            android:id="@+id/ivProduct"
+            android:layout_width="117dp"
+            android:layout_height="76dp"
+            android:layout_marginStart="49dp"
+            android:layout_marginTop="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.593"
+            app:layout_constraintStart_toEndOf="@+id/btnSelectImage"
+            app:layout_constraintTop_toBottomOf="@+id/etQuantity"
+            tools:src="@tools:sample/avatars" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
