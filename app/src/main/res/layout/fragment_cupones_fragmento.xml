@@ -29,7 +29,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:background="#FF2459"
-                    android:fontFamily="serif"
                     android:gravity="center"
                     android:text="@string/cupones_ofertados"
                     android:textColor="@color/white"
@@ -154,7 +153,7 @@
                 android:layout_height="48dp"
                 android:layout_marginTop="20dp"
                 android:backgroundTint="@color/colorSecondary"
-                android:text="Editar cupón"
+                android:text="Actualizar cupón"
                 android:textColor="@color/white"
                 android:contentDescription="Botón para editar cupones" />
 

@@ -74,6 +74,20 @@
             app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent" />
 
+        <TextView
+            android:id="@+id/cupongenerado"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="48dp"
+            android:textSize="18dp"
+            android:fontFamily="sans-serif-medium"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/btnVolver"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="ACÁ VA EL CUPON GENERADO" />
+
         <ImageView
             android:id="@+id/iv_qr"
             android:layout_width="match_parent"
