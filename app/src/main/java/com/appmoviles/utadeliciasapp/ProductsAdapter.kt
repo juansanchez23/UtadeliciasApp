@@ -57,7 +57,7 @@ class ProductsAdapter(
         val nombreTextView: TextView = itemView.findViewById(R.id.txtNombre)
         val ivProducto: ImageView = itemView.findViewById(R.id.ivProducto)
         val descripcionTextView: TextView = itemView.findViewById(R.id.txtDescripcion)
-        val btnDelete: ImageButton = itemView.findViewById(R.id.btnDelete)
+        val btnDelete: ImageView = itemView.findViewById(R.id.btnDelete)
 
         fun bind(product: Products) {
             nombreTextView.text = product.nombre

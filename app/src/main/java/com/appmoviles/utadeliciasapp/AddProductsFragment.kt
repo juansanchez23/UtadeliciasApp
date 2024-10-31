@@ -2,6 +2,7 @@ package com.appmoviles.utadeliciasapp
 
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
@@ -12,6 +13,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
@@ -26,8 +28,8 @@ class AddProductsFragment : Fragment() {
     private lateinit var ivProduct: ImageView
     private lateinit var btnSelectImage: Button
     private lateinit var btnAddProduct: Button
-    private lateinit var ivBackAdd:ImageView
-    private lateinit var etQuantity:EditText
+    private lateinit var ivBackAdd: ImageView
+    private lateinit var etQuantity: EditText
 
     // Instancias de Firestore y Storage
     private val db = FirebaseFirestore.getInstance()
@@ -57,15 +59,23 @@ class AddProductsFragment : Fragment() {
 
         // Configuración del botón para capturar imagen
         btnSelectImage.setOnClickListener {
+            if (ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                openCamera()
+            } else {
+                requestPermissions(arrayOf(android.Manifest.permission.CAMERA), CAMERA_PERMISSION_REQUEST_CODE)
+            }
             val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
         }
 
+
         // Configuración del botón para agregar producto
         btnAddProduct.setOnClickListener {
+
             val nom = etName.text.toString()
             val des = etDescription.text.toString()
-            val cantidad = etQuantity.text.toString().toIntOrNull() ?: 0 // Asigna 0 si el valor es nulo
+            val cantidad =
+                etQuantity.text.toString().toIntOrNull() ?: 0 // Asigna 0 si el valor es nulo
             val imageUrl = ivProduct.toString()
 
             val data = hashMapOf(
@@ -117,7 +127,8 @@ class AddProductsFragment : Fragment() {
                 }
             }
             .addOnFailureListener {
-                Toast.makeText(requireContext(), "Error al subir la imagen", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Error al subir la imagen", Toast.LENGTH_SHORT)
+                    .show()
             }
     }
 
@@ -132,17 +143,46 @@ class AddProductsFragment : Fragment() {
         db.collection("Products")
             .add(product)
             .addOnSuccessListener {
-                Toast.makeText(requireContext(), "Producto agregado con éxito", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Producto agregado con éxito", Toast.LENGTH_SHORT)
+                    .show()
                 etName.text.clear()
                 etDescription.text.clear()
                 ivProduct.setImageBitmap(null) // Reiniciar la imagen
             }
             .addOnFailureListener {
-                Toast.makeText(requireContext(), "Error al agregar el producto", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Error al agregar el producto", Toast.LENGTH_SHORT)
+                    .show()
             }
     }
 
+
     companion object {
         private const val REQUEST_IMAGE_CAPTURE = 1
+    }
+
+    private val CAMERA_PERMISSION_REQUEST_CODE = 1001
+    private fun openCamera() {
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        startActivityForResult(intent, CAMERA_PERMISSION_REQUEST_CODE)
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == CAMERA_PERMISSION_REQUEST_CODE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                openCamera()
+            } else {
+                Toast.makeText(
+                    requireContext(),
+                    "Camera permission is required",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+
     }
 }

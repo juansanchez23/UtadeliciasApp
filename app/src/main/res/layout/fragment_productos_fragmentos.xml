@@ -63,19 +63,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.425" />
 
-        <ImageView
-            android:id="@+id/ivBack"
-            android:layout_width="45dp"
-            android:layout_height="37dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="13dp"
-            android:src="@drawable/back_icon"
-            app:layout_constraintBottom_toTopOf="@+id/tvpruductos"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.054"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.188" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

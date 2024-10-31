@@ -18,21 +18,12 @@ class HomeActivity : AppCompatActivity() {
         binding = ActivityNavegacionBinding.inflate(layoutInflater)
         enableEdgeToEdge()
         setContentView(binding.root)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
 
         val bundle = intent.extras
         val email = bundle?.getString("email")
         val provider = bundle?.getString("provider")
         val name = bundle?.getString("name")
         val lastname = bundle?.getString("lastname")
-//        val name = bundle?.getString("name")
-//        val lastname = bundle?.getString("lastname")
-        //Mirar si se puede colocar en la linea R.id.settings -> replaceFragment(ajustes_fragmento.newInstance(email ?: "", provider ?: ""))
-
         replaceFragment(fragment_inicio_fragmento())
         binding.bottomNavigationView.selectedItemId = R.id.home
 
