@@ -21,13 +21,7 @@ class home_cliente : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val botonScannercl: FloatingActionButton = view.findViewById(R.id.boton_scannercl)
-        botonScannercl.setOnClickListener {
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.navcliente, CrearQr())  // Asegúrate de usar el ID correcto
-                .addToBackStack(null)
-                .commit()
-        }
+
 
     }
 

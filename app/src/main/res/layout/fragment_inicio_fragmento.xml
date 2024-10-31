@@ -9,7 +9,7 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView2"
-        android:layout_width="371dp"
+        android:layout_width="348dp"
         android:layout_height="45dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="60dp"
@@ -32,10 +32,10 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rDatosInicio"
         android:layout_width="348dp"
-        android:layout_height="457dp"
+        android:layout_height="472dp"
         android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
         android:layout_marginTop="120dp"
+        android:layout_marginEnd="20dp"
         android:backgroundTint="@color/colorSecondary"
         android:textColor="@color/black" />
 
@@ -50,7 +50,7 @@
             android:id="@+id/btnProductos"
             android:layout_width="219dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="650dp"
+            android:layout_marginTop="670dp"
             android:backgroundTint="@color/colorSecondary"
             android:text="Ver productos"
             android:textSize="20sp" />

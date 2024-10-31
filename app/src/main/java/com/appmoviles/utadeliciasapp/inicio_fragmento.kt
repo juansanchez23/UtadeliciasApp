@@ -5,7 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.appmoviles.utadeliciasapp.databinding.ActivityNavegacionBinding
@@ -51,5 +53,16 @@ class fragment_inicio_fragmento : Fragment() {
                 .commit()
         }
 
-    }
+        val btnProductos: Button = view.findViewById(R.id.btnProductos)
+        btnProductos.setOnClickListener {
+            // Crear una instancia de ProductosFragmento
+            val productosFragmento =  ProductosFragmentos()
+            // Iniciar una transacción de fragmentos
+            val transaction = parentFragmentManager.beginTransaction()
+            transaction.replace(R.id.frame_layout, productosFragmento)
+            transaction.addToBackStack(null) //
+            transaction.commit() //
+        }
+        }
+
 }
