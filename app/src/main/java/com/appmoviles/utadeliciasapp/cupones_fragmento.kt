@@ -306,22 +306,64 @@ class cupones_fragmento : Fragment(), AdaptadorCupones.OnItemClickListener {
             val des: String = txt_descripcion.text.toString()
             val IDD: String = txt_id.text.toString()
 
-            val docActualizado = hashMapOf<String, Any>(
-                "Nombre" to nom,
-                "Descripcion" to des,
-                "updatedAt" to FieldValue.serverTimestamp()
-            )
+            // Verificar si hay una nueva imagen seleccionada
+            if (imageUri != null) {
+                // Primero subir la nueva imagen
+                val imageRef = storageRef.child("usuarios_comercio/${user.uid}/cupones/${System.currentTimeMillis()}_${imageUri!!.lastPathSegment}")
 
-            currentUserCuponesRef
-                .document(IDD)
-                .update(docActualizado)
-                .addOnSuccessListener {
-                    Toast.makeText(requireContext(), "Actualización Exitosa", Toast.LENGTH_SHORT).show()
-                    consultarColeccion()
-                }
-                .addOnFailureListener {
-                    Toast.makeText(requireContext(), "Error al actualizar", Toast.LENGTH_SHORT).show()
-                }
+                val progressDialog = ProgressDialog(requireContext())
+                progressDialog.setTitle("Actualizando... espera un momento")
+                progressDialog.show()
+
+                imageRef.putFile(imageUri!!)
+                    .addOnSuccessListener { taskSnapshot ->
+                        imageRef.downloadUrl.addOnSuccessListener { uri ->
+                            // Actualizar el documento con la nueva URL de la imagen
+                            val docActualizado = hashMapOf<String, Any>(
+                                "Nombre" to nom,
+                                "Descripcion" to des,
+                                "imagenUrl" to uri.toString(),
+                                "updatedAt" to FieldValue.serverTimestamp()
+                            )
+
+                            currentUserCuponesRef
+                                .document(IDD)
+                                .update(docActualizado)
+                                .addOnSuccessListener {
+                                    progressDialog.dismiss()
+                                    Toast.makeText(requireContext(), "Actualización Exitosa", Toast.LENGTH_SHORT).show()
+                                    consultarColeccion()
+                                    imageUri = null  // Limpiar la URI de la imagen después de actualizar
+                                }
+                                .addOnFailureListener { e ->
+                                    progressDialog.dismiss()
+                                    Toast.makeText(requireContext(), "Error al actualizar: ${e.message}", Toast.LENGTH_SHORT).show()
+                                }
+                        }
+                    }
+                    .addOnFailureListener { e ->
+                        progressDialog.dismiss()
+                        Toast.makeText(requireContext(), "Error al subir la imagen: ${e.message}", Toast.LENGTH_SHORT).show()
+                    }
+            } else {
+                // Si no hay nueva imagen, solo actualizar los campos de texto
+                val docActualizado = hashMapOf<String, Any>(
+                    "Nombre" to nom,
+                    "Descripcion" to des,
+                    "updatedAt" to FieldValue.serverTimestamp()
+                )
+
+                currentUserCuponesRef
+                    .document(IDD)
+                    .update(docActualizado)
+                    .addOnSuccessListener {
+                        Toast.makeText(requireContext(), "Actualización Exitosa", Toast.LENGTH_SHORT).show()
+                        consultarColeccion()
+                    }
+                    .addOnFailureListener { e ->
+                        Toast.makeText(requireContext(), "Error al actualizar: ${e.message}", Toast.LENGTH_SHORT).show()
+                    }
+            }
         }
     }
 

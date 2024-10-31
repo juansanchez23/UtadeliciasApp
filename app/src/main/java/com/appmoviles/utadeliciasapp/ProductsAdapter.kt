@@ -31,6 +31,7 @@ class ProductsAdapter(
         holder.bind(producto)
 
 
+
         // Configura el clic en el botón de eliminar
         holder.btnDelete.setOnClickListener {
             listener.onDeleteItemClick(producto.id)
