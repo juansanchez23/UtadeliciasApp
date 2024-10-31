@@ -14,13 +14,13 @@
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/etName"
-            android:layout_width="333dp"
-            android:layout_height="48dp"
+            android:layout_width="324dp"
+            android:layout_height="53dp"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="8dp"
             android:background="@color/SecundaryBackground"
-            android:maxLines="1"
             android:hint="@string/addName"
+            android:maxLines="1"
             android:padding="16dp"
             android:singleLine="true"
             app:layout_constraintBottom_toTopOf="@+id/tvDescrition"
