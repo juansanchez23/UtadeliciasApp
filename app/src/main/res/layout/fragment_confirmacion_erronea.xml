@@ -6,23 +6,38 @@
     android:background="@drawable/fondo"
     tools:context=".ConfirmacionErronea">
 
-    <ImageView
-        android:id="@+id/imageView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/logosinfondo" />
+    <TextView
+        android:id="@+id/fondodeltexto2"
+        android:layout_width="350dp"
+        android:layout_height="282dp"
+        android:layout_marginHorizontal="30dp"
+        android:layout_marginTop="190dp"
+        android:background="@drawable/rounded_background_secondcolor"
+        android:gravity="center" />
 
     <TextView
         android:id="@+id/textViewPalala"
-        android:layout_width="wrap_content"
+        android:layout_width="227dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:layout_marginHorizontal="100dp"
+        android:layout_marginHorizontal="95dp"
+        android:layout_marginTop="400dp"
+        android:fontFamily="sans-serif-medium"
         android:gravity="center"
-        android:text="ESTE QR NO ES DE ESTE COMERCIO"
+        android:text="Escaneaste el Qr de otro comercio"
+        android:textColor="@color/black"
         android:textSize="24sp"
-        android:textColor="@color/colorPrimary"
-        android:textStyle="bold"
-        android:fontFamily="sans-serif-medium" />
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/fondoparaerroneo"
+        android:layout_width="216dp"
+        android:layout_height="227dp"
+        android:layout_marginHorizontal="95dp"
+        android:layout_marginTop="195dp"
+        android:shadowColor="#000000"
+        android:shadowDx="10"
+        android:shadowDy="10"
+        android:shadowRadius="1000"
+        android:src="@drawable/cabitoconfundido" />
 
 </FrameLayout>

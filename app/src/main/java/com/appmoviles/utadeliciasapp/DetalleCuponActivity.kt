@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.MultiFormatWriter
+import android.view.View
 
 class DetalleCuponActivity : AppCompatActivity() {
 
@@ -37,12 +38,14 @@ class DetalleCuponActivity : AppCompatActivity() {
         }
 
         val ivQr = findViewById<ImageView>(R.id.iv_qr)
+        val buttonGenerate = findViewById<Button>(R.id.bt_generate)
 
         // Configurar el botón para generar el QR
         findViewById<Button>(R.id.bt_generate).setOnClickListener {
             generateQR("CUPON:$cuponId", ivQr)
             Log.d("MiEtiqueta", "Valor de la variable: $cuponId")
             Log.d("MiEtiqueta", "Valor de la variable: $descripcion")
+            buttonGenerate.visibility = View.GONE
         }
 
         // Configurar el botón de regreso
@@ -54,7 +57,7 @@ class DetalleCuponActivity : AppCompatActivity() {
     private fun generateQR(text: String, imageView: ImageView) {
         val writer = MultiFormatWriter()
         try {
-            val bitMatrix = writer.encode(text, BarcodeFormat.QR_CODE, 700, 700)
+            val bitMatrix = writer.encode(text, BarcodeFormat.QR_CODE, 900, 900)
             val width = bitMatrix.width
             val height = bitMatrix.height
             val bmp = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565)

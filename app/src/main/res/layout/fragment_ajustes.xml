@@ -22,40 +22,74 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/emailTextView"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:text="@string/email" />
+            android:id="@+id/textView"
+            android:layout_width="227dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="70dp"
+            android:fontFamily=""
+            android:text="AJUSTES"
+            android:textColor="@color/black"
+            android:textSize="50sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_marginHorizontal="80dp"
+            android:src="@drawable/logosinfondo" />
 
         <TextView
-            android:id="@+id/providerTextView"
+            android:id="@+id/emailTextView"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:text="@string/proveedor" />
+            android:layout_height="80dp"
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/email"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            android:textStyle="italic" />
 
         <TextView
             android:id="@+id/nameTextView"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:text="@string/nombre" />
+            android:layout_height="80dp"
+            android:text="@string/nombre"
+            android:fontFamily="sans-serif-medium"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            android:textStyle="italic"/>
 
         <TextView
             android:id="@+id/lastnameTextView"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:text="@string/apellido" />
+            android:layout_height="80dp"
+            android:text="@string/apellido"
+            android:fontFamily="sans-serif-medium"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            android:textStyle="italic"/>
 
+        <TextView
+            android:id="@+id/providerTextView"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:text="@string/proveedor"
+            android:fontFamily="sans-serif-medium"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            android:textStyle="italic" />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
             <Button
+                android:layout_marginTop="10dp"
                 android:id="@+id/logOutbutton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="#000000"
+                android:background="@drawable/rounded_background_secondcolor"
                 android:text="@string/cerrar_sesi_n"
                 android:textColor="@android:color/white" />
         </LinearLayout>
