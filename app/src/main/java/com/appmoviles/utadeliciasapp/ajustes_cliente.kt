@@ -63,9 +63,9 @@ class ajustes_cliente : Fragment() {
         val logOutButton = view.findViewById<TextView>(R.id.logOutbuttoncl)
 
         // Mostrar el correo, nombre y apellido
-        emailTextView.text = email
-        nameTextView.text = name
-        lastnameTextView.text = lastname
+        emailTextView.text = "Email:\n      $email"
+        nameTextView.text = "Nombre:\n      $name"
+        lastnameTextView.text = "Apellido:\n      $lastname"
 
         // Cerrar sesión
         logOutButton.setOnClickListener {
