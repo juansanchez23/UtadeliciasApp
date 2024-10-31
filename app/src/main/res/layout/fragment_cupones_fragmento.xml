@@ -144,7 +144,7 @@
                 android:layout_height="48dp"
                 android:layout_marginTop="15dp"
                 android:backgroundTint="@color/colorSecondary"
-                android:text="Eliminar cupones"
+                android:text="Eliminar cupón"
                 android:textColor="@color/white"
                 android:contentDescription="Botón para eliminar cupones" />
 

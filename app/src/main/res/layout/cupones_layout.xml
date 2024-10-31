@@ -13,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:padding="16dp"
         android:background="@color/teal_200">
 
         <!-- Contenedor del texto -->
@@ -57,7 +58,7 @@
         <ImageView
             android:id="@+id/imagenCupon"
             android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_height="110dp"
             android:layout_marginStart="16dp"
             android:scaleType="centerCrop"
             android:contentDescription="Imagen del cupón" />
