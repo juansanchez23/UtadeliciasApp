@@ -66,7 +66,7 @@ class AddProductsFragment : Fragment() {
             val nom = etName.text.toString()
             val des = etDescription.text.toString()
             val cantidad = etQuantity.text.toString().toIntOrNull() ?: 0 // Asigna 0 si el valor es nulo
-            val imageUrl = imageBitmap.toString()
+            val imageUrl = ivProduct.toString()
 
             val data = hashMapOf(
                 "Nombre" to nom,
@@ -84,13 +84,7 @@ class AddProductsFragment : Fragment() {
                 }
 
             // Verificación de que todos los campos estén completos
-            if (nom.isNotEmpty() && des.isNotEmpty() && ::imageBitmap.isInitialized) {
-                uploadImageToFirebase(imageBitmap) { imageUrl ->
-                    saveProductToFirestore(nom, des, imageUrl)
-                }
-            } else {
-                Toast.makeText(requireContext(), "Completa todos los campos e incluye una imagen", Toast.LENGTH_SHORT).show()
-            }
+
         }
         ivBackAdd.setOnClickListener {
             parentFragmentManager.popBackStack()

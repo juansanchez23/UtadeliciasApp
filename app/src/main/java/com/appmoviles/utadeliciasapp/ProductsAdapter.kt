@@ -20,6 +20,8 @@ class ProductsAdapter(
         fun onDeleteItemClick(productId: String)
     }
 
+
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_product, parent, false)
@@ -28,7 +30,12 @@ class ProductsAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val producto = productosList[position]
-        holder.bind(producto)
+        holder.nombreTextView.text = producto.nombre
+        holder.descripcionTextView.text = producto.descripcion
+        // Cargar la imagen con Glide
+        Glide.with(holder.itemView.context)
+            .load(producto.imagen)
+            .into(holder.ivProducto)
 
 
 
@@ -47,8 +54,9 @@ class ProductsAdapter(
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val nombreTextView: TextView = itemView.findViewById(R.id.txtNombre)
-        private val descripcionTextView: TextView = itemView.findViewById(R.id.txtDescripcion)
+        val nombreTextView: TextView = itemView.findViewById(R.id.txtNombre)
+        val ivProducto: ImageView = itemView.findViewById(R.id.ivProducto)
+        val descripcionTextView: TextView = itemView.findViewById(R.id.txtDescripcion)
         val btnDelete: ImageButton = itemView.findViewById(R.id.btnDelete)
 
         fun bind(product: Products) {
