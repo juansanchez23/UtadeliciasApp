@@ -11,14 +11,14 @@ class NavCliente : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding2=ActivityNavCliente2Binding.inflate(layoutInflater)
         setContentView(binding2.root)
-        replaceFragment2(home_cliente())
+        replaceFragment2(CarritoCliente())
         binding2.bottomNavigationView2.selectedItemId = R.id.home_cliente
 
         binding2.bottomNavigationView2.setOnItemSelectedListener {
             when(it.itemId){
-                R.id.home_cliente -> replaceFragment2(home_cliente())
+                R.id.home_cliente -> replaceFragment2(cupones_cliente())
                 R.id.productos_cliente -> replaceFragment2(productos_cliente())
-                R.id.carrito -> replaceFragment2(cupones_cliente())
+                R.id.carrito -> replaceFragment2(CarritoCliente())
                 R.id.settings_cliente -> replaceFragment2(ajustes_cliente())
                 R.id.notification_cliente -> replaceFragment2(notificacion_cliente())
                 else ->{
