@@ -8,10 +8,11 @@
     >
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <Button
+        android:id="@+id/btnNotification"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/seccion_notificaciones_cliente"
+        android:text="NOTIFICACION"
         android:textSize="26sp"
         android:layout_gravity="center"/>
 
