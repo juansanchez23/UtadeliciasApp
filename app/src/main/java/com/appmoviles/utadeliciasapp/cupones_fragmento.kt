@@ -1,11 +1,14 @@
 package com.appmoviles.utadeliciasapp
 
+import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.ProgressDialog
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +17,9 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,6 +29,10 @@ import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
+import java.io.File
+import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.*
 
 class cupones_fragmento : Fragment(), AdaptadorCupones.OnItemClickListener {
     private val db = FirebaseFirestore.getInstance()
@@ -37,6 +47,11 @@ class cupones_fragmento : Fragment(), AdaptadorCupones.OnItemClickListener {
     private lateinit var imageView: ImageView
     private val auth = FirebaseAuth.getInstance()
     private lateinit var currentUserCuponesRef: CollectionReference
+    private val CAMERA_PERMISSION_CODE = 1001
+    private val GALLERY_PERMISSION_CODE = 1002
+    private val CAMERA_REQUEST_CODE = 1003
+    private val GALLERY_REQUEST_CODE = 1004
+    private var currentPhotoPath: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -200,7 +215,7 @@ class cupones_fragmento : Fragment(), AdaptadorCupones.OnItemClickListener {
         // Botón seleccionar imagen
         val btnSelectImage: Button = view.findViewById(R.id.btnSelectImage)
         btnSelectImage.setOnClickListener {
-            selectImage()
+            showImageSourceDialog()
         }
 
         // Botón agregar
@@ -225,6 +240,116 @@ class cupones_fragmento : Fragment(), AdaptadorCupones.OnItemClickListener {
             deleteCupon()
         }
     }
+    private fun showImageSourceDialog() {
+        val options = arrayOf("Tomar foto", "Seleccionar de galería")
+        AlertDialog.Builder(requireContext())
+            .setTitle("Seleccionar imagen")
+            .setItems(options) { _, which ->
+                when (which) {
+                    0 -> checkCameraPermission()
+                    1 -> openGallery()
+                }
+            }
+            .show()
+    }
+
+    private fun checkCameraPermission() {
+        if (ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.CAMERA
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                requireActivity(),
+                arrayOf(Manifest.permission.CAMERA),
+                CAMERA_PERMISSION_CODE
+            )
+        } else {
+            openCamera()
+        }
+    }
+
+    private fun checkGalleryPermission() {
+        if (ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                requireActivity(),
+                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                GALLERY_PERMISSION_CODE
+            )
+        } else {
+            openGallery()
+        }
+    }
+
+    private fun openCamera() {
+        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { intent ->
+            intent.resolveActivity(requireActivity().packageManager)?.also {
+                val photoFile: File? = try {
+                    createImageFile()
+                } catch (ex: IOException) {
+                    Toast.makeText(requireContext(), "Error al crear el archivo de imagen", Toast.LENGTH_SHORT).show()
+                    null
+                }
+
+                photoFile?.also {
+                    val photoURI: Uri = FileProvider.getUriForFile(
+                        requireContext(),
+                        "com.appmoviles.utadeliciasapp.fileprovider",  // Asegúrate de usar tu package correcto
+                        it
+                    )
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                    startActivityForResult(intent, CAMERA_REQUEST_CODE)
+                }
+            }
+        }
+    }
+
+    private fun openGallery() {
+        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        startActivityForResult(intent, GALLERY_REQUEST_CODE)
+    }
+
+    @Throws(IOException::class)
+    private fun createImageFile(): File {
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+        val storageDir: File? = requireContext().getExternalFilesDir(null)
+        return File.createTempFile(
+            "JPEG_${timeStamp}_",
+            ".jpg",
+            storageDir
+        ).apply {
+            currentPhotoPath = absolutePath
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        when (requestCode) {
+            CAMERA_PERMISSION_CODE -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    openCamera()
+                } else {
+                    Toast.makeText(requireContext(), "Permiso de cámara denegado", Toast.LENGTH_SHORT).show()
+                }
+            }
+            GALLERY_PERMISSION_CODE -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    openGallery()
+                } else {
+                    Toast.makeText(requireContext(), "Permiso de galería denegado", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
+
 
 
 
@@ -237,17 +362,28 @@ class cupones_fragmento : Fragment(), AdaptadorCupones.OnItemClickListener {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data?.data != null) {
-            imageUri = data.data
-            try {
-                Glide.with(requireContext())
-                    .load(imageUri)
-                    .into(imageView)
-            } catch (e: Exception) {
-                e.printStackTrace()
+        if (resultCode == Activity.RESULT_OK) {
+            when (requestCode) {
+                CAMERA_REQUEST_CODE -> {
+                    currentPhotoPath?.let { path ->
+                        imageUri = Uri.fromFile(File(path))
+                        Glide.with(requireContext())
+                            .load(imageUri)
+                            .into(imageView)
+                    }
+                }
+                GALLERY_REQUEST_CODE -> {
+                    data?.data?.let { uri ->
+                        imageUri = uri
+                        Glide.with(requireContext())
+                            .load(imageUri)
+                            .into(imageView)
+                    }
+                }
             }
         }
     }
+
 
     private fun uploadImageAndDataForUser(userId: String) {
         val txt_nombre: TextView = requireView().findViewById(R.id.txt_Nombre)
