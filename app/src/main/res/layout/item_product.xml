@@ -25,7 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="16dp"
+                android:padding="8dp"
                 android:background="@color/SecundaryBackground">
 
                 <!-- Contenedor del texto -->
@@ -67,7 +67,7 @@
                 <ImageView
                     android:id="@+id/ivProducto"
                     android:layout_width="86dp"
-                    android:layout_height="71dp"
+                    android:layout_height="82dp"
                     android:layout_marginStart="16dp"
                     android:contentDescription="Imagen del producto"
                     android:scaleType="centerCrop" />
