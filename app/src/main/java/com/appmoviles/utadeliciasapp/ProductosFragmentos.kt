@@ -2,7 +2,6 @@ package com.appmoviles.utadeliciasapp
 
 
 import android.os.Bundle
-import android.text.Editable
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -62,10 +61,11 @@ class ProductosFragmentos : Fragment(), ProductsAdapter.OnItemClickListener {
                     val nombre = document.getString("Nombre")
                     val descripcion = document.getString("Descripción")
                     val imagen = document.getString("ImagenUrl") ?: ""
+                    //val precio = document.getString("precio")?.toInt()
                     val txtcantidad = document.getLong("Cantidad")?.toInt()
                     val ID = document.id
                     if (nombre != null && descripcion != null && txtcantidad != null) {
-                        val producto = Products(ID, nombre, descripcion, imagen, txtcantidad)
+                        val producto = Products(ID, nombre, descripcion, imagen, txtcantidad)//,precio)
                         listaProductos.add(producto)
                     }
                 }
