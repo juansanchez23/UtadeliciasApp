@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -31,6 +32,7 @@ class AddProductsFragment : Fragment() {
     private lateinit var btnAddProduct: Button
     private lateinit var ivBackAdd: ImageView
     private lateinit var etQuantity: EditText
+    private lateinit var progressBar: ProgressBar
 
     // Instancias de Firestore y Storage
     private val db = FirebaseFirestore.getInstance()
@@ -57,6 +59,7 @@ class AddProductsFragment : Fragment() {
         btnAddProduct = view.findViewById(R.id.btnAddProduct)
         ivBackAdd = view.findViewById(R.id.ivBack_add)
         etQuantity = view.findViewById(R.id.etQuantity)
+        progressBar = view.findViewById(R.id.progressBar)
 
         // Configuración del botón para capturar imagen
         btnSelectImage.setOnClickListener {
@@ -79,6 +82,8 @@ class AddProductsFragment : Fragment() {
             val name = etName.text.toString()
             val description = etDescription.text.toString()
             val quantity = etQuantity.text.toString().toIntOrNull() ?: 0
+
+            progressBar.visibility = View.VISIBLE
 
             if (imageBitmap != null) {
                 uploadImageToFirebase(imageBitmap!!) { imageUrl ->
@@ -149,6 +154,7 @@ class AddProductsFragment : Fragment() {
             db.collection("Products")
                 .add(product)
                 .addOnSuccessListener {
+                    progressBar.visibility = View.GONE
                     Toast.makeText(
                         requireContext(),
                         "Producto agregado con éxito",

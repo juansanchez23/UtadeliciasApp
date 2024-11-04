@@ -148,7 +148,7 @@
             android:id="@+id/btnAddProduct"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="68dp"
+            android:layout_marginBottom="56dp"
             android:backgroundTint="@color/redBtn"
             android:text="@string/AddProduct"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -191,12 +191,25 @@
             android:layout_width="117dp"
             android:layout_height="76dp"
             android:layout_marginStart="49dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="24dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.593"
+            app:layout_constraintHorizontal_bias="0.505"
             app:layout_constraintStart_toEndOf="@+id/btnSelectImage"
             app:layout_constraintTop_toBottomOf="@+id/etQuantity"
             tools:src="@tools:sample/avatars" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="332dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/btnAddProduct"
+            app:layout_constraintEnd_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/etQuantity"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

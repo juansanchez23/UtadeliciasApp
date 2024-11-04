@@ -54,14 +54,7 @@
                         android:textSize="18sp"
                         android:textStyle="bold" />
 
-                    <TextView
-                        android:id="@+id/txtDescripcion"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="Descripción del producto aquí."
-                        android:textColor="@android:color/darker_gray"
-                        android:textSize="14sp" />
+
                 </LinearLayout>
 
                 <!-- Imagen del producto alineada a la derecha -->

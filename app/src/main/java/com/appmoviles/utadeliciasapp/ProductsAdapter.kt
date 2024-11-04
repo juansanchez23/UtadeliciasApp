@@ -31,7 +31,7 @@ class ProductsAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val producto = productosList[position]
         holder.nombreTextView.text = producto.nombre
-        holder.descripcionTextView.text = producto.descripcion
+
         // Cargar la imagen con Glide
         Glide.with(holder.itemView.context)
             .load(producto.imagen)
@@ -56,12 +56,12 @@ class ProductsAdapter(
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val nombreTextView: TextView = itemView.findViewById(R.id.txtNombre)
         val ivProducto: ImageView = itemView.findViewById(R.id.ivProducto)
-        val descripcionTextView: TextView = itemView.findViewById(R.id.txtDescripcion)
+
         val btnDelete: ImageView = itemView.findViewById(R.id.btnDelete)
 
         fun bind(product: Products) {
             nombreTextView.text = product.nombre
-            descripcionTextView.text = product.descripcion
+
         }
     }
 }
