@@ -1,5 +1,6 @@
 package com.appmoviles.utadeliciasapp
 
+import android.app.AlertDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -72,16 +73,31 @@ class ProductosFragmentos : Fragment(), ProductsAdapter.OnItemClickListener {
     }
 
     override fun onDeleteItemClick(productId: String) {
-        productosColeccion.document(productId).delete()
-            .addOnSuccessListener {
-                consultarColeccion()  // Actualizar lista
-                val transaction = parentFragmentManager.beginTransaction()
-                transaction.replace(R.id.frame_layout, Producto_eliminado_exitosamente()) // Asegúrate de usar el ID correcto de tu contenedor de fragmentos
-                transaction.addToBackStack(null) // Opcional: para permitir volver al fragmento anterior
-                transaction.commit()
+        // Diálogo de confirmación antes de eliminar
+        AlertDialog.Builder(context)
+            .setTitle("Eliminar Producto")
+            .setMessage("¿Estás seguro de que deseas eliminar este producto?")
+            .setPositiveButton("Sí") { dialog, which ->
+                productosColeccion.document(productId).delete()
+                    .addOnSuccessListener {
+                        consultarColeccion()  // Actualizar lista
+                        val transaction = parentFragmentManager.beginTransaction()
+                        transaction.replace(
+                            R.id.frame_layout,
+                            Producto_eliminado_exitosamente()
+                        ) // Asegúrate de usar el ID correcto de tu contenedor de fragmentos
+                        transaction.addToBackStack(null) // Opcional: para permitir volver al fragmento anterior
+                        transaction.commit()
+                    }
+                    .addOnFailureListener { e ->
+                        // Manejar el error en caso de fallo en la eliminación
+                    }
+
+                dialog.dismiss()
             }
-            .addOnFailureListener { e ->
-                // Manejar el error en caso de fallo en la eliminación
-            }
+            .setNegativeButton("No", null)
+            .show()
+
+
     }
 }
