@@ -27,7 +27,7 @@ class CarritoCliente : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflar el layout para el fragmento del carrito
-        return inflater.inflate(R.layout.fragment_home_cliente, container, false)
+        return inflater.inflate(R.layout.fragment_carrito_cliente, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
