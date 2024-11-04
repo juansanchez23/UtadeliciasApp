@@ -5,18 +5,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-class cupones_cliente : Fragment() {
+class home_cliente : Fragment() {
     private lateinit var viewModel: SharedCuponesViewModel
     private lateinit var adapter: AdaptadorClienteCupon
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_cupones_cliente, container, false)
+        return inflater.inflate(R.layout.fragment_home_cliente, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
