@@ -269,21 +269,7 @@ class cupones_fragmento : Fragment(), AdaptadorCupones.OnItemClickListener {
         }
     }
 
-    private fun checkGalleryPermission() {
-        if (ContextCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.READ_EXTERNAL_STORAGE
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(
-                requireActivity(),
-                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
-                GALLERY_PERMISSION_CODE
-            )
-        } else {
-            openGallery()
-        }
-    }
+
 
     private fun openCamera() {
         Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { intent ->
@@ -298,7 +284,7 @@ class cupones_fragmento : Fragment(), AdaptadorCupones.OnItemClickListener {
                 photoFile?.also {
                     val photoURI: Uri = FileProvider.getUriForFile(
                         requireContext(),
-                        "com.appmoviles.utadeliciasapp.fileprovider",  // Asegúrate de usar tu package correcto
+                        "com.appmoviles.utadeliciasapp.fileprovider",
                         it
                     )
                     intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)

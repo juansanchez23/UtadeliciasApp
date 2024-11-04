@@ -11,7 +11,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 
-class AdaptadorClienteCupon(private val itemClickListener: AdaptadorCupones.OnItemClickListener) : RecyclerView.Adapter<AdaptadorClienteCupon.ViewHolder>() {
+class AdaptadorClienteCupon(private val itemClickListener: OnItemClickListener) : RecyclerView.Adapter<AdaptadorClienteCupon.ViewHolder>() {
 
     private var datos: List<Cupones> = ArrayList()
 
