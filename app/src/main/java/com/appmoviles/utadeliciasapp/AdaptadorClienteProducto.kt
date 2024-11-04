@@ -6,8 +6,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 
-class AdaptadorClienteProducto: RecyclerView.Adapter<AdaptadorClienteProducto.ViewHolder>() {
+class AdaptadorClienteProducto : RecyclerView.Adapter<AdaptadorClienteProducto.ViewHolder>() {
 
     private val productosList = mutableListOf<Products>()
 
@@ -17,27 +18,30 @@ class AdaptadorClienteProducto: RecyclerView.Adapter<AdaptadorClienteProducto.Vi
         return ViewHolder(view)
     }
 
-
     override fun getItemCount(): Int = productosList.size
 
     fun setDatos(listaProductos: List<Products>) {
-        productosList.clear() // Limpia la lista anterior
-        productosList.addAll(listaProductos) // Agrega los nuevos productos
-        notifyDataSetChanged() // Notifica que los datos han cambiado
+        productosList.clear()
+        productosList.addAll(listaProductos)
+        notifyDataSetChanged()
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val nombreTextView: TextView = itemView.findViewById(R.id.txtNombre)
+
+        private val imagen: ImageView = itemView.findViewById(R.id.ivProducto)
 
         fun bind(product: Products) {
-            nombreTextView.text = product.nombre
 
 
+            // Usar Glide para cargar la imagen desde la URL
+            Glide.with(itemView.context)
+                .load(product.imagen)  // Aquí la URL de la imagen
+                .into(imagen)  // Cargar en el ImageView
         }
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val product = productosList[position]
-        holder.bind(product) // Bind data to the view
+        holder.bind(product)
     }
 }

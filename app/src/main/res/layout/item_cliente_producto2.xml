@@ -14,8 +14,8 @@
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             android:background="@color/SecundaryBackground"
             android:orientation="vertical"
             android:padding="16dp">
@@ -23,23 +23,16 @@
             <!-- Contenedor del texto -->
 
 
-            <TextView
-                android:id="@+id/txtNombre"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
 
-                android:text="Nombre Producto"
-                android:textColor="@android:color/black"
-                android:textSize="11sp"
-                android:textStyle="bold" />
 
             <ImageView
                 android:id="@+id/ivProducto"
-                android:layout_width="86dp"
-                android:layout_height="71dp"
-                android:layout_marginStart="3dp"
-                android:contentDescription="Imagen del cupón"
-                android:scaleType="centerCrop" />
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_centerInParent="true"
+                android:scaleType="centerCrop"
+                android:layout_gravity="center"
+                android:contentDescription="Imagen del producto" />
 
 
             <!-- Imagen del cupón alineada a la derecha -->

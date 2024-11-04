@@ -46,10 +46,10 @@ class productos_cliente : Fragment() {
                 for (document in querySnapshot) {
                     val nombre = document.getString("Nombre")
                     val descripcion = document.getString("Descripción")
-                    val imagenUrl = document.getString("ImagenUrl") ?: ""
+                    val imagen = document.getString("ImagenUrl") ?: ""
                     val ID = document.id
-                    if (nombre != null && descripcion != null) {
-                        val producto = Products(ID, nombre, descripcion, imagenUrl)
+                    if (nombre != null && descripcion != null && imagen !=null) {
+                        val producto = Products(ID, nombre, descripcion, imagen)
                         listaProductos.add(producto)
                     }
                 }
