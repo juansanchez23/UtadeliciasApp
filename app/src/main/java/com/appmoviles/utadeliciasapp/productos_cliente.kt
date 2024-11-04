@@ -1,6 +1,6 @@
 package com.appmoviles.utadeliciasapp
 
-
+import AdaptadorClienteProducto
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,12 +10,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
 
-class productos_cliente : Fragment() {
+
+class productos_cliente : Fragment(), AdaptadorClienteProducto.OnItemClickListener {
 
     // Variables y configuración básica
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: AdaptadorClienteProducto
-    private lateinit var add: AddProductsFragment
 
     private val db = FirebaseFirestore.getInstance()
     private val productosColeccion = db.collection("Products")
@@ -30,10 +30,11 @@ class productos_cliente : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        add = AddProductsFragment()
         recyclerView = view.findViewById(R.id.rvproductsCliente)
-        recyclerView.layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
-        adapter = AdaptadorClienteProducto()
+        recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+
+        // Inicializa el adaptador con this como el listener para los clics
+        adapter = AdaptadorClienteProducto(this)
         recyclerView.adapter = adapter
 
         consultarColeccion()
@@ -48,7 +49,7 @@ class productos_cliente : Fragment() {
                     val descripcion = document.getString("Descripción")
                     val imagen = document.getString("ImagenUrl") ?: ""
                     val ID = document.id
-                    if (nombre != null && descripcion != null && imagen !=null) {
+                    if (nombre != null && descripcion != null && imagen != null) {
                         val producto = Products(ID, nombre, descripcion, imagen)
                         listaProductos.add(producto)
                     }
@@ -58,5 +59,17 @@ class productos_cliente : Fragment() {
             .addOnFailureListener { e ->
                 // Manejar el error aquí
             }
+    }
+
+    override fun onItemClick(product: Products) {
+        // Inicia el fragmento de detalle y pasa los datos
+        val detalleFragment = DetalleProducto.newInstance(
+            product.nombre, product.descripcion, product.imagen
+        )
+
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.navcliente, detalleFragment)  // Asegúrate de que el ID sea correcto
+            .addToBackStack(null)
+            .commit()
     }
 }

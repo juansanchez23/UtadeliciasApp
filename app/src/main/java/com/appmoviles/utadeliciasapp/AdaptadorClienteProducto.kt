@@ -1,16 +1,21 @@
-package com.appmoviles.utadeliciasapp
-
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.appmoviles.utadeliciasapp.Products
+import com.appmoviles.utadeliciasapp.R
 import com.bumptech.glide.Glide
 
-class AdaptadorClienteProducto : RecyclerView.Adapter<AdaptadorClienteProducto.ViewHolder>() {
+class AdaptadorClienteProducto(
+    private val itemClickListener: OnItemClickListener
+) : RecyclerView.Adapter<AdaptadorClienteProducto.ViewHolder>() {
 
     private val productosList = mutableListOf<Products>()
+
+    interface OnItemClickListener {
+        fun onItemClick(product: Products)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -27,16 +32,18 @@ class AdaptadorClienteProducto : RecyclerView.Adapter<AdaptadorClienteProducto.V
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
         private val imagen: ImageView = itemView.findViewById(R.id.ivProducto)
 
         fun bind(product: Products) {
-
-
             // Usar Glide para cargar la imagen desde la URL
             Glide.with(itemView.context)
-                .load(product.imagen)  // Aquí la URL de la imagen
-                .into(imagen)  // Cargar en el ImageView
+                .load(product.imagen)
+                .into(imagen)
+
+            // Configura el clic para redirigir al fragmento de detalle
+            itemView.setOnClickListener {
+                itemClickListener.onItemClick(product)
+            }
         }
     }
 
