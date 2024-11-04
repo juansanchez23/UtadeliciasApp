@@ -75,6 +75,10 @@ class ProductosFragmentos : Fragment(), ProductsAdapter.OnItemClickListener {
         productosColeccion.document(productId).delete()
             .addOnSuccessListener {
                 consultarColeccion()  // Actualizar lista
+                val transaction = parentFragmentManager.beginTransaction()
+                transaction.replace(R.id.frame_layout, Producto_eliminado_exitosamente()) // Asegúrate de usar el ID correcto de tu contenedor de fragmentos
+                transaction.addToBackStack(null) // Opcional: para permitir volver al fragmento anterior
+                transaction.commit()
             }
             .addOnFailureListener { e ->
                 // Manejar el error en caso de fallo en la eliminación
