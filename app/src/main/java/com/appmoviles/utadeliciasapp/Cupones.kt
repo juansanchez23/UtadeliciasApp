@@ -7,6 +7,8 @@ data class Cupones(
     val nombre: String,
     val descripcion:String,
     val imagenUrl: String = "",
-    val userId: String
+    val userId: String,
+    var nombreComercio: String = "" // Nuevo campo
+
 
 )

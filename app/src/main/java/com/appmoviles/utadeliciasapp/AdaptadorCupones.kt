@@ -23,6 +23,7 @@ class AdaptadorCupones(private val itemClickListener: OnItemClickListener) : Rec
 
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val txtNombreComercio: TextView = itemView.findViewById(R.id.txtNombreComercio)
         val txtId: TextView = itemView.findViewById(R.id.txtId)
         val txtnombre: TextView = itemView.findViewById(R.id.txtnombre)
         val txtDescripcion: TextView = itemView.findViewById(R.id.txtdescripcion)
@@ -39,6 +40,7 @@ class AdaptadorCupones(private val itemClickListener: OnItemClickListener) : Rec
                         putExtra("nombre", cupon.nombre)
                         putExtra("descripcion", cupon.descripcion)
                         putExtra("imagenUrl", cupon.imagenUrl)
+                        putExtra("nombreComercio",cupon.nombreComercio)
                     }
                     itemView.context.startActivity(intent)
 
@@ -73,6 +75,8 @@ class AdaptadorCupones(private val itemClickListener: OnItemClickListener) : Rec
         holder.txtId.text = item.id.toString()
         holder.txtnombre.text = item.nombre
         holder.txtDescripcion.text = item.descripcion
+        holder.txtNombreComercio.text = item.nombreComercio // Asegúrate de que este TextView existe en tu layout
+
 
         if (item.imagenUrl.isNotEmpty()) {
             Glide.with(holder.itemView.context)

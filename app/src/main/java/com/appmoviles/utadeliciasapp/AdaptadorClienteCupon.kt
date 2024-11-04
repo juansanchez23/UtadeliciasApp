@@ -24,6 +24,7 @@ class AdaptadorClienteCupon(private val itemClickListener: OnItemClickListener) 
         val txtnombre: TextView = itemView.findViewById(R.id.txtnombre)
         val txtDescripcion: TextView = itemView.findViewById(R.id.txtdescripcion)
         val imagenCupon: ImageView = itemView.findViewById(R.id.imagenCupon)
+        val txtNombreComercio: TextView = itemView.findViewById(R.id.txtNombreComercio)
 
         init {
             itemView.setOnClickListener {
@@ -35,6 +36,8 @@ class AdaptadorClienteCupon(private val itemClickListener: OnItemClickListener) 
                     intent.putExtra("descripcion", cupon.descripcion)
                     intent.putExtra("imagenUrl", cupon.imagenUrl)
                     intent.putExtra("userId",cupon.userId)
+                    intent.putExtra("nombreComercio",cupon.nombreComercio)
+
                     itemView.context.startActivity(intent)
                 }
             }
@@ -60,6 +63,8 @@ class AdaptadorClienteCupon(private val itemClickListener: OnItemClickListener) 
         holder.txtId.text = item.id
         holder.txtnombre.text = item.nombre
         holder.txtDescripcion.text = item.descripcion
+        holder.txtNombreComercio.text = item.nombreComercio // Asegúrate de que este TextView existe en tu layout
+
 
         if (item.imagenUrl.isNotEmpty()) {
             Glide.with(holder.itemView.context)
