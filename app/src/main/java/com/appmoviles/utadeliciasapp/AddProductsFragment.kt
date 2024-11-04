@@ -47,7 +47,7 @@ class AddProductsFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view,savedInstanceState)
+        super.onViewCreated(view, savedInstanceState)
 
         // Inicialización de vistas
         etName = view.findViewById(R.id.etName)
@@ -60,10 +60,17 @@ class AddProductsFragment : Fragment() {
 
         // Configuración del botón para capturar imagen
         btnSelectImage.setOnClickListener {
-            if (ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    android.Manifest.permission.CAMERA
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
                 openCamera()
             } else {
-                requestPermissions(arrayOf(android.Manifest.permission.CAMERA), CAMERA_PERMISSION_REQUEST_CODE)
+                requestPermissions(
+                    arrayOf(android.Manifest.permission.CAMERA),
+                    CAMERA_PERMISSION_REQUEST_CODE
+                )
             }
         }
 
@@ -78,7 +85,11 @@ class AddProductsFragment : Fragment() {
                     saveProductToFirestore(name, description, quantity, imageUrl)
                 }
             } else {
-                Toast.makeText(requireContext(), "Por favor, selecciona una imagen", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    "Por favor, selecciona una imagen",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
 
@@ -110,11 +121,17 @@ class AddProductsFragment : Fragment() {
                 }
             }
             .addOnFailureListener {
-                Toast.makeText(requireContext(), "Error al subir la imagen", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Error al subir la imagen", Toast.LENGTH_SHORT)
+                    .show()
             }
     }
 
-    private fun saveProductToFirestore(name: String, description: String, quantity: Int, imageUrl: String) {
+    private fun saveProductToFirestore(
+        name: String,
+        description: String,
+        quantity: Int,
+        imageUrl: String
+    ) {
         val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
         val product = hashMapOf(
             "Nombre" to name,
@@ -123,20 +140,29 @@ class AddProductsFragment : Fragment() {
             "ImagenUrl" to imageUrl,
             "userId" to userId // Añadir el ID del usuario
         )
-
-        db.collection("Products")
-            .add(product)
-            .addOnSuccessListener {
-                Toast.makeText(requireContext(), "Producto agregado con éxito", Toast.LENGTH_SHORT).show()
-                etName.text.clear()
-                etDescription.text.clear()
-                etQuantity.text.clear()
-                ivProduct.setImageBitmap(null)
-                imageBitmap = null
-            }
-            .addOnFailureListener {
-                Toast.makeText(requireContext(), "Error al agregar el producto", Toast.LENGTH_SHORT).show()
-            }
+        if (name != null && description != null && quantity != null && imageUrl != null) {
+            db.collection("Products")
+                .add(product)
+                .addOnSuccessListener {
+                    Toast.makeText(
+                        requireContext(),
+                        "Producto agregado con éxito",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    etName.text.clear()
+                    etDescription.text.clear()
+                    etQuantity.text.clear()
+                    ivProduct.setImageBitmap(null)
+                    imageBitmap = null
+                }
+                .addOnFailureListener {
+                    Toast.makeText(
+                        requireContext(),
+                        "Error al agregar el producto",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+        }
     }
 
     companion object {
