@@ -1,43 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/swipeRefreshLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/tvTitleCarrito"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Carrito"
-        android:textSize="24sp"
-        android:layout_gravity="center_horizontal"
-        android:textStyle="bold"
-        android:paddingBottom="16dp" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvCarrito"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:padding="8dp" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tvTotal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Total: $0"
-        android:textSize="18sp"
-        android:layout_gravity="end"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp" />
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="60dp"
+            android:layout_marginEnd="20dp">
 
-    <Button
-        android:id="@+id/btnConfirmarCompra"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Confirmar Compra"
-        android:backgroundTint="@color/colorPrimary"
-        android:textColor="@android:color/white" />
-</LinearLayout>
+            <TextView
+                android:id="@+id/Cupones_Disponibles"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#FF2459"
+                android:gravity="center"
+                android:text="Cupones disponibles"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rDatosInicio"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:backgroundTint="@color/colorSecondary"
+            android:textColor="@color/black" />
+
+    </LinearLayout>
+
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

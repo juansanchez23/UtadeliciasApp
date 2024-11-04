@@ -15,6 +15,7 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import java.io.ByteArrayOutputStream
@@ -36,7 +37,7 @@ class AddProductsFragment : Fragment() {
     private val storage = FirebaseStorage.getInstance().reference
 
     // Variable para almacenar el bitmap de la imagen capturada
-    private lateinit var imageBitmap: Bitmap
+    private var imageBitmap: Bitmap? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -59,49 +60,49 @@ class AddProductsFragment : Fragment() {
 
         // Configuración del botón para capturar imagen
         btnSelectImage.setOnClickListener {
-            if (ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    android.Manifest.permission.CAMERA
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
                 openCamera()
             } else {
-                requestPermissions(arrayOf(android.Manifest.permission.CAMERA), CAMERA_PERMISSION_REQUEST_CODE)
+                requestPermissions(
+                    arrayOf(android.Manifest.permission.CAMERA),
+                    CAMERA_PERMISSION_REQUEST_CODE
+                )
             }
-            val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
         }
-
 
         // Configuración del botón para agregar producto
         btnAddProduct.setOnClickListener {
+            val name = etName.text.toString()
+            val description = etDescription.text.toString()
+            val quantity = etQuantity.text.toString().toIntOrNull() ?: 0
 
-            val nom = etName.text.toString()
-            val des = etDescription.text.toString()
-            val cantidad =
-                etQuantity.text.toString().toIntOrNull() ?: 0 // Asigna 0 si el valor es nulo
-            val imageUrl = ivProduct.toString()
+            if (imageBitmap != null) {
+                uploadImageToFirebase(imageBitmap!!) { imageUrl ->
+                    saveProductToFirestore(name, description, quantity, imageUrl)
 
-            val data = hashMapOf(
-                "Nombre" to nom,
-                "Descripción" to des,
-                "Cantidad" to cantidad,
-                "ImagenUrl" to imageUrl
-            )
-            db.collection("Products")
-                .add(data)
-                .addOnSuccessListener {
-                    Toast.makeText(requireContext(), "Registro exitoso", Toast.LENGTH_SHORT).show()
+                    val transaction = parentFragmentManager.beginTransaction()
+                    transaction.replace(R.id.frame_layout, producto_agregado_exitosamente()) // Asegúrate de que el ID sea correcto
+                    transaction.addToBackStack(null) // Opcional: permite volver al fragmento anterior
+                    transaction.commit()
                 }
-                .addOnFailureListener {
-                    // Manejar el error
-                }
-
-            // Verificación de que todos los campos estén completos
-
+            } else {
+                Toast.makeText(
+                    requireContext(),
+                    "Por favor, selecciona una imagen",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
+
         ivBackAdd.setOnClickListener {
             parentFragmentManager.popBackStack()
         }
     }
 
-    // Manejo del resultado de la actividad de captura de imagen
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
@@ -111,19 +112,17 @@ class AddProductsFragment : Fragment() {
         }
     }
 
-    // Función para subir la imagen a Firebase Storage y obtener su URL
     private fun uploadImageToFirebase(bitmap: Bitmap, callback: (String) -> Unit) {
         val baos = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
         val imageData = baos.toByteArray()
 
-        // Referencia para almacenar la imagen en Firebase Storage
         val imageRef = storage.child("images/${UUID.randomUUID()}.jpg")
 
         imageRef.putBytes(imageData)
             .addOnSuccessListener {
                 imageRef.downloadUrl.addOnSuccessListener { uri ->
-                    callback(uri.toString()) // Llama al callback con la URL de la imagen
+                    callback(uri.toString())
                 }
             }
             .addOnFailureListener {
@@ -132,38 +131,53 @@ class AddProductsFragment : Fragment() {
             }
     }
 
-    // Función para guardar los detalles del producto en Firestore
-    private fun saveProductToFirestore(name: String, description: String, imageUrl: String) {
+    private fun saveProductToFirestore(
+        name: String,
+        description: String,
+        quantity: Int,
+        imageUrl: String
+    ) {
+        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
         val product = hashMapOf(
             "Nombre" to name,
             "Descripción" to description,
-            "ImagenUrl" to imageUrl
+            "Cantidad" to quantity,
+            "ImagenUrl" to imageUrl,
+            "userId" to userId // Añadir el ID del usuario
         )
-
-        db.collection("Products")
-            .add(product)
-            .addOnSuccessListener {
-                Toast.makeText(requireContext(), "Producto agregado con éxito", Toast.LENGTH_SHORT)
-                    .show()
-                etName.text.clear()
-                etDescription.text.clear()
-                ivProduct.setImageBitmap(null) // Reiniciar la imagen
-            }
-            .addOnFailureListener {
-                Toast.makeText(requireContext(), "Error al agregar el producto", Toast.LENGTH_SHORT)
-                    .show()
-            }
+        if (name != null && description != null && quantity != null && imageUrl != null) {
+            db.collection("Products")
+                .add(product)
+                .addOnSuccessListener {
+                    Toast.makeText(
+                        requireContext(),
+                        "Producto agregado con éxito",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    etName.text.clear()
+                    etDescription.text.clear()
+                    etQuantity.text.clear()
+                    ivProduct.setImageBitmap(null)
+                    imageBitmap = null
+                }
+                .addOnFailureListener {
+                    Toast.makeText(
+                        requireContext(),
+                        "Error al agregar el producto",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+        }
     }
-
 
     companion object {
         private const val REQUEST_IMAGE_CAPTURE = 1
+        private const val CAMERA_PERMISSION_REQUEST_CODE = 1001
     }
 
-    private val CAMERA_PERMISSION_REQUEST_CODE = 1001
     private fun openCamera() {
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        startActivityForResult(intent, CAMERA_PERMISSION_REQUEST_CODE)
+        startActivityForResult(intent, REQUEST_IMAGE_CAPTURE)
     }
 
     override fun onRequestPermissionsResult(
@@ -178,11 +192,10 @@ class AddProductsFragment : Fragment() {
             } else {
                 Toast.makeText(
                     requireContext(),
-                    "Camera permission is required",
+                    "Se requiere el permiso de la cámara",
                     Toast.LENGTH_SHORT
                 ).show()
             }
         }
-
     }
 }

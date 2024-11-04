@@ -16,78 +16,97 @@ class SharedCuponesViewModel : ViewModel() {
 
     private val _allCupones = MutableLiveData<List<Cupones>>()
     val allCupones: LiveData<List<Cupones>> = _allCupones
-
-    fun getCuponesForCurrentUser() {
-        val currentUser = auth.currentUser
-        if (currentUser != null) {
-            db.collection("usuarios_comercio")
-                .document(currentUser.uid)
-                .collection("cupones")
-                .get()
-                .addOnSuccessListener { querySnapshot ->
-                    val cuponesLista = mutableListOf<Cupones>()
-                    for (document in querySnapshot) {
-                        val id = document.id
-                        val nombre = document.getString("Nombre") ?: ""
-                        val descripcion = document.getString("Descripcion") ?: ""
-                        val imagenUrl = document.getString("imagenUrl") ?: ""
-                        val userId = document.getString("userId") ?: ""
-                        cuponesLista.add(Cupones(id, nombre, descripcion, imagenUrl,userId))
-                    }
-                    _userCupones.value = cuponesLista
+    private fun fetchComercioName(userId: String, cupon: Cupones, cuponesLista: MutableList<Cupones>, totalToProcess: Int, processed: MutableList<Int>, callback: () -> Unit) {
+        db.collection("user-info")
+            .document(userId)
+            .get()
+            .addOnSuccessListener { userDoc ->
+                cupon.nombreComercio = userDoc.getString("nombre") ?: "Comercio Desconocido"
+                cuponesLista.add(cupon)
+                processed[0]++
+                if (processed[0] == totalToProcess) {
+                    callback()
                 }
-        }
+            }
+            .addOnFailureListener {
+                cupon.nombreComercio = "Comercio Desconocido"
+                cuponesLista.add(cupon)
+                processed[0]++
+                if (processed[0] == totalToProcess) {
+                    callback()
+                }
+            }
     }
-
     fun getAllCupones() {
         val cuponesLista = mutableListOf<Cupones>()
+        val processedCount = mutableListOf(0)
 
-        // Paso 1: Obtenemos los IDs de los usuarios desde "user_info"
         db.collection("user-info")
             .get()
             .addOnSuccessListener { userInfoSnapshot ->
-                val totalUsers = userInfoSnapshot.size()
-                var completedTasks = 0
+                var totalCupones = 0
 
-                if (totalUsers == 0) {
-                    _allCupones.value = cuponesLista
-                    return@addOnSuccessListener
-                }
-
-                // Paso 2: Para cada usuario, buscamos en "usuarios_comercio" y obtenemos los cupones
-                for (userDocument in userInfoSnapshot) {
+                // Primero contamos el total de cupones que necesitaremos procesar
+                for (userDocument in userInfoSnapshot.documents) {
                     val userId = userDocument.id
-
                     db.collection("usuarios_comercio")
                         .document(userId)
                         .collection("cupones")
                         .get()
                         .addOnSuccessListener { cuponesSnapshot ->
-                            for (document in cuponesSnapshot) {
-                                val id = document.id
-                                val nombre = document.getString("Nombre") ?: ""
-                                val descripcion = document.getString("Descripcion") ?: ""
-                                val imagenUrl = document.getString("imagenUrl") ?: ""
-                                val userId = document.getString("userId") ?: ""
-                                cuponesLista.add(Cupones(id, nombre, descripcion, imagenUrl, userId))
-                            }
+                            totalCupones += cuponesSnapshot.size()
 
-                            completedTasks++
-                            if (completedTasks == totalUsers) {
-                                _allCupones.value = cuponesLista
-                            }
-                        }
-                        .addOnFailureListener { e ->
-                            completedTasks++
-                            if (completedTasks == totalUsers) {
-                                _allCupones.value = cuponesLista
+                            // Una vez que sabemos el total, comenzamos a procesar los cupones
+                            for (document in cuponesSnapshot) {
+                                val cupon = Cupones(
+                                    id = document.id,
+                                    nombre = document.getString("Nombre") ?: "",
+                                    descripcion = document.getString("Descripcion") ?: "",
+                                    imagenUrl = document.getString("imagenUrl") ?: "",
+                                    userId = document.getString("userId") ?: userId
+                                )
+
+                                fetchComercioName(userId, cupon, cuponesLista, totalCupones, processedCount) {
+                                    _allCupones.value = cuponesLista.sortedBy { it.nombreComercio }
+                                }
                             }
                         }
                 }
             }
-            .addOnFailureListener { e ->
-                // Manejo de error en caso de falla al obtener "user_info"
-            }
     }
 
+    fun getCuponesForCurrentUser() {
+        val currentUser = auth.currentUser
+        if (currentUser != null) {
+            val cuponesLista = mutableListOf<Cupones>()
+            val processedCount = mutableListOf(0)
+
+            db.collection("usuarios_comercio")
+                .document(currentUser.uid)
+                .collection("cupones")
+                .get()
+                .addOnSuccessListener { querySnapshot ->
+                    val totalCupones = querySnapshot.size()
+
+                    if (totalCupones == 0) {
+                        _userCupones.value = emptyList()
+                        return@addOnSuccessListener
+                    }
+
+                    for (document in querySnapshot) {
+                        val cupon = Cupones(
+                            id = document.id,
+                            nombre = document.getString("Nombre") ?: "",
+                            descripcion = document.getString("Descripcion") ?: "",
+                            imagenUrl = document.getString("imagenUrl") ?: "",
+                            userId = document.getString("userId") ?: currentUser.uid
+                        )
+
+                        fetchComercioName(currentUser.uid, cupon, cuponesLista, totalCupones, processedCount) {
+                            _userCupones.value = cuponesLista
+                        }
+                    }
+                }
+        }
+    }
 }
