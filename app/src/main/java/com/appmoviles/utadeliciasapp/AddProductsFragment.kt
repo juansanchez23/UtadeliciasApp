@@ -15,6 +15,7 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import java.io.ByteArrayOutputStream
@@ -46,7 +47,7 @@ class AddProductsFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        super.onViewCreated(view,savedInstanceState)
 
         // Inicialización de vistas
         etName = view.findViewById(R.id.etName)
@@ -64,20 +65,9 @@ class AddProductsFragment : Fragment() {
             } else {
                 requestPermissions(arrayOf(android.Manifest.permission.CAMERA), CAMERA_PERMISSION_REQUEST_CODE)
             }
-            val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
         }
-
 
         // Configuración del botón para agregar producto
-        btnSelectImage.setOnClickListener {
-            if (ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-                openCamera()
-            } else {
-                requestPermissions(arrayOf(android.Manifest.permission.CAMERA), CAMERA_PERMISSION_REQUEST_CODE)
-            }
-        }
-
         btnAddProduct.setOnClickListener {
             val name = etName.text.toString()
             val description = etDescription.text.toString()
@@ -125,11 +115,13 @@ class AddProductsFragment : Fragment() {
     }
 
     private fun saveProductToFirestore(name: String, description: String, quantity: Int, imageUrl: String) {
+        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
         val product = hashMapOf(
             "Nombre" to name,
             "Descripción" to description,
             "Cantidad" to quantity,
-            "ImagenUrl" to imageUrl
+            "ImagenUrl" to imageUrl,
+            "userId" to userId // Añadir el ID del usuario
         )
 
         db.collection("Products")

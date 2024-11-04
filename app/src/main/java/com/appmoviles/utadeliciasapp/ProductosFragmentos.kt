@@ -1,6 +1,5 @@
 package com.appmoviles.utadeliciasapp
 
-
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -18,7 +17,6 @@ class ProductosFragmentos : Fragment(), ProductsAdapter.OnItemClickListener {
     private lateinit var btnAddProduct: Button
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: ProductsAdapter
-    private lateinit var add: AddProductsFragment
 
     private val db = FirebaseFirestore.getInstance()
     private val productosColeccion = db.collection("Products")
@@ -33,7 +31,6 @@ class ProductosFragmentos : Fragment(), ProductsAdapter.OnItemClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        add = AddProductsFragment()
         btnAddProduct = view.findViewById(R.id.btnaddProduct)
         recyclerView = view.findViewById(R.id.rvproducts)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -49,28 +46,28 @@ class ProductosFragmentos : Fragment(), ProductsAdapter.OnItemClickListener {
                 .addToBackStack(null)
                 .commit()
         }
-
-
-
     }
 
     private fun consultarColeccion() {
-        productosColeccion.get()
+        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
+        productosColeccion.whereEqualTo("userId", userId).get()
             .addOnSuccessListener { querySnapshot ->
                 val listaProductos = mutableListOf<Products>()
                 for (document in querySnapshot) {
                     val nombre = document.getString("Nombre")
                     val descripcion = document.getString("Descripción")
                     val imagen = document.getString("ImagenUrl") ?: ""
-                    //val precio = document.getString("precio")?.toInt()
                     val txtcantidad = document.getLong("Cantidad")?.toInt()
                     val ID = document.id
                     if (nombre != null && descripcion != null && txtcantidad != null) {
-                        val producto = Products(ID, nombre, descripcion, imagen, txtcantidad)//,precio)
+                        val producto = Products(ID, nombre, descripcion, imagen, txtcantidad)
                         listaProductos.add(producto)
                     }
                 }
                 adapter.setDatos(listaProductos)
+            }
+            .addOnFailureListener { e ->
+                // Manejar el error en caso de fallo
             }
     }
 
@@ -84,4 +81,3 @@ class ProductosFragmentos : Fragment(), ProductsAdapter.OnItemClickListener {
             }
     }
 }
-
