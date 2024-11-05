@@ -150,12 +150,13 @@ class AddProductsFragment : Fragment() {
     ) {
         val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
         val product = hashMapOf(
+            "userId" to userId, // Añadir el ID del usuario
             "Nombre" to name,
             "Descripción" to description,
             "Cantidad" to quantity,
             "ImagenUrl" to imageUrl,
             "Precio" to price,
-            "userId" to userId // Añadir el ID del usuario
+
         )
         if (name != null && description != null && quantity != null && imageUrl != null) {
             db.collection("Products")
