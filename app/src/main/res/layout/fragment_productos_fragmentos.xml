@@ -49,13 +49,13 @@
 
         <Button
             android:id="@+id/btnaddProduct"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="157dp"
+            android:layout_height="53dp"
             android:layout_marginTop="509dp"
             android:backgroundTint="@color/blueBtn"
             android:text="@string/AddProduct"
             android:textColor="@color/black"
-            android:textSize="11sp"
+            android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.464"
