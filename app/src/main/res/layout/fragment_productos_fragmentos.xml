@@ -35,8 +35,8 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvproducts"
-            android:layout_width="318dp"
-            android:layout_height="418dp"
+            android:layout_width="311dp"
+            android:layout_height="483dp"
             android:layout_marginTop="1dp"
             android:background="@android:color/transparent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -61,8 +61,7 @@
             app:layout_constraintHorizontal_bias="0.464"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.425" />
-
+            app:layout_constraintVertical_bias="0.695" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
