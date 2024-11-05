@@ -19,12 +19,37 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/logosinfondo" />
 
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="¡GUAUF BIENVENIDO!"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/fondodeltexto2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView3"
+        app:layout_constraintVertical_bias="0.692" />
+
+    <TextView
+        android:id="@+id/fondodeltexto2"
+        android:layout_width="308dp"
+        android:layout_height="175dp"
+        android:layout_marginHorizontal="30dp"
+        android:layout_marginTop="65dp"
+        android:background="@drawable/rounded_background"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="251dp"
+        android:layout_height="149dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="80dp"
         android:layout_marginEnd="32dp"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
@@ -60,6 +85,7 @@
                 android:layout_weight="1"
                 android:text="@string/ingresar" />
         </LinearLayout>
+
     </LinearLayout>
 
     <Button
@@ -67,11 +93,12 @@
         style="@style/ButtonPrimary"
         android:layout_width="240dp"
         android:layout_height="49dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:layout_weight="1"
         android:text="@string/registrar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
