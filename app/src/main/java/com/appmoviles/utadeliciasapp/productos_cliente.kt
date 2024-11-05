@@ -48,9 +48,11 @@ class productos_cliente : Fragment(), AdaptadorClienteProducto.OnItemClickListen
                     val nombre = document.getString("Nombre")
                     val descripcion = document.getString("Descripción")
                     val imagen = document.getString("ImagenUrl") ?: ""
+                    val txtcantidad = document.getLong("Cantidad")!!.toInt()
+                    val txtprecio = document.getLong("Precio")!!.toDouble()
                     val ID = document.id
                     if (nombre != null && descripcion != null && imagen != null) {
-                        val producto = Products(ID, nombre, descripcion, imagen)
+                        val producto = Products(ID, nombre, descripcion, imagen,txtcantidad,txtprecio)
                         listaProductos.add(producto)
                     }
                 }

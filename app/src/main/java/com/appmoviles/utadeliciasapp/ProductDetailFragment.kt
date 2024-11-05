@@ -16,6 +16,7 @@ class ProductDetailFragment : Fragment() {
     private lateinit var productDescription: String
     private lateinit var productImage: String
     private var productQuantity: Int = 0
+    private var tvprecio:Double = 0.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,6 +26,7 @@ class ProductDetailFragment : Fragment() {
             productDescription = it.getString("productDescription") ?: ""
             productImage = it.getString("productImage") ?: ""
             productQuantity = it.getInt("productQuantity", 0)
+            tvprecio = it.getDouble("productPrice",0.0)
         }
     }
 
@@ -39,10 +41,13 @@ class ProductDetailFragment : Fragment() {
         val tvDescription = view.findViewById<TextView>(R.id.tvDescription)
         val ivProductImage = view.findViewById<ImageView>(R.id.ivProducts)
         val tvQuantity = view.findViewById<TextView>(R.id.tvCantidad)
+        val tvPrecio = view.findViewById<TextView>(R.id.tvPrecio)
 
         tvName.text = productName
         tvDescription.text = productDescription
-        tvQuantity.text = "Cantidad: $productQuantity"
+        tvQuantity.text = productQuantity.toString()
+        tvPrecio.text = tvprecio.toString()
+
 
         // Cargar la imagen del producto (usando Glide)
         Glide.with(this)

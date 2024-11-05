@@ -58,9 +58,10 @@ class ProductosFragmentos : Fragment(), ProductsAdapter.OnItemClickListener {
                     val descripcion = document.getString("Descripción")
                     val imagen = document.getString("ImagenUrl") ?: ""
                     val txtcantidad = document.getLong("Cantidad")?.toInt()
+                    val txtprecio = document.getLong("Precio")!!.toDouble()
                     val ID = document.id
                     if (nombre != null && descripcion != null && txtcantidad != null) {
-                        val producto = Products(ID, nombre, descripcion, imagen, txtcantidad)
+                        val producto = Products(ID, nombre, descripcion, imagen, txtcantidad,txtprecio)
                         listaProductos.add(producto)
                     }
                 }
@@ -108,6 +109,7 @@ class ProductosFragmentos : Fragment(), ProductsAdapter.OnItemClickListener {
             putString("productDescription", product.descripcion)
             putString("productImage", product.imagen)
             putInt("productQuantity", product.cantidad)
+            putDouble("productPrice", product.precio)
         }
         productDetailFragment.arguments = bundle
 
