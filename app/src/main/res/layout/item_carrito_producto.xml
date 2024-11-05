@@ -41,4 +41,14 @@
             android:text="Cantidad: 1"
             android:textSize="14sp" />
     </LinearLayout>
+
+    <!-- Agrega el ImageView para el ícono de eliminación -->
+    <ImageView
+        android:id="@+id/ivEliminar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/baseline_clear_24"
+        android:contentDescription="Eliminar producto"
+        android:layout_marginStart="8dp"
+        android:layout_gravity="center_vertical" /> <!-- Centrar verticalmente el ícono -->
 </LinearLayout>

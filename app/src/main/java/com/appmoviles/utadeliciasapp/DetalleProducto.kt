@@ -10,11 +10,12 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 class DetalleProducto : Fragment() {
 
     private lateinit var producto: Products
-
+    private val firestore = FirebaseFirestore.getInstance()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -30,11 +31,10 @@ class DetalleProducto : Fragment() {
         val nombre = arguments?.getString("nombre") ?: ""
         val descripcion = arguments?.getString("descripcion") ?: ""
         val imagenUrl = arguments?.getString("imagenUrl") ?: ""
-        val cantidad = arguments?.getInt("cantidad")?: 9999
-        val precio = arguments?.getInt("precio") ?: 9999
+        val cantidad = arguments?.getInt("cantidad")?: 0
+        val precio = arguments?.getDouble("precio") ?: 0.0
+        producto = Products(id, nombre, descripcion, imagenUrl, cantidad, precio)
 
-        // Crea el objeto Producto
-        producto = Products(id, nombre, descripcion, imagenUrl, cantidad,precio)
 
         // Configura las vistas
         val tvNombre = view.findViewById<TextView>(R.id.tvNombreDetalle)
@@ -60,28 +60,52 @@ class DetalleProducto : Fragment() {
     }
 
     private fun agregarProductoAlCarrito(producto: Products, cantidad: Int) {
-        val carrito = Carrito()
         val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
 
-        // Agregar el producto al carrito
-        val item = CarritoItem(producto, cantidad)
-        carrito.items.add(item)
+        firestore.collection("user-info").document(userId)
+            .collection("carrito").document("carritoId")
+            .get()
+            .addOnSuccessListener { document ->
+                val carrito = document.toObject(Carrito::class.java) ?: Carrito()
 
-        // Guardar el carrito en Firestore
-        carrito.guardarCarrito(userId)
+                // Verificar si el producto ya está en el carrito
+                val existingItem = carrito.items.find { it.producto.id == producto.id }
+
+                if (existingItem != null) {
+                    // Si ya existe, eliminarlo del carrito
+                    carrito.eliminarProducto(producto.id)
+                } else {
+                    // Si no existe, agregar el nuevo producto
+                    val item = CarritoItem(producto, cantidad)
+                    carrito.items.add(item)
+                }
+
+                // Guardar el carrito actualizado en Firestore
+                carrito.guardarCarrito(userId)
+
+                // Actualizar total en CarritoCliente
+                (activity as? CarritoCliente)?.actualizarTotal() // Llamar método para actualizar total
+            }
+            .addOnFailureListener { exception ->
+                exception.printStackTrace()
+            }
     }
 
+
+
+
     companion object {
-        fun newInstance(id: String, nombre: String, descripcion: String, imagenUrl: String, cantidad:Int, precio: Int) =
+        fun newInstance(id: String, nombre: String, descripcion: String, imagenUrl: String, cantidad: Int, precio: Double) =
             DetalleProducto().apply {
                 arguments = Bundle().apply {
                     putString("id", id)
                     putString("nombre", nombre)
                     putString("descripcion", descripcion)
                     putString("imagenUrl", imagenUrl)
-                    putInt("cantidad",cantidad)
-                    putInt("precio", precio)
+                    putInt("cantidad", cantidad)
+                    putDouble("precio", precio) // Cambiar a putDouble
                 }
             }
     }
+
 }

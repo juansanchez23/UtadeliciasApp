@@ -1,5 +1,6 @@
 package com.appmoviles.utadeliciasapp
 
+import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 
 data class Carrito(
@@ -8,10 +9,13 @@ data class Carrito(
     fun obtenerTotal(): Double {
         var total = 0.0
         for (item in items) {
-            total += item.producto.precio * item.selectedQuantity // Asumiendo que `precio` está en la clase `Products`
+            Log.d("Carrito", "Producto: ${item.producto.nombre}, Precio: ${item.producto.precio}, Cantidad: ${item.selectedQuantity}")
+            total += item.producto.precio * item.selectedQuantity
         }
+        Log.d("Carrito", "Total: $total")
         return total
     }
+
 
     fun guardarCarrito(userId: String) {
         val firestore = FirebaseFirestore.getInstance()
@@ -26,6 +30,10 @@ data class Carrito(
                 exception.printStackTrace()
             }
     }
+    fun eliminarProducto(productoId: String) {
+        items.removeIf { it.producto.id == productoId }
+    }
+
 }
 
 

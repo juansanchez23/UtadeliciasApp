@@ -9,7 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 
 class CarritoAdapter(
-    private val items: List<CarritoItem>
+    private val items: MutableList<CarritoItem>,
+    private val onEliminar: (String, Int) -> Unit // Lambda para eliminar
 ) : RecyclerView.Adapter<CarritoAdapter.CarritoViewHolder>() {
 
     class CarritoViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -17,6 +18,7 @@ class CarritoAdapter(
         val descripcion: TextView = view.findViewById(R.id.tvDescripcionProducto)
         val cantidad: TextView = view.findViewById(R.id.tvCantidadProducto)
         val imagen: ImageView = view.findViewById(R.id.ivProductoImagen)
+        val ivEliminar: ImageView = itemView.findViewById(R.id.ivEliminar)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CarritoViewHolder {
@@ -31,11 +33,23 @@ class CarritoAdapter(
         holder.descripcion.text = carritoItem.producto.descripcion
         holder.cantidad.text = "Cantidad: ${carritoItem.selectedQuantity}"
 
-        // Cargar imagen del producto con Glide (asegúrate de tener Glide en tu proyecto)
+        // Cargar imagen del producto con Glide
         Glide.with(holder.itemView.context)
             .load(carritoItem.producto.imagen)
             .into(holder.imagen)
+
+        // Manejar clic en el icono de eliminar
+        holder.ivEliminar.setOnClickListener {
+            onEliminar(carritoItem.producto.id, position) // Llama a la función de eliminar
+        }
     }
 
     override fun getItemCount() = items.size
+
+    // Método para eliminar un producto por posición
+    fun eliminarProducto(position: Int) {
+        items.removeAt(position) // Elimina el producto de la lista
+        notifyItemRemoved(position) // Notifica que un ítem ha sido removido
+        notifyItemRangeChanged(position, items.size) // Actualiza el rango de elementos
+    }
 }
