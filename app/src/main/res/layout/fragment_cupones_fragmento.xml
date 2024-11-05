@@ -42,21 +42,15 @@
                 android:id="@+id/textId"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="@string/id"
-                android:textSize="20sp"
-                android:textColor="@color/colorSecondary"
-                android:textStyle="bold"/>
+                android:visibility="gone"
+
+                />
 
             <EditText
                 android:id="@+id/text_Id"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:hint="@string/ingresa_el_id_del_cup_n"
-                android:padding="8dp"
-                android:textColorHint="#80AAAAAA"
-                android:importantForAccessibility="yes"
-                android:accessibilityLiveRegion="polite" />
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/textNombre"
