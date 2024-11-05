@@ -89,8 +89,10 @@ class AddProductsFragment : Fragment() {
                 uploadImageToFirebase(imageBitmap!!) { imageUrl ->
                     saveProductToFirestore(name, description, quantity, imageUrl)
 
+                    val productoAgregadoExitosamente = producto_agregado_exitosamente.newInstance(name,imageUrl)
+
                     val transaction = parentFragmentManager.beginTransaction()
-                    transaction.replace(R.id.frame_layout, producto_agregado_exitosamente()) // Asegúrate de que el ID sea correcto
+                    transaction.replace(R.id.frame_layout, productoAgregadoExitosamente) // Asegúrate de que el ID sea correcto
                     transaction.addToBackStack(null) // Opcional: permite volver al fragmento anterior
                     transaction.commit()
                 }

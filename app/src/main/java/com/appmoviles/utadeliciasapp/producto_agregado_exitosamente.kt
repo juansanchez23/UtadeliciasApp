@@ -5,20 +5,18 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import com.bumptech.glide.Glide
 
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+private var nombre: String? = null
+private var imagen: String? = null
 
 class producto_agregado_exitosamente : Fragment() {
-    private var param1: String? = null
-    private var param2: String? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
     }
 
     override fun onCreateView(
@@ -27,13 +25,25 @@ class producto_agregado_exitosamente : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_producto_agregado_exitosamente, container, false)
 
+        nombre = arguments?.getString("nombreProducto")
+        imagen = arguments?.getString("imagenProducto")
+
+        view.findViewById<TextView>(R.id.tvnombre).text = nombre
+
+        val imagenUrl = view.findViewById<ImageView>(R.id.ivProducts)
+
+        Glide.with(this)
+            .load(imagen)
+            .into(imagenUrl)
+
+
         // Configurar el click listener para el botón de regreso
-        view.findViewById<View>(R.id.btn_volver_comercio_agregado).setOnClickListener {
+        view.findViewById<View>(R.id.btn_volver_comercio_eliminado).setOnClickListener {
             parentFragmentManager.popBackStack()
         }
 
         // Configurar el click listener para el botón de agregar producto
-        view.findViewById<View>(R.id.btn_volver_comercio_agregado).setOnClickListener {
+        view.findViewById<View>(R.id.btn_volver_comercio_eliminado).setOnClickListener {
             // Cambiar a otro fragmento al hacer clic en el botón
             parentFragmentManager.beginTransaction()
                 .replace(R.id.frame_layout, ProductosFragmentos()) // Cambia ProductosFragmentos por el fragmento al que deseas volver
@@ -50,13 +60,13 @@ class producto_agregado_exitosamente : Fragment() {
     }
 
     companion object {
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            producto_agregado_exitosamente().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+        fun newInstance(nombre: String, imagen: String): producto_agregado_exitosamente {
+            val fragment = producto_agregado_exitosamente()
+            val args = Bundle()
+            args.putString("nombreProducto", nombre)
+            args.putString("imagenProducto", imagen)
+            fragment.arguments = args
+            return fragment
+        }
     }
 }
