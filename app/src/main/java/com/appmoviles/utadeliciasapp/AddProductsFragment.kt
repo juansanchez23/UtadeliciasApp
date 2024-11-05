@@ -33,6 +33,7 @@ class AddProductsFragment : Fragment() {
     private lateinit var ivBackAdd: ImageView
     private lateinit var etQuantity: EditText
     private lateinit var progressBar: ProgressBar
+    private lateinit var etPrice: EditText
 
     // Instancias de Firestore y Storage
     private val db = FirebaseFirestore.getInstance()
@@ -60,6 +61,7 @@ class AddProductsFragment : Fragment() {
         ivBackAdd = view.findViewById(R.id.ivBack_add)
         etQuantity = view.findViewById(R.id.etQuantity)
         progressBar = view.findViewById(R.id.progressBar)
+        etPrice = view.findViewById(R.id.etPrice)
 
         // Configuración del botón para capturar imagen
         btnSelectImage.setOnClickListener {
@@ -82,12 +84,13 @@ class AddProductsFragment : Fragment() {
             val name = etName.text.toString()
             val description = etDescription.text.toString()
             val quantity = etQuantity.text.toString().toIntOrNull() ?: 0
+            val price = etPrice.text.toString().toIntOrNull() ?: 0
 
             progressBar.visibility = View.VISIBLE
 
             if (imageBitmap != null) {
                 uploadImageToFirebase(imageBitmap!!) { imageUrl ->
-                    saveProductToFirestore(name, description, quantity, imageUrl)
+                    saveProductToFirestore(name, description, quantity, imageUrl, price)
 
                     val productoAgregadoExitosamente = producto_agregado_exitosamente.newInstance(name,imageUrl)
 
@@ -99,7 +102,7 @@ class AddProductsFragment : Fragment() {
             } else {
                 Toast.makeText(
                     requireContext(),
-                    "Por favor, selecciona una imagen",
+                    "Por favor, completa todos los campos",
                     Toast.LENGTH_SHORT
                 ).show()
             }
@@ -142,7 +145,8 @@ class AddProductsFragment : Fragment() {
         name: String,
         description: String,
         quantity: Int,
-        imageUrl: String
+        imageUrl: String,
+        price: Int
     ) {
         val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
         val product = hashMapOf(
@@ -150,6 +154,7 @@ class AddProductsFragment : Fragment() {
             "Descripción" to description,
             "Cantidad" to quantity,
             "ImagenUrl" to imageUrl,
+            "Precio" to price,
             "userId" to userId // Añadir el ID del usuario
         )
         if (name != null && description != null && quantity != null && imageUrl != null) {
