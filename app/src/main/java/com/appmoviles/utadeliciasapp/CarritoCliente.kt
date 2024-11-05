@@ -83,25 +83,14 @@ class CarritoCliente : Fragment() {
 
     private fun actualizarTotal() {
         val total = carrito.obtenerTotal()
-        tvTotal.text = "Total: $$total"
+        // Convierte total a entero
+        val totalEntero = total.toInt()
+        tvTotal.text = "Total: $totalEntero"
     }
 
     private fun confirmarCompra() {
         // Implementar la lógica de confirmación de compra, por ejemplo, guardar el carrito en Firebase
     }
-
-    private fun agregarProductoAlCarrito(producto: Products, cantidad: Int) {
-        val item = CarritoItem(producto, cantidad)
-        carrito.items.add(item)
-
-        // Guardar el carrito en Firestore después de agregar el producto
-        val userId = auth.currentUser?.uid ?: return
-        carrito.guardarCarrito(userId)
-
-        // Actualizar el total y el adaptador
-        actualizarTotal()
-    }
-
 
 
 }

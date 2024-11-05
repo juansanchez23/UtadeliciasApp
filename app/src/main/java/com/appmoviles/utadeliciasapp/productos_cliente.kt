@@ -64,7 +64,7 @@ class productos_cliente : Fragment(), AdaptadorClienteProducto.OnItemClickListen
     override fun onItemClick(product: Products) {
         // Inicia el fragmento de detalle y pasa los datos
         val detalleFragment = DetalleProducto.newInstance(
-            product.nombre, product.descripcion, product.imagen
+            product.id,product.nombre, product.descripcion, product.imagen, product.cantidad, product.precio
         )
 
         requireActivity().supportFragmentManager.beginTransaction()
