@@ -97,7 +97,29 @@ class ProductosFragmentos : Fragment(), ProductsAdapter.OnItemClickListener {
             }
             .setNegativeButton("No", null)
             .show()
-
-
     }
+
+    override fun onItemClick(product: Products) {
+        val fragment = ProductDetailFragment(
+            product.nombre,
+            product.descripcion,
+            product.imagen,
+            product.precio,
+            product.cantidad
+        ).apply {
+            arguments = Bundle().apply {
+                putString("productName", product.nombre)
+                putString("productDescription", product.descripcion)
+                putString("productImageUrl", product.imagen)
+                putInt("productQuantity", product.cantidad)
+                putInt("productPrice", product.precio)
+            }
+        }
+
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.fragmentContainer, fragment)
+            .addToBackStack(null)
+            .commit()
+    }
+
 }

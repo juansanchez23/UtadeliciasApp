@@ -35,8 +35,8 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvproducts"
-            android:layout_width="318dp"
-            android:layout_height="418dp"
+            android:layout_width="311dp"
+            android:layout_height="483dp"
             android:layout_marginTop="1dp"
             android:background="@android:color/transparent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -49,20 +49,19 @@
 
         <Button
             android:id="@+id/btnaddProduct"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="157dp"
+            android:layout_height="53dp"
             android:layout_marginTop="509dp"
             android:backgroundTint="@color/blueBtn"
             android:text="@string/AddProduct"
             android:textColor="@color/black"
-            android:textSize="11sp"
+            android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.464"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.425" />
-
+            app:layout_constraintVertical_bias="0.695" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
