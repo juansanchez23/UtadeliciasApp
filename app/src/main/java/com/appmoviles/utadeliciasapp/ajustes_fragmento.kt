@@ -1,5 +1,6 @@
 package com.appmoviles.utadeliciasapp
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -72,7 +73,9 @@ class ajustes_fragmento : Fragment() {
         // Cerrar sesión
         logOutButton.setOnClickListener {
             FirebaseAuth.getInstance().signOut()
-            activity?.onBackPressed()
+            val intent = Intent(activity, AuthActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
         }
     }
 
