@@ -11,13 +11,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-
 class CarritoCliente : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var tvTotal: TextView
     private lateinit var btnConfirmarCompra: Button
     private lateinit var carrito: Carrito
+    private lateinit var carritoAdapter: CarritoAdapter // Declarar el adaptador aquí
 
     private val firestore = FirebaseFirestore.getInstance()
     private val auth = FirebaseAuth.getInstance()
@@ -26,71 +26,64 @@ class CarritoCliente : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflar el layout para el fragmento del carrito
         return inflater.inflate(R.layout.fragment_carrito_cliente, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Inicializar los elementos de UI
         recyclerView = view.findViewById(R.id.rvCarrito)
         tvTotal = view.findViewById(R.id.tvTotal)
         btnConfirmarCompra = view.findViewById(R.id.btnConfirmarCompra)
 
-        // Cargar el carrito desde Firebase
-        cargarCarrito()
+        recyclerView.layoutManager = LinearLayoutManager(requireContext()) // Configurar el layout manager
 
-        // Configurar el RecyclerView
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        cargarCarrito() // Cargar el carrito desde Firestore
 
-        // Configurar el botón de confirmación
         btnConfirmarCompra.setOnClickListener {
-            confirmarCompra()
+            confirmarCompra() // Llamar a la función de confirmación de compra
         }
     }
 
     private fun cargarCarrito() {
-        val userId = auth.currentUser?.uid ?: return // Obtener el ID del usuario actual
+        val userId = auth.currentUser?.uid ?: return
 
-        // Acceder a la subcolección "carrito" y cargar los items
         firestore.collection("user-info").document(userId)
             .collection("carrito").document("carritoId") // Cambia esto según la lógica de tu aplicación
             .get()
             .addOnSuccessListener { document ->
                 if (document != null && document.exists()) {
-                    // Si el carrito ya existe, cargarlo
                     carrito = document.toObject(Carrito::class.java) ?: Carrito()
                 } else {
-                    // Si no existe, crear un nuevo carrito
                     carrito = Carrito()
-                    // Guarda el carrito vacío si es necesario
                     carrito.guardarCarrito(userId)
                 }
 
-                // Configurar el adaptador después de cargar el carrito
-                val carritoAdapter = CarritoAdapter(carrito.items)
-                recyclerView.adapter = carritoAdapter
+                carritoAdapter = CarritoAdapter(carrito.items.toMutableList()) { productoId, position ->
+                    // Eliminar el producto del carrito
+                    carrito.eliminarProducto(productoId) // Eliminar del carrito
+                    carritoAdapter.eliminarProducto(position) // Llama al método de eliminar en la instancia del adaptador
+                    actualizarTotal() // Actualiza el total
+                    carrito.guardarCarrito(userId) // Guarda el carrito actualizado en Firestore
+                }
+                recyclerView.adapter = carritoAdapter // Asigna el adaptador a RecyclerView
 
-                // Actualizar el total
-                actualizarTotal()
+                actualizarTotal() // Actualiza el total después de cargar el carrito
             }
             .addOnFailureListener { exception ->
-                // Manejar errores al obtener el carrito
                 exception.printStackTrace()
             }
     }
 
-    private fun actualizarTotal() {
-        val total = carrito.obtenerTotal()
-        // Convierte total a entero
-        val totalEntero = total.toInt()
-        tvTotal.text = "Total: $totalEntero"
-    }
-
     private fun confirmarCompra() {
-        // Implementar la lógica de confirmación de compra, por ejemplo, guardar el carrito en Firebase
+        // Implementar la lógica de confirmación de compra
     }
 
-
+    internal fun actualizarTotal() {
+        val total = carrito.obtenerTotal()
+        tvTotal.text = "Total: $${total.format(2)}" // Muestra el total con dos decimales
+    }
 }
+
+// Función de extensión para formatear el total
+fun Double.format(digits: Int) = "%.${digits}f".format(this)

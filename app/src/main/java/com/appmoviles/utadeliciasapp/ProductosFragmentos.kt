@@ -14,7 +14,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 class ProductosFragmentos : Fragment(), ProductsAdapter.OnItemClickListener {
 
-    // Variables y configuración básica
     private lateinit var btnAddProduct: Button
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: ProductsAdapter
@@ -85,8 +84,8 @@ class ProductosFragmentos : Fragment(), ProductsAdapter.OnItemClickListener {
                         transaction.replace(
                             R.id.frame_layout,
                             Producto_eliminado_exitosamente()
-                        ) // Asegúrate de usar el ID correcto de tu contenedor de fragmentos
-                        transaction.addToBackStack(null) // Opcional: para permitir volver al fragmento anterior
+                        )
+                        transaction.addToBackStack(null)
                         transaction.commit()
                     }
                     .addOnFailureListener { e ->
@@ -100,24 +99,21 @@ class ProductosFragmentos : Fragment(), ProductsAdapter.OnItemClickListener {
     }
 
     override fun onItemClick(product: Products) {
-        val fragment = ProductDetailFragment(
-            product.nombre,
-            product.descripcion,
-            product.imagen,
-            product.precio,
-            product.cantidad
-        ).apply {
-            arguments = Bundle().apply {
-                putString("productName", product.nombre)
-                putString("productDescription", product.descripcion)
-                putString("productImageUrl", product.imagen)
-                putInt("productQuantity", product.cantidad)
-                putInt("productPrice", product.precio)
-            }
-        }
+        val productDetailFragment = ProductDetailFragment()
 
+        // Pasar datos al nuevo fragmento
+        val bundle = Bundle().apply {
+            putString("productId", product.id)
+            putString("productName", product.nombre)
+            putString("productDescription", product.descripcion)
+            putString("productImage", product.imagen)
+            putInt("productQuantity", product.cantidad)
+        }
+        productDetailFragment.arguments = bundle
+
+        // Reemplaza el fragmento correctamente
         parentFragmentManager.beginTransaction()
-            .replace(R.id.fragmentContainer, fragment)
+            .replace(R.id.frame_layout, productDetailFragment) // Cambia aquí
             .addToBackStack(null)
             .commit()
     }

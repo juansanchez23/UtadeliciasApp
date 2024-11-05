@@ -9,38 +9,46 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
 
-class ProductDetailFragment(
-    nombre: String,
-    descripcion: String,
-    imagen: String,
-    precio: Int,
-    cantidad: Int
-) : Fragment() {
+class ProductDetailFragment : Fragment() {
+
+    private lateinit var productId: String
+    private lateinit var productName: String
+    private lateinit var productDescription: String
+    private lateinit var productImage: String
+    private var productQuantity: Int = 0
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            productId = it.getString("productId") ?: ""
+            productName = it.getString("productName") ?: ""
+            productDescription = it.getString("productDescription") ?: ""
+            productImage = it.getString("productImage") ?: ""
+            productQuantity = it.getInt("productQuantity", 0)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_product_detail, container, false)
-    }
+        // Infla el layout y configura las vistas
+        val view = inflater.inflate(R.layout.fragment_product_detail, container, false)
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        val tvName = view.findViewById<TextView>(R.id.tvName)
+        val tvDescription = view.findViewById<TextView>(R.id.tvDescription)
+        val ivProductImage = view.findViewById<ImageView>(R.id.ivProducts)
+        val tvQuantity = view.findViewById<TextView>(R.id.tvCantidad)
 
-        val productName = arguments?.getString("productName")
-        val productDescription = arguments?.getString("productDescription")
-        val productImage = arguments?.getString("productImageUrl")
-        val productoCantidad = arguments?.getString("productQuantity")?.toIntOrNull()
-        val productoPrecio = arguments?.getString("productPrice")?.toIntOrNull()
+        tvName.text = productName
+        tvDescription.text = productDescription
+        tvQuantity.text = "Cantidad: $productQuantity"
 
-        // Ahora, asigna los valores a los elementos de tu layout, por ejemplo:
-        view.findViewById<TextView>(R.id.tvName).text = productName
-        view.findViewById<TextView>(R.id.tvDescription).text = productDescription
-        view.findViewById<TextView>(R.id.tvCantidad).text = productoCantidad.toString()
-        view.findViewById<TextView>(R.id.tvPrecio).text = productoPrecio.toString()
+        // Cargar la imagen del producto (usando Glide)
+        Glide.with(this)
+            .load(productImage)
+            .into(ivProductImage)
 
-
-        val imageView = view.findViewById<ImageView>(R.id.ivProducts)
-        Glide.with(this).load(productImage).into(imageView)
+        return view
     }
 }
