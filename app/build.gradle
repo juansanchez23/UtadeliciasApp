@@ -66,11 +66,13 @@ dependencies {
     implementation libs.identity.jvm
     implementation libs.firebase.messaging
     implementation libs.firebase.messaging.ktx
+    implementation libs.firebase.analytics
     testImplementation libs.junit
     implementation libs.glide
     annotationProcessor libs.compiler
     androidTestImplementation libs.androidx.junit
     androidTestImplementation libs.androidx.espresso.core
+
 
     //Dependencias Firebase
     implementation(platform(libs.firebase.bom))

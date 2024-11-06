@@ -8,7 +8,7 @@ object TokenManager {
         val db = FirebaseFirestore.getInstance()
         val currentUser = FirebaseAuth.getInstance().currentUser
 
-        if (currentUser != null) {
+        currentUser?.let {
             val userDocRef = db.collection("userTokens").document(currentUser.uid)
             val tokenData = hashMapOf("token" to token)
 
