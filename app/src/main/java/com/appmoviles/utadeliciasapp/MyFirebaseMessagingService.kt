@@ -7,7 +7,7 @@ import com.appmoviles.utadeliciasapp.R
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 
-class MyFirebaseMessagingService : FirebaseMessagingService() {
+class MyFirebaseMessagingService  : FirebaseMessagingService() {
 
     // Método que se llama cuando se recibe un mensaje FCM
     override fun onMessageReceived(remoteMessage: RemoteMessage) {

@@ -4,16 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".notificaciones_fragmento"
-    android:background="@drawable/fondo"
-    >
+    android:background="@drawable/fondo">
 
-    <!-- TODO: Update blank fragment layout -->
-    <Button
-        android:id="@+id/btnNotification"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="NOTIFICACION"
-        android:textSize="26sp"
-        android:layout_gravity="center"/>
+    <!-- RecyclerView para mostrar las notificaciones -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewNotifications"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible" /> <!-- Visible por defecto -->
 
 </FrameLayout>

@@ -6,6 +6,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 data class Carrito(
     val items: MutableList<CarritoItem> = mutableListOf()
 ) {
+
     fun obtenerTotal(): Double {
         var total = 0.0
         for (item in items) {
