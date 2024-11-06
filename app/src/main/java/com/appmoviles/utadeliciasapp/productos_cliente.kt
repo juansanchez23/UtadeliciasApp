@@ -1,11 +1,14 @@
 package com.appmoviles.utadeliciasapp
 
 import AdaptadorClienteProducto
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
@@ -29,6 +32,14 @@ class productos_cliente : Fragment(), AdaptadorClienteProducto.OnItemClickListen
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val whatsappLink = "https://chat.whatsapp.com/DdQ2CrzuwWYKTBJUplxflC"
+        val btnWhatsApp: Button = view.findViewById(R.id.btnWhatsApp)
+        btnWhatsApp.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse(whatsappLink)
+            startActivity(intent)
+        }
+
 
         recyclerView = view.findViewById(R.id.rvproductsCliente)
         recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
@@ -62,6 +73,8 @@ class productos_cliente : Fragment(), AdaptadorClienteProducto.OnItemClickListen
                 // Manejar el error aquí
             }
     }
+
+
 
     override fun onItemClick(product: Products) {
         // Inicia el fragmento de detalle y pasa los datos

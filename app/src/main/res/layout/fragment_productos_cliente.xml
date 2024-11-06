@@ -17,6 +17,7 @@
             android:id="@+id/tvTitlePoducts"
             android:layout_width="match_parent"
             android:layout_height="28dp"
+            android:background="@color/colorSecondary"
             android:gravity="center"
             android:text="Productos para Domicilio:"
             android:textColor="@color/black"
@@ -36,18 +37,18 @@
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.39"
+            app:layout_constraintHorizontal_bias="0.658"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.31" />
+            app:layout_constraintVertical_bias="0.295" />
 
         <TextView
             android:id="@+id/tvUser"
             android:layout_width="369dp"
             android:layout_height="38dp"
             android:layout_marginStart="16dp"
-            android:textSize="20sp"
             android:textColor="@color/black"
+            android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/tvTitlePoducts"
             app:layout_constraintStart_toStartOf="parent"
@@ -88,6 +89,7 @@
             android:id="@+id/tvTadeistas"
             android:layout_width="match_parent"
             android:layout_height="30dp"
+            android:background="@color/colorSecondary"
             android:gravity="center"
             android:text="¡Ayuda a los tadeistas!"
             android:textColor="@color/black"
@@ -98,19 +100,34 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/rvproductsCliente"
-            app:layout_constraintVertical_bias="0.149" />
+            app:layout_constraintVertical_bias="0.277" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvTadeistas"
-            android:layout_width="371dp"
-            android:layout_height="215dp"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
+        <TextView
+            android:id="@+id/descripcion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:gravity="center"
+            android:text="Únete al grupo oficial de apoyo para emprendimientos Tadeístas en WhatsApp y conecta con otros compañeros para recibir ayuda, promocionar tus productos, y dar a conocer tu negocio."
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@+id/btnWhatsApp"
+            app:layout_constraintTop_toBottomOf="@+id/tvTadeistas" />
+
+        <Button
+            android:id="@+id/btnWhatsApp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="196dp"
+            android:backgroundTint="@color/teal_200"
+            android:text="Unirse al Grupo de WhatsApp"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.375"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.812" />
+            app:layout_constraintTop_toBottomOf="@+id/tvTadeistas" />
+        />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>
