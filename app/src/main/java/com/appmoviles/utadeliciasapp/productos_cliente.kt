@@ -9,8 +9,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
 
@@ -39,7 +41,36 @@ class productos_cliente : Fragment(), AdaptadorClienteProducto.OnItemClickListen
             intent.data = Uri.parse(whatsappLink)
             startActivity(intent)
         }
+        // Referencia al TextView
+        val tvUser: TextView = view.findViewById(R.id.tvUser)
 
+        // Obtener el ID del usuario actual
+        val userId = FirebaseAuth.getInstance().currentUser?.uid
+        if (userId != null) {
+            // Referencia al documento del usuario en Firestore
+            val userDocRef = db.collection("user-info").document(userId)
+
+            // Obtener el nombre del usuario
+            userDocRef.get()
+                .addOnSuccessListener { documentSnapshot ->
+                    if (documentSnapshot.exists()) {
+                        // Obtener el nombre del campo 'nombre'
+                        val nombre = documentSnapshot.getString("nombre")
+                        if (nombre != null) {
+                            tvUser.text = nombre // Establece el nombre en el TextView
+                        } else {
+                            tvUser.text = "Nombre no disponible"
+                        }
+                    } else {
+                        tvUser.text = "Usuario no encontrado"
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    tvUser.text = "Error al obtener el nombre"
+                }
+        } else {
+            tvUser.text = "No hay usuario autenticado"
+        }
 
         recyclerView = view.findViewById(R.id.rvproductsCliente)
         recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
