@@ -40,7 +40,6 @@ class AdaptadorClienteProducto(
                 .load(product.imagen)
                 .into(imagen)
 
-            // Configura el clic para redirigir al fragmento de detalle
             itemView.setOnClickListener {
                 itemClickListener.onItemClick(product)
             }

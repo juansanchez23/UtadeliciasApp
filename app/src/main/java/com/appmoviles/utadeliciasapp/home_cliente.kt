@@ -58,13 +58,11 @@ class home_cliente: Fragment() {
 
         // Cargar datos iniciales
         refreshData()
-
     }
 
     private fun refreshData() {
         swipeRefreshLayout.isRefreshing = true
         viewModel.getAllCupones()
         Toast.makeText(context, "Cupones Actualizados con éxito :)", Toast.LENGTH_SHORT).show()
-
     }
 }
