@@ -1,22 +1,36 @@
 package com.appmoviles.utadeliciasapp
 
+import android.Manifest
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.messaging.FirebaseMessaging
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
+
+
 
 enum class ProviderType {
     BASIC
 }
 
 class AuthActivity : AppCompatActivity() {
+    companion object {
+        const val CHANNEL_ID = "my_channel_id"
+    }
+
 
     private val TAG = "AuthActivity" // Definimos el TAG para los logs
 
@@ -25,8 +39,36 @@ class AuthActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_auth)
 
+        createNotificationChannel()
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                    1001
+                )
+            }
+        }
+
         // Continuar con el resto de la configuración
         setup()
+    }
+
+    private fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val name = "My Notifications"
+            val descriptionText = "Channel for my app notifications"
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
+                description = descriptionText
+            }
+
+            val notificationManager: NotificationManager =
+                getSystemService(NotificationManager::class.java)
+            notificationManager.createNotificationChannel(channel)
+        }
+
     }
 
     private fun setup() {
@@ -44,7 +86,10 @@ class AuthActivity : AppCompatActivity() {
 
         logInButton.setOnClickListener {
             if (emailEditText.text.isNotEmpty() && passwordEditText.text.isNotEmpty()) {
-                FirebaseAuth.getInstance().signInWithEmailAndPassword(emailEditText.text.toString(), passwordEditText.text.toString()).addOnCompleteListener { task ->
+                FirebaseAuth.getInstance().signInWithEmailAndPassword(
+                    emailEditText.text.toString(),
+                    passwordEditText.text.toString()
+                ).addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         // Obtener el usuario autenticado
                         val user = task.result?.user
@@ -63,7 +108,11 @@ class AuthActivity : AppCompatActivity() {
                                         // Solicitar el token de FCM después de que el usuario se haya autenticado
                                         FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
                                             if (!task.isSuccessful) {
-                                                android.util.Log.w(TAG, "Fetching FCM registration token failed", task.exception)
+                                                android.util.Log.w(
+                                                    TAG,
+                                                    "Fetching FCM registration token failed",
+                                                    task.exception
+                                                )
                                                 return@addOnCompleteListener
                                             }
 
@@ -75,7 +124,13 @@ class AuthActivity : AppCompatActivity() {
                                         }
 
                                         // Dirigir a la actividad correspondiente según esComercio
-                                        actividadComercio(email, ProviderType.BASIC, esComercio, nombre, apellido)
+                                        actividadComercio(
+                                            email,
+                                            ProviderType.BASIC,
+                                            esComercio,
+                                            nombre,
+                                            apellido
+                                        )
                                     } else {
                                         showAlert() // Si el documento no existe
                                     }
@@ -101,7 +156,13 @@ class AuthActivity : AppCompatActivity() {
         dialog.show()
     }
 
-    private fun actividadComercio(email: String, provider: ProviderType, esComercio: Boolean, nombre: String, apellido: String) {
+    private fun actividadComercio(
+        email: String,
+        provider: ProviderType,
+        esComercio: Boolean,
+        nombre: String,
+        apellido: String
+    ) {
         if (esComercio) {
             // Si es comercio, redirigir a la actividad correspondiente para dueños de comercio
             val homeIntent = Intent(this, HomeActivity::class.java).apply {
