@@ -18,14 +18,13 @@ enum class ProviderType {
 
 class AuthActivity : AppCompatActivity() {
 
-    private val TAG = "AuthActivity" // Definimos el TAG para los logs
+    private val TAG = "AuthActivity"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_auth)
 
-        // Continuar con el resto de la configuración
         setup()
     }
 
@@ -37,7 +36,6 @@ class AuthActivity : AppCompatActivity() {
         val passwordEditText = findViewById<EditText>(R.id.passwordEditText)
 
         signUpButton.setOnClickListener {
-            // Crear un Intent para ir a RegisterActivity
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
         }
@@ -46,46 +44,37 @@ class AuthActivity : AppCompatActivity() {
             if (emailEditText.text.isNotEmpty() && passwordEditText.text.isNotEmpty()) {
                 FirebaseAuth.getInstance().signInWithEmailAndPassword(emailEditText.text.toString(), passwordEditText.text.toString()).addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        // Obtener el usuario autenticado
                         val user = task.result?.user
-                        if (user != null) {
-                            // Obtener la información del usuario de Firestore
+                        user?.let {
                             val db = FirebaseFirestore.getInstance()
                             db.collection("user-info").document(user.uid).get()
                                 .addOnSuccessListener { document ->
                                     if (document != null) {
-                                        // Extraer los datos del documento
                                         val nombre = document.getString("nombre") ?: ""
                                         val apellido = document.getString("apellido") ?: ""
                                         val email = document.getString("email") ?: ""
                                         val esComercio = document.getBoolean("esComercio") ?: false
 
-                                        // Solicitar el token de FCM después de que el usuario se haya autenticado
                                         FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
                                             if (!task.isSuccessful) {
                                                 android.util.Log.w(TAG, "Fetching FCM registration token failed", task.exception)
                                                 return@addOnCompleteListener
                                             }
-
-                                            // Obtener el nuevo token de registro
                                             val token = task.result
-                                            android.util.Log.d(TAG, "Token FCM: $token")
-                                            // Enviar el token al servidor usando TokenManager
-                                            TokenManager.sendRegistrationToServer(token)
+                                            TokenManager.sendRegistrationToServer(token!!)
                                         }
 
-                                        // Dirigir a la actividad correspondiente según esComercio
                                         actividadComercio(email, ProviderType.BASIC, esComercio, nombre, apellido)
                                     } else {
-                                        showAlert() // Si el documento no existe
+                                        showAlert()
                                     }
                                 }
                                 .addOnFailureListener {
-                                    showAlert() // Si hay un error al obtener el documento
+                                    showAlert()
                                 }
                         }
                     } else {
-                        showAlert() // Mostrar alerta si la autenticación falla
+                        showAlert()
                     }
                 }
             }
@@ -103,14 +92,12 @@ class AuthActivity : AppCompatActivity() {
 
     private fun actividadComercio(email: String, provider: ProviderType, esComercio: Boolean, nombre: String, apellido: String) {
         if (esComercio) {
-            // Si es comercio, redirigir a la actividad correspondiente para dueños de comercio
             val homeIntent = Intent(this, HomeActivity::class.java).apply {
                 putExtra("email", email)
                 putExtra("provider", provider.name)
             }
             startActivity(homeIntent)
         } else {
-            // Si no es comercio, redirigir a la actividad para clientes
             val clienteIntent = Intent(this, NavCliente::class.java).apply {
                 putExtra("email", email)
                 putExtra("provider", provider.name)
@@ -121,4 +108,3 @@ class AuthActivity : AppCompatActivity() {
         }
     }
 }
-

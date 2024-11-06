@@ -1,33 +1,38 @@
+package com.appmoviles.utadeliciasapp
+
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
-import com.appmoviles.utadeliciasapp.R
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import com.appmoviles.utadeliciasapp.R
 
-class MyFirebaseMessagingService  : FirebaseMessagingService() {
+class MyFirebaseMessagingService : FirebaseMessagingService() {
 
-    // Método que se llama cuando se recibe un mensaje FCM
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
-        // Comprueba si el mensaje tiene datos (en este caso, texto de la notificación)
+        // Si el mensaje contiene datos
         remoteMessage.data.isNotEmpty().let {
             val message = remoteMessage.data["message"]
             if (!message.isNullOrEmpty()) {
-                // Muestra la notificación con el mensaje
                 showNotification(message)
             }
         }
 
-        // También puedes manejar las notificaciones en el campo de "notification"
+        // Si el mensaje tiene una notificación
         remoteMessage.notification?.let {
             showNotification(it.body)
         }
     }
 
+    override fun onNewToken(token: String) {
+        super.onNewToken(token)
+        TokenManager.sendRegistrationToServer(token)
+    }
+
     private fun showNotification(message: String?) {
-        // Crear el canal de notificación (solo en Android 8.0 y superior)
+        // Crear canal de notificación solo en Android 8.0+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channelId = "default_channel"
             val channelName = "Default Notifications"
@@ -37,11 +42,11 @@ class MyFirebaseMessagingService  : FirebaseMessagingService() {
             notificationManager.createNotificationChannel(channel)
         }
 
-        // Crea y muestra la notificación
+        // Crear la notificación
         val notification = Notification.Builder(this, "default_channel")
             .setContentTitle("Nueva Notificación")
             .setContentText(message)
-            .setSmallIcon(R.drawable.logoapp) // Asegúrate de tener un ícono
+            .setSmallIcon(R.drawable.logoapp)
             .setAutoCancel(true)
             .build()
 
