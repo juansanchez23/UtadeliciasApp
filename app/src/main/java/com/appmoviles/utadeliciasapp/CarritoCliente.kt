@@ -11,6 +11,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import java.text.NumberFormat
+import java.util.Locale
+
 class CarritoCliente : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
@@ -80,8 +83,12 @@ class CarritoCliente : Fragment() {
     }
 
     internal fun actualizarTotal() {
-        val total = carrito.obtenerTotal()
-        tvTotal.text = "Total: $${total.format(2)}" // Muestra el total con dos decimales
+        val total = carrito.obtenerTotal().toInt() // Convertir el total a entero
+
+        // Crear un formato de número con separadores de miles
+        val formattedTotal = NumberFormat.getNumberInstance(Locale.getDefault()).format(total)
+
+        tvTotal.text = "Total: $$formattedTotal" // Mostrar el total con formato de miles
     }
 }
 

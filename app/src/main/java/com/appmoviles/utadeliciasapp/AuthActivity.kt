@@ -10,23 +10,22 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.messaging.FirebaseMessaging
 
 enum class ProviderType {
     BASIC
 }
 
 class AuthActivity : AppCompatActivity() {
+
+    private val TAG = "AuthActivity" // Definimos el TAG para los logs
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_auth)
 
-        val analytics = FirebaseAnalytics.getInstance(this)
-        val bundle = Bundle()
-        bundle.putString("message", "Integración de Firebase Completa")
-        analytics.logEvent("InitScreen", bundle)
-
-        // Setup
+        // Continuar con el resto de la configuración
         setup()
     }
 
@@ -45,10 +44,10 @@ class AuthActivity : AppCompatActivity() {
 
         logInButton.setOnClickListener {
             if (emailEditText.text.isNotEmpty() && passwordEditText.text.isNotEmpty()) {
-                FirebaseAuth.getInstance().signInWithEmailAndPassword(emailEditText.text.toString(), passwordEditText.text.toString()).addOnCompleteListener {
-                    if (it.isSuccessful) {
+                FirebaseAuth.getInstance().signInWithEmailAndPassword(emailEditText.text.toString(), passwordEditText.text.toString()).addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
                         // Obtener el usuario autenticado
-                        val user = it.result?.user
+                        val user = task.result?.user
                         if (user != null) {
                             // Obtener la información del usuario de Firestore
                             val db = FirebaseFirestore.getInstance()
@@ -61,9 +60,22 @@ class AuthActivity : AppCompatActivity() {
                                         val email = document.getString("email") ?: ""
                                         val esComercio = document.getBoolean("esComercio") ?: false
 
+                                        // Solicitar el token de FCM después de que el usuario se haya autenticado
+                                        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+                                            if (!task.isSuccessful) {
+                                                android.util.Log.w(TAG, "Fetching FCM registration token failed", task.exception)
+                                                return@addOnCompleteListener
+                                            }
+
+                                            // Obtener el nuevo token de registro
+                                            val token = task.result
+                                            android.util.Log.d(TAG, "Token FCM: $token")
+                                            // Enviar el token al servidor usando TokenManager
+                                            TokenManager.sendRegistrationToServer(token)
+                                        }
+
                                         // Dirigir a la actividad correspondiente según esComercio
-                                        actividadComercio(email,
-                                            ProviderType.BASIC, esComercio, nombre, apellido)
+                                        actividadComercio(email, ProviderType.BASIC, esComercio, nombre, apellido)
                                     } else {
                                         showAlert() // Si el documento no existe
                                     }
@@ -73,7 +85,7 @@ class AuthActivity : AppCompatActivity() {
                                 }
                         }
                     } else {
-                        showAlert()
+                        showAlert() // Mostrar alerta si la autenticación falla
                     }
                 }
             }
@@ -109,3 +121,4 @@ class AuthActivity : AppCompatActivity() {
         }
     }
 }
+
