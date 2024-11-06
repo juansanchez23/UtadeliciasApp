@@ -2,12 +2,12 @@ package com.appmoviles.utadeliciasapp
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.messaging.FirebaseMessaging
@@ -60,18 +60,15 @@ class AuthActivity : AppCompatActivity() {
                                         val email = document.getString("email") ?: ""
                                         val esComercio = document.getBoolean("esComercio") ?: false
 
-                                        // Solicitar el token de FCM después de que el usuario se haya autenticado
+                                        // Obtener el token de FCM y enviarlo al servidor
                                         FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
-                                            if (!task.isSuccessful) {
-                                                android.util.Log.w(TAG, "Fetching FCM registration token failed", task.exception)
-                                                return@addOnCompleteListener
+                                            if (task.isSuccessful) {
+                                                val token = task.result
+                                                Log.d(TAG, "Token FCM: $token")
+                                                TokenManager.sendRegistrationToServer(token)
+                                            } else {
+                                                Log.w(TAG, "Fetching FCM registration token failed", task.exception)
                                             }
-
-                                            // Obtener el nuevo token de registro
-                                            val token = task.result
-                                            android.util.Log.d(TAG, "Token FCM: $token")
-                                            // Enviar el token al servidor usando TokenManager
-                                            TokenManager.sendRegistrationToServer(token)
                                         }
 
                                         // Dirigir a la actividad correspondiente según esComercio
@@ -121,4 +118,3 @@ class AuthActivity : AppCompatActivity() {
         }
     }
 }
-

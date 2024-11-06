@@ -1,3 +1,5 @@
+package com.appmoviles.utadeliciasapp
+
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -26,6 +28,18 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         }
     }
 
+    // Método que se llama cuando se genera un nuevo token de registro FCM
+    override fun onNewToken(token: String) {
+        super.onNewToken(token)
+        // Aquí puedes enviar el token a tu servidor si es necesario
+        // por ejemplo, enviarlo a Firebase Firestore o a tu backend
+        sendTokenToServer(token)
+    }
+
+    private fun sendTokenToServer(token: String) {
+        // Implementa la lógica para enviar el token a tu servidor o backend
+    }
+
     private fun showNotification(message: String?) {
         // Crear el canal de notificación (solo en Android 8.0 y superior)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -50,3 +64,4 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         notificationManager.notify(0, notification)
     }
 }
+

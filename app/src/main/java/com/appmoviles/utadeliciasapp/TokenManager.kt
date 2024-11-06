@@ -2,22 +2,22 @@ package com.appmoviles.utadeliciasapp
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-
+// Método en TokenManager para gestionar el envío del token
 object TokenManager {
     fun sendRegistrationToServer(token: String) {
-        val db = FirebaseFirestore.getInstance()
-        val currentUser = FirebaseAuth.getInstance().currentUser
-
-        if (currentUser != null) {
-            val userDocRef = db.collection("userTokens").document(currentUser.uid)
-            val tokenData = hashMapOf("token" to token)
-
-            userDocRef.set(tokenData)
+        // Aquí puedes implementar el envío del token al servidor o Firestore.
+        android.util.Log.d("TokenManager", "Token enviado al servidor: $token")
+        // Por ejemplo, puedes guardar el token en Firestore con el UID del usuario.
+        val user = FirebaseAuth.getInstance().currentUser
+        user?.let {
+            val db = FirebaseFirestore.getInstance()
+            db.collection("user-info").document(it.uid)
+                .update("fcmToken", token)
                 .addOnSuccessListener {
-                    android.util.Log.d("TokenManager", "Token saved to Firestore successfully!")
+                    android.util.Log.d("TokenManager", "Token actualizado en Firestore")
                 }
-                .addOnFailureListener {
-                    android.util.Log.w("TokenManager", "Error saving token to Firestore", it)
+                .addOnFailureListener { e ->
+                    android.util.Log.w("TokenManager", "Error al actualizar el token", e)
                 }
         }
     }
