@@ -39,14 +39,10 @@ class SharedCuponesViewModel : ViewModel() {
     }
     fun getAllCupones() {
         val cuponesLista = mutableListOf<Cupones>()
-        val processedCount = mutableListOf(0)
 
         db.collection("user-info")
             .get()
             .addOnSuccessListener { userInfoSnapshot ->
-                var totalCupones = 0
-
-                // Primero contamos el total de cupones que necesitaremos procesar
                 for (userDocument in userInfoSnapshot.documents) {
                     val userId = userDocument.id
                     db.collection("usuarios_comercio")
@@ -54,22 +50,18 @@ class SharedCuponesViewModel : ViewModel() {
                         .collection("cupones")
                         .get()
                         .addOnSuccessListener { cuponesSnapshot ->
-                            totalCupones += cuponesSnapshot.size()
-
-                            // Una vez que sabemos el total, comenzamos a procesar los cupones
                             for (document in cuponesSnapshot) {
                                 val cupon = Cupones(
                                     id = document.id,
                                     nombre = document.getString("Nombre") ?: "",
                                     descripcion = document.getString("Descripcion") ?: "",
                                     imagenUrl = document.getString("imagenUrl") ?: "",
-                                    userId = document.getString("userId") ?: userId
+                                    userId = document.getString("userId") ?: userId,
+                                    nombreComercio = userDocument.getString("nombre") ?: "Comercio Desconocido"
                                 )
-
-                                fetchComercioName(userId, cupon, cuponesLista, totalCupones, processedCount) {
-                                    _allCupones.value = cuponesLista.sortedBy { it.nombreComercio }
-                                }
+                                cuponesLista.add(cupon)
                             }
+                            _allCupones.value = cuponesLista.sortedBy { it.nombreComercio }
                         }
                 }
             }
