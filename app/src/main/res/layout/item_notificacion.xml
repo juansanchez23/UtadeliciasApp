@@ -7,25 +7,29 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
-        android:layout_width="409dp"
-        android:layout_height="wrap_content"
+        android:layout_width="215dp"
+        android:layout_height="48dp"
+        android:backgroundTint="@color/SecundaryBackground"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.081"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.085">
+        app:layout_constraintVertical_bias="0.081">
 
         <TextView
             android:id="@+id/notificationTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sapoooo" />
+            android:text="Mira una notificacion" />
 
         <TextView
             android:id="@+id/notificationMessage"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="Cacorrooo" />
+            android:layout_marginTop="20dp"
+            android:text="Esto genera una notificacion" />
 
     </androidx.cardview.widget.CardView>
 
@@ -33,10 +37,12 @@
         android:id="@+id/notificationButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="18dp"
+        android:layout_marginTop="56dp"
+        android:backgroundTint="@color/redBtn"
         android:text="notificacion"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/cardView"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
