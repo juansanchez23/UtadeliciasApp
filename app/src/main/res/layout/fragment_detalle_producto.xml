@@ -54,24 +54,42 @@
             android:id="@+id/btnVolver"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="25dp"
+            android:layout_marginStart="64dp"
+            android:layout_marginBottom="24dp"
             android:backgroundTint="@color/colorSecondary"
             android:text="Volver"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent" />
 
         <Button
             android:id="@+id/btnAñadirAlCarrito"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:text="Añadir al Carrito"
+            android:layout_marginBottom="24dp"
             android:backgroundTint="@color/colorPrimary"
-            app:layout_constraintBottom_toTopOf="@+id/btnVolver"
+            android:text="Añadir al Carrito"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.493"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintHorizontal_bias="0.447"
+            app:layout_constraintStart_toEndOf="@+id/btnVolver" />
+
+        <TextView
+            android:id="@+id/tvtotalproducto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="80dp"
+            android:layout_marginEnd="1dp"
+            android:layout_marginBottom="16dp"
+            android:background="@color/white"
+            android:shadowColor="#000000"
+            android:shadowDx="2"
+            android:shadowDy="2"
+            android:shadowRadius="80"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/btnAñadirAlCarrito"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.803"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="Hola como vas" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
