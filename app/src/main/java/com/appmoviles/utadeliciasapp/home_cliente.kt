@@ -32,6 +32,8 @@ class home_cliente: Fragment() {
         // Inicializar ViewModel
         viewModel = ViewModelProvider(requireActivity())[SharedCuponesViewModel::class.java]
 
+        viewModel.getAllCupones()
+
         // Configurar RecyclerView
         val recyclerView = view.findViewById<RecyclerView>(R.id.rDatosInicio)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
