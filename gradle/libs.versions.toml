@@ -28,6 +28,7 @@ firebaseCrashlyticsBuildtools = "3.0.2"
 cronetEmbedded = "119.6045.31"
 identityJvm = "202408.1"
 firebaseMessaging = "24.0.3"
+firebaseMessagingKtx = "24.0.3"
 
 [libraries]
 androidx-constraintlayout-v220 = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayoutVersion" }
@@ -59,6 +60,7 @@ firebase-crashlytics-buildtools = { group = "com.google.firebase", name = "fireb
 cronet-embedded = { group = "org.chromium.net", name = "cronet-embedded", version.ref = "cronetEmbedded" }
 identity-jvm = { group = "com.android.identity", name = "identity-jvm", version.ref = "identityJvm" }
 firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging", version.ref = "firebaseMessaging" }
+firebase-messaging-ktx = { group = "com.google.firebase", name = "firebase-messaging-ktx", version.ref = "firebaseMessagingKtx" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
