@@ -1,29 +1,18 @@
 package com.appmoviles.utadeliciasapp
 
-import android.Manifest
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
-import android.content.Context
-import android.content.Intent
-import android.content.pm.PackageManager
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import androidx.core.app.ActivityCompat
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 class notificaciones_fragmento : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
-    //private lateinit var adapter: NotificationAdapter
+    private lateinit var adapter: NotificationAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,13 +23,15 @@ class notificaciones_fragmento : Fragment() {
         recyclerView = view.findViewById(R.id.recyclerViewNotifications)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
+        // Lista de notificaciones de ejemplo
         val notifications = listOf(
             Notification("1", "Pedido Aceptado", "Tu pedido ha sido aceptado.", true),
             Notification("2", "Orden Generada", "La orden ha sido generada.", false)
         )
 
-       // adapter = NotificationAdapter(notifications)
-       // recyclerView.adapter = adapter
+        // Configura el adaptador con las notificaciones
+        adapter = NotificationAdapter(requireContext(), notifications)
+        recyclerView.adapter = adapter
 
         return view
     }

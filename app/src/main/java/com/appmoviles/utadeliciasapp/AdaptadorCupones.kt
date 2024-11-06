@@ -17,11 +17,6 @@ class AdaptadorCupones(private val itemClickListener: OnItemClickListener) : Rec
     interface  OnItemClickListener{
         fun onItemClick(tuModelo : Cupones)
     }
-
-
-
-
-
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val txtNombreComercio: TextView = itemView.findViewById(R.id.txtNombreComercio)
         val txtId: TextView = itemView.findViewById(R.id.txtId)
