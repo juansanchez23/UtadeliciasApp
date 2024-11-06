@@ -81,13 +81,6 @@ class ProductosFragmentos : Fragment(), ProductsAdapter.OnItemClickListener {
                 productosColeccion.document(productId).delete()
                     .addOnSuccessListener {
                         consultarColeccion()  // Actualizar lista
-                        val transaction = parentFragmentManager.beginTransaction()
-                        transaction.replace(
-                            R.id.frame_layout,
-                            Producto_eliminado_exitosamente()
-                        )
-                        transaction.addToBackStack(null)
-                        transaction.commit()
                     }
                     .addOnFailureListener { e ->
                         // Manejar el error en caso de fallo en la eliminación
