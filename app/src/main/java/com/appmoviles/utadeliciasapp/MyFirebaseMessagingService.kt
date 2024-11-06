@@ -5,34 +5,43 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
+import com.appmoviles.utadeliciasapp.R
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import com.appmoviles.utadeliciasapp.R
 
 class MyFirebaseMessagingService : FirebaseMessagingService() {
 
+    // Método que se llama cuando se recibe un mensaje FCM
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
-        // Si el mensaje contiene datos
+        // Comprueba si el mensaje tiene datos (en este caso, texto de la notificación)
         remoteMessage.data.isNotEmpty().let {
             val message = remoteMessage.data["message"]
             if (!message.isNullOrEmpty()) {
+                // Muestra la notificación con el mensaje
                 showNotification(message)
             }
         }
 
-        // Si el mensaje tiene una notificación
+        // También puedes manejar las notificaciones en el campo de "notification"
         remoteMessage.notification?.let {
             showNotification(it.body)
         }
     }
 
+    // Método que se llama cuando se genera un nuevo token de registro FCM
     override fun onNewToken(token: String) {
         super.onNewToken(token)
-        TokenManager.sendRegistrationToServer(token)
+        // Aquí puedes enviar el token a tu servidor si es necesario
+        // por ejemplo, enviarlo a Firebase Firestore o a tu backend
+        sendTokenToServer(token)
+    }
+
+    private fun sendTokenToServer(token: String) {
+        // Implementa la lógica para enviar el token a tu servidor o backend
     }
 
     private fun showNotification(message: String?) {
-        // Crear canal de notificación solo en Android 8.0+
+        // Crear el canal de notificación (solo en Android 8.0 y superior)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channelId = "default_channel"
             val channelName = "Default Notifications"
@@ -42,11 +51,11 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             notificationManager.createNotificationChannel(channel)
         }
 
-        // Crear la notificación
+        // Crea y muestra la notificación
         val notification = Notification.Builder(this, "default_channel")
             .setContentTitle("Nueva Notificación")
             .setContentText(message)
-            .setSmallIcon(R.drawable.logoapp)
+            .setSmallIcon(R.drawable.logoapp) // Asegúrate de tener un ícono
             .setAutoCancel(true)
             .build()
 
@@ -54,4 +63,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.notify(0, notification)
     }
+
 }
+
