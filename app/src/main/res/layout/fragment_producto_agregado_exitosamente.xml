@@ -11,33 +11,30 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <!-- Botón de regreso -->
         <ImageView
             android:id="@+id/vovler_agregado"
             android:layout_width="37dp"
             android:layout_height="30dp"
-            android:layout_marginTop="36dp"
             android:src="@drawable/back_icon"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.042"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="36dp" />
 
-        <Button
-            android:id="@+id/btn_volver_comercio_eliminado"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="152dp"
-            android:backgroundTint="@color/redBtn"
-            android:text="@string/volver_al_comercio"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
-            app:layout_constraintStart_toStartOf="parent" />
+        <!-- Título del producto agregado -->
+
+        <!-- Imagen del producto en la tarjeta -->
+
+        <!-- Nombre del producto en la tarjeta -->
+
+        <!-- Icono dentro del título -->
 
         <TextView
             android:id="@+id/textView2"
             android:layout_width="299dp"
             android:layout_height="63dp"
+            android:layout_marginTop="284dp"
             android:background="@color/redApp"
             android:gravity="center"
             android:text="Producto Agregado"
@@ -45,53 +42,57 @@
             android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/btn_volver_comercio_eliminado"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.464"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.487" />
-
-        <TextView
-            android:id="@+id/tvnombre"
-            android:layout_width="300dp"
-            android:layout_height="132dp"
-            android:layout_marginTop="288dp"
-            android:background="@color/SecundaryBackground"
-            android:gravity="center_vertical"
-            android:paddingVertical="8dp"
-
-            android:text="Nombre del producto"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/btn_volver_comercio_eliminado"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.495"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.027" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/ivProducts"
             android:layout_width="137dp"
             android:layout_height="126dp"
-            app:layout_constraintBottom_toTopOf="@+id/btn_volver_comercio_eliminado"
+            android:layout_marginEnd="48dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.795"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView2"
-            app:layout_constraintVertical_bias="0.052"
             tools:src="@tools:sample/avatars" />
+
+        <!-- Botón para volver al comercio -->
+
+        <TextView
+            android:id="@+id/tvnombre"
+            android:layout_width="180dp"
+            android:layout_height="126dp"
+            android:layout_marginStart="52dp"
+            android:background="@color/SecundaryBackground"
+            android:gravity="center_vertical"
+            android:paddingVertical="8dp"
+            android:paddingLeft="10dp"
+            android:text="Nombre del producto"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
         <ImageView
             android:id="@+id/imageView5"
             android:layout_width="53dp"
             android:layout_height="39dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginStart="52dp"
+            android:layout_marginBottom="16dp"
             android:src="@drawable/cabitonormal"
-            app:layout_constraintBottom_toTopOf="@+id/tvnombre"
-            app:layout_constraintEnd_toEndOf="@+id/textView2"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/textView2" />
+            app:layout_constraintBottom_toBottomOf="@+id/textView2"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/btn_volver_comercio_eliminado"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/redBtn"
+            android:text="@string/volver_al_comercio"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginBottom="50dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
