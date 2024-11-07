@@ -32,6 +32,7 @@ class home_cliente: Fragment() {
         // Inicializar ViewModel
         viewModel = ViewModelProvider(requireActivity())[SharedCuponesViewModel::class.java]
 
+
         // Configurar RecyclerView
         val recyclerView = view.findViewById<RecyclerView>(R.id.rDatosInicio)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -56,13 +57,11 @@ class home_cliente: Fragment() {
 
         // Cargar datos iniciales
         refreshData()
-
     }
 
     private fun refreshData() {
         swipeRefreshLayout.isRefreshing = true
         viewModel.getAllCupones()
         Toast.makeText(context, "Cupones Actualizados con éxito :)", Toast.LENGTH_SHORT).show()
-
     }
 }

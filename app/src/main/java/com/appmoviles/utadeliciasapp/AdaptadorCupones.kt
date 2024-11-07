@@ -70,7 +70,7 @@ class AdaptadorCupones(private val itemClickListener: OnItemClickListener) : Rec
         holder.txtId.text = item.id.toString()
         holder.txtnombre.text = item.nombre
         holder.txtDescripcion.text = item.descripcion
-        holder.txtNombreComercio.text = item.nombreComercio // Asegúrate de que este TextView existe en tu layout
+        holder.txtNombreComercio.text = item.nombreComercio
 
 
         if (item.imagenUrl.isNotEmpty()) {

@@ -37,7 +37,7 @@
                 android:layout_marginTop="8dp"
                 android:text="comercio nombre"
                 android:textColor="@color/colorSecondary"
-                android:textSize="18sp"
+                android:textSize="22sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -52,12 +52,13 @@
                 android:textStyle="bold" />
 
 
+
+
             <TextView
                 android:id="@+id/txtdescripcion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-
                 android:layout_marginTop="4dp"
                 android:text="Descripción del cupón aquí. Puede ser una descripción más larga que ocupe varias líneas."
                 android:textColor="@android:color/darker_gray"

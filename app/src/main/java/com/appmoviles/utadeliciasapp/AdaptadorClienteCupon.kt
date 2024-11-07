@@ -63,7 +63,7 @@ class AdaptadorClienteCupon(private val itemClickListener: OnItemClickListener) 
         holder.txtId.text = item.id
         holder.txtnombre.text = item.nombre
         holder.txtDescripcion.text = item.descripcion
-        holder.txtNombreComercio.text = item.nombreComercio // Asegúrate de que este TextView existe en tu layout
+        holder.txtNombreComercio.text = item.nombreComercio
 
 
         if (item.imagenUrl.isNotEmpty()) {

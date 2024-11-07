@@ -45,6 +45,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Confirmar Compra"
-        android:backgroundTint="@color/colorPrimary"
+        android:backgroundTint="@color/teal_200"
+        android:textSize="18dp"
         android:textColor="@android:color/white" />
 </LinearLayout>

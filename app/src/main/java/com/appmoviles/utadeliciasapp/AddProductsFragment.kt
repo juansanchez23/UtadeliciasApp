@@ -95,8 +95,8 @@ class AddProductsFragment : Fragment() {
                     val productoAgregadoExitosamente = producto_agregado_exitosamente.newInstance(name,imageUrl)
 
                     val transaction = parentFragmentManager.beginTransaction()
-                    transaction.replace(R.id.frame_layout, productoAgregadoExitosamente) // Asegúrate de que el ID sea correcto
-                    transaction.addToBackStack(null) // Opcional: permite volver al fragmento anterior
+                    transaction.replace(R.id.frame_layout, productoAgregadoExitosamente)
+                    transaction.addToBackStack(null)
                     transaction.commit()
                 }
             } else {

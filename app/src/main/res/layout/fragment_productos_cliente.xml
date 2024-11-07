@@ -15,102 +15,96 @@
 
         <TextView
             android:id="@+id/tvTitlePoducts"
-            android:layout_width="match_parent"
-            android:layout_height="28dp"
+            android:layout_width="406dp"
+            android:layout_height="33dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="152dp"
+            android:background="@color/colorSecondary"
             android:gravity="center"
             android:text="Productos para Domicilio:"
             android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/rvproductsCliente"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvproductsCliente"
             android:layout_width="370dp"
             android:layout_height="155dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="24dp"
             android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.39"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.31" />
+            app:layout_constraintTop_toBottomOf="@+id/tvTitlePoducts" />
 
         <TextView
             android:id="@+id/tvUser"
             android:layout_width="369dp"
             android:layout_height="38dp"
-            android:layout_marginStart="16dp"
-            android:textSize="20sp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="72dp"
             android:textColor="@color/black"
+            android:textSize="22sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/tvTitlePoducts"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0"
             tools:text="Nombre del pinche usuario" />
 
         <TextView
             android:id="@+id/tvHola"
             android:layout_width="81dp"
             android:layout_height="34dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="40dp"
             android:text="Hola!"
             android:textColor="@color/black"
             android:textSize="22sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/tvUser"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.045"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0" />
-
-        <ImageView
-            android:id="@+id/ivUser"
-            android:layout_width="45dp"
-            android:layout_height="52dp"
-            android:layout_marginBottom="44dp"
-            app:cornerRadius="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/tvHola"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.043"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0"
-            tools:src="@tools:sample/avatars" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tvTadeistas"
-            android:layout_width="match_parent"
+            android:layout_width="411dp"
             android:layout_height="30dp"
+            android:layout_marginTop="48dp"
+            android:background="@color/colorSecondary"
             android:gravity="center"
             android:text="¡Ayuda a los tadeistas!"
             android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rvproductsCliente"
-            app:layout_constraintVertical_bias="0.149" />
+            app:layout_constraintTop_toBottomOf="@+id/rvproductsCliente" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvTadeistas"
-            android:layout_width="371dp"
-            android:layout_height="215dp"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.375"
+        <TextView
+            android:id="@+id/descripcion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="44dp"
+            android:gravity="center"
+            android:text="Únete al grupo oficial de apoyo para emprendimientos Tadeístas en WhatsApp y conecta con otros compañeros para recibir ayuda, promocionar tus productos, y dar a conocer tu negocio."
+            android:textColor="@color/black"
+            android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.812" />
+            app:layout_constraintTop_toBottomOf="@+id/tvTadeistas" />
+
+        <Button
+            android:id="@+id/btnWhatsApp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="72dp"
+            android:layout_marginTop="40dp"
+            android:backgroundTint="@color/teal_200"
+            android:text="Unirse al Grupo de WhatsApp"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/descripcion" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

@@ -63,7 +63,7 @@ class DetalleProducto : Fragment() {
 
         // Configura el botón de agregar al carrito
         btnAgregarCarrito.setOnClickListener {
-            agregarProductoAlCarrito(producto, 1) // Puedes cambiar la cantidad según las necesidades
+            agregarProductoAlCarrito(producto, 1)
         }
     }
 
