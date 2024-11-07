@@ -90,20 +90,25 @@ class productos_cliente : Fragment(), AdaptadorClienteProducto.OnItemClickListen
                     val nombre = document.getString("Nombre")
                     val descripcion = document.getString("Descripción")
                     val imagen = document.getString("ImagenUrl") ?: ""
-                    val txtcantidad = document.getLong("Cantidad")!!.toInt()
-                    val txtprecio = document.getLong("Precio")!!.toDouble()
+                    // Asegúrate de que los valores "Cantidad" y "Precio" no sean nulos
+                    val txtcantidad = document.getLong("Cantidad")?.toInt() ?: 0  // Valor predeterminado si es null
+                    val txtprecio = document.getLong("Precio")?.toDouble() ?: 0.0  // Valor predeterminado si es null
                     val ID = document.id
-                    if (nombre != null && descripcion != null && imagen != null) {
-                        val producto = Products(ID, nombre, descripcion, imagen,txtcantidad,txtprecio)
+
+                    // Verificar que tanto nombre como descripcion sean no nulos antes de continuar
+                    if (!nombre.isNullOrEmpty() && !descripcion.isNullOrEmpty()) {
+                        val producto = Products(ID, nombre, descripcion, imagen, txtcantidad, txtprecio)
                         listaProductos.add(producto)
                     }
                 }
                 adapter.setDatos(listaProductos)
             }
             .addOnFailureListener { e ->
-                // Manejar el error aquí
+                // Manejar el error aquí (por ejemplo, mostrar un mensaje)
             }
     }
+
+
 
 
 

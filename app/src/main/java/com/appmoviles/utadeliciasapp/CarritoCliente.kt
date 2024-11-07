@@ -43,9 +43,34 @@ class CarritoCliente : Fragment() {
 
         cargarCarrito() // Cargar el carrito desde Firestore
 
+        val btnConfirmarCompra: Button = view.findViewById(R.id.btnConfirmarCompra)
+        val cuponNoDisponible = CuponNoDisponible()  // Crear instancia del fragmento
+
+        // Dentro del OnClickListener del botón btnConfirmarCompra
         btnConfirmarCompra.setOnClickListener {
-            confirmarCompra() // Llamar a la función de confirmación de compra
+            // Vaciar el carrito en Firestore
+            val userId = auth.currentUser?.uid ?: return@setOnClickListener
+            val carritoRef = firestore.collection("user-info").document(userId)
+                .collection("carrito").document("carritoId")  // Cambia "carritoId" según tu lógica
+
+            // Eliminar todos los productos del carrito
+            carritoRef.update("items", emptyList<String>())
+                .addOnSuccessListener {
+                    carrito.items.clear() // Limpiar la lista del carrito
+                    carritoAdapter.notifyDataSetChanged()
+                    actualizarTotal()
+
+                    val cuponNoDisponible = CuponNoDisponible()  // Crear instancia del fragmento
+                    parentFragmentManager.beginTransaction()
+                        .replace(R.id.navcliente, cuponNoDisponible) // Reemplazar el fragmento actual
+                        .addToBackStack(null) // Agregar al backstack para poder regresar
+                        .commit()
+                }
+                .addOnFailureListener { exception ->
+                    exception.printStackTrace()
+                }
         }
+
     }
 
     private fun cargarCarrito() {
@@ -78,18 +103,16 @@ class CarritoCliente : Fragment() {
             }
     }
 
-    private fun confirmarCompra() {
-        // Implementar la lógica de confirmación de compra
-    }
 
     internal fun actualizarTotal() {
-        val total = carrito.obtenerTotal().toInt() // Convertir el total a entero
+        val total = carrito.obtenerTotal().toInt() // Obtener el total actualizado (0 si el carrito está vacío)
 
         // Crear un formato de número con separadores de miles
         val formattedTotal = NumberFormat.getNumberInstance(Locale.getDefault()).format(total)
 
         tvTotal.text = "Total: $$formattedTotal" // Mostrar el total con formato de miles
     }
+
 }
 
 // Función de extensión para formatear el total

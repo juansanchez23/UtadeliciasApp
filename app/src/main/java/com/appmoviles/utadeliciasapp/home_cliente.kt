@@ -62,6 +62,5 @@ class home_cliente: Fragment() {
     private fun refreshData() {
         swipeRefreshLayout.isRefreshing = true
         viewModel.getAllCupones()
-        Toast.makeText(context, "Cupones Actualizados con éxito :)", Toast.LENGTH_SHORT).show()
     }
 }
