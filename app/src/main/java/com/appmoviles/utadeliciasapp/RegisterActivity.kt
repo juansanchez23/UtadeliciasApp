@@ -2,24 +2,42 @@ package com.appmoviles.utadeliciasapp
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Switch
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 
 class RegisterActivity : AppCompatActivity() {
 
+    private lateinit var ivUsuario: ImageView
+    private var imageUri: Uri? = null
+    private val PICK_IMAGE_REQUEST = 1
+    private val REQUEST_IMAGE_CAPTURE = 2
+    private val storageReference = FirebaseStorage.getInstance().reference
+
+    private lateinit var tvSeleccionaFoto: TextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_register)
+
+        // Inicializa las vistas correctamente después de setContentView
+        tvSeleccionaFoto = findViewById(R.id.tvEscogerImagen)
+        ivUsuario = findViewById(R.id.ivUsuario)
 
         val analytics = FirebaseAnalytics.getInstance(this)
         val bundle = Bundle()
@@ -27,6 +45,12 @@ class RegisterActivity : AppCompatActivity() {
         analytics.logEvent("InitScreen", bundle)
 
         setup()
+
+        ivUsuario.setOnClickListener {
+            val intent = Intent(Intent.ACTION_PICK)
+            intent.type = "image/*"
+            startActivityForResult(intent, PICK_IMAGE_REQUEST)
+        }
     }
 
     @SuppressLint("UseSwitchCompatOrMaterialCode")
@@ -41,46 +65,83 @@ class RegisterActivity : AppCompatActivity() {
 
         signUpButtonRegister.setOnClickListener {
             if (emailEditText.text.isNotEmpty() && passwordEditText.text.isNotEmpty() &&
-                nameEditText.text.isNotEmpty() && lastnameEditText.text.isNotEmpty()) {
-
-                // Crear usuario en Firebase Authentication
+                nameEditText.text.isNotEmpty() && lastnameEditText.text.isNotEmpty()
+            ) {
                 FirebaseAuth.getInstance().createUserWithEmailAndPassword(
                     emailEditText.text.toString(), passwordEditText.text.toString()
                 ).addOnCompleteListener {
                     if (it.isSuccessful) {
                         val userId = FirebaseAuth.getInstance().currentUser?.uid
-
-                        // Obtener el estado del switch
                         val esComercio = switchComercio.isChecked
 
-                        // Crear el mapa de datos para guardar en Firestore
-                        val userData = hashMapOf(
-                            "nombre" to nameEditText.text.toString(),
-                            "apellido" to lastnameEditText.text.toString(),
-                            "esComercio" to esComercio, // Guardar el estado del switch
-                            "email" to emailEditText.text.toString()
-                        )
-
-                        // Guardar los datos en Firestore
-                        val db = FirebaseFirestore.getInstance()
-                        userId?.let { uid ->
-                            db.collection("user-info").document(uid)
-                                .set(userData)
-                                .addOnSuccessListener {
-                                    showHome(emailEditText.text.toString(), ProviderType.BASIC, nameEditText.text.toString(), lastnameEditText.text.toString(), esComercio)
+                        if (imageUri != null) {
+                            val imageRef = storageReference.child("users/$userId/profile.jpg")
+                            imageRef.putFile(imageUri!!)
+                                .addOnCompleteListener { task ->
+                                    if (task.isSuccessful) {
+                                        imageRef.downloadUrl.addOnSuccessListener { uri ->
+                                            saveUserData(userId, uri.toString(), esComercio)
+                                        }
+                                    } else {
+                                        Log.w("Firebase Storage", "Error al subir la imagen", task.exception)
+                                        showAlert()
+                                    }
                                 }
                                 .addOnFailureListener { e ->
+                                    Log.e("Firebase Storage", "Error al subir la imagen", e)
                                     showAlert()
-                                    Log.w("Firestore", "Error al guardar los datos", e)
                                 }
                         }
-                    } else {
-                        showAlert()
                     }
                 }
             }
         }
     }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == RESULT_OK) {
+            if (requestCode == PICK_IMAGE_REQUEST && data?.data != null) {
+                imageUri = data.data
+                ivUsuario.setImageURI(imageUri)
+                tvSeleccionaFoto.visibility = View.GONE
+            } else if (requestCode == REQUEST_IMAGE_CAPTURE && data?.extras != null) {
+                val imageBitmap = data.extras?.get("data") as? Bitmap
+                ivUsuario.setImageBitmap(imageBitmap)
+                tvSeleccionaFoto.visibility = View.GONE
+            }
+        }
+    }
+
+    private fun saveUserData(userId: String?, imageUrl: String?, esComercio: Boolean) {
+        val db = FirebaseFirestore.getInstance()
+        val userData = hashMapOf(
+            "nombre" to findViewById<EditText>(R.id.nameEditText).text.toString(),
+            "apellido" to findViewById<EditText>(R.id.lasNameEditText).text.toString(),
+            "email" to findViewById<EditText>(R.id.emailEditText).text.toString(),
+            "esComercio" to esComercio,
+            "profileImageUrl" to imageUrl
+        )
+
+        userId?.let { uid ->
+            db.collection("user-info").document(uid)
+                .set(userData)
+                .addOnSuccessListener {
+                    showHome(
+                        findViewById<EditText>(R.id.emailEditText).text.toString(),
+                        ProviderType.BASIC,
+                        findViewById<EditText>(R.id.nameEditText).text.toString(),
+                        findViewById<EditText>(R.id.lasNameEditText).text.toString(),
+                        esComercio
+                    )
+                }
+                .addOnFailureListener { e ->
+                    showAlert()
+                    Log.w("Firestore", "Error al guardar los datos", e)
+                }
+        }
+    }
+
 
     private fun showAlert() {
         val builder = AlertDialog.Builder(this)
@@ -91,7 +152,13 @@ class RegisterActivity : AppCompatActivity() {
         dialog.show()
     }
 
-    private fun showHome(email: String, provider: ProviderType, name: String, lastname: String, esComercio: Boolean) {
+    private fun showHome(
+        email: String,
+        provider: ProviderType,
+        name: String,
+        lastname: String,
+        esComercio: Boolean
+    ) {
         if (esComercio) {
             // Si es comercio, redirigir a la actividad correspondiente para dueños de comercio
             val homeIntent = Intent(this, HomeActivity::class.java).apply {
