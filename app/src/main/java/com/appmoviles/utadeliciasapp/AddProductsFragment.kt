@@ -152,6 +152,11 @@ class AddProductsFragment : Fragment() {
         val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
         Log.d("AddProductsFragment", "userId: $userId")  // Aquí logueamos el valor del userId
 
+        val sharedPreferences = requireContext().getSharedPreferences("AppPreferences", Activity.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putString("comercio_id", userId)  // Guardamos el comercio_id
+        editor.apply()  // Aplicamos los cambios
+
         val product = hashMapOf(
             "userId" to userId, // Añadir el ID del usuario
             "Nombre" to name,
@@ -160,9 +165,8 @@ class AddProductsFragment : Fragment() {
             "ImagenUrl" to imageUrl,
             "Precio" to price,
             "comercio_id" to userId
-
-
         )
+
         if (name != null && description != null && quantity != null && imageUrl != null) {
             db.collection("Products")
                 .add(product)

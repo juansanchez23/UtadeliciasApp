@@ -5,9 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="4dp"
-    app:cardBackgroundColor="@color/white">
+    app:cardCornerRadius="8dp"
+    app:cardElevation="4dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,64 +14,64 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/tvCliente"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:textColor="@color/black"/>
 
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@android:drawable/ic_menu_myplaces"
-                app:tint="@color/purple_500"
-                android:layout_marginEnd="8dp"/>
-            <TextView
-                android:id="@+id/tvCliente"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textColor="@color/black"
-                android:textSize="18sp"
-                android:textStyle="bold"/>
-        </LinearLayout>
-
-        <View
+        <TextView
+            android:id="@+id/tvFecha"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#E0E0E0"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"/>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textColor="@android:color/darker_gray"/>
 
         <TextView
             android:id="@+id/tvProductos"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:layout_marginTop="8dp"/>
+
+        <TextView
+            android:id="@+id/tvTotal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/tvEstado"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textStyle="bold"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="center_vertical"
             android:layout_marginTop="8dp">
 
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@android:drawable/ic_menu_recent_history"
-                app:tint="@color/purple_500"
-                android:layout_marginEnd="8dp"/>
-            <TextView
-                android:id="@+id/tvFecha"
-                android:layout_width="wrap_content"
+            <Button
+                android:id="@+id/btnAceptar"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorSecondary"
-                android:textSize="14sp"
-                android:textStyle="italic"/>
+                android:layout_weight="1"
+                android:layout_marginEnd="4dp"
+                android:text="Aceptar"
+                android:backgroundTint="@color/SecundaryBackground"/>
+
+            <Button
+                android:id="@+id/btnRechazar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="4dp"
+                android:text="Rechazar"
+                android:backgroundTint="@color/colorSecondary"/>
         </LinearLayout>
-
     </LinearLayout>
-
 </androidx.cardview.widget.CardView>

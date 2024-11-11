@@ -5,8 +5,10 @@ data class NotificacionPedido(
     val clienteApellido: String = "",
     val productos: List<ProductoPedido> = listOf(),
     val fecha: Long = System.currentTimeMillis(),
-    val pedidoId: String = "",
+    var pedidoId: String = "",
     val userId: String = "",
+    val estado: String? = null  // Nuevo campo para el estado
+
 )
 
 // ProductoPedido.kt

@@ -1,5 +1,6 @@
 package com.appmoviles.utadeliciasapp
 
+import android.app.Activity
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -49,18 +50,29 @@ class CarritoCliente : Fragment() {
         btnConfirmarCompra.setOnClickListener {
             val userId = auth.currentUser?.uid ?: return@setOnClickListener
 
+            // Obtener el comercio_id desde SharedPreferences
+            val sharedPreferences = requireContext().getSharedPreferences("AppPreferences", Activity.MODE_PRIVATE)
+            val comercioId = sharedPreferences.getString("comercio_id", null)
+
+            // Verificamos si conseguimos el comercio_id
+            if (comercioId == null) {
+                Toast.makeText(requireContext(), "No se encontró comercio_id", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
             firestore.collection("user-info").document(userId).get()
                 .addOnSuccessListener { userDoc ->
                     val nombre = userDoc.getString("nombre") ?: ""
                     val apellido = userDoc.getString("apellido") ?: ""
 
+                    // Crear la lista de productos con comercio_id
                     val productosPedido = carrito.items.map { item ->
                         ProductoPedido(
                             productoId = item.producto.id,
                             nombre = item.producto.nombre,
                             cantidad = item.selectedQuantity,
                             precio = item.producto.precio,
-                            comercio_id = item.producto.comercio_id
+                            comercio_id = comercioId  // Usamos el comercio_id obtenido de SharedPreferences
                         )
                     }
 
