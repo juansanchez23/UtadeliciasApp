@@ -1,5 +1,6 @@
 package com.appmoviles.utadeliciasapp
 
+import NotificacionesComercioFragment
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -31,7 +32,7 @@ class HomeActivity : AppCompatActivity() {
         binding.bottomNavigationView.setOnItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.home -> replaceFragment(fragment_inicio_fragmento())
-                R.id.notification -> replaceFragment(notificaciones_fragmento())
+                R.id.notification -> replaceFragment(NotificacionesComercioFragment())
                 R.id.productos -> replaceFragment(ProductosFragmentos())
                 R.id.descuentos -> replaceFragment(cupones_fragmento())
                 R.id.settings -> replaceFragment(ajustes_fragmento.newInstance(email ?: "", provider ?: "", name ?: "",lastname ?:""))
