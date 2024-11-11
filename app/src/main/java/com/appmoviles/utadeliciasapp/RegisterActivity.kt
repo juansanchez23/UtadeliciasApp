@@ -33,6 +33,7 @@ class RegisterActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         setContentView(R.layout.activity_register)
 
         // Inicializa las vistas correctamente después de setContentView
@@ -65,8 +66,9 @@ class RegisterActivity : AppCompatActivity() {
 
         signUpButtonRegister.setOnClickListener {
             if (emailEditText.text.isNotEmpty() && passwordEditText.text.isNotEmpty() &&
-                nameEditText.text.isNotEmpty() && lastnameEditText.text.isNotEmpty()
-            ) {
+                nameEditText.text.isNotEmpty() && lastnameEditText.text.isNotEmpty()) {
+
+                // Crear usuario en Firebase Authentication
                 FirebaseAuth.getInstance().createUserWithEmailAndPassword(
                     emailEditText.text.toString(), passwordEditText.text.toString()
                 ).addOnCompleteListener {
@@ -132,7 +134,8 @@ class RegisterActivity : AppCompatActivity() {
                         ProviderType.BASIC,
                         findViewById<EditText>(R.id.nameEditText).text.toString(),
                         findViewById<EditText>(R.id.lasNameEditText).text.toString(),
-                        esComercio
+                        esComercio,
+                        imageUrl
                     )
                 }
                 .addOnFailureListener { e ->
@@ -157,7 +160,8 @@ class RegisterActivity : AppCompatActivity() {
         provider: ProviderType,
         name: String,
         lastname: String,
-        esComercio: Boolean
+        esComercio: Boolean,
+        imageUrl: String?
     ) {
         if (esComercio) {
             // Si es comercio, redirigir a la actividad correspondiente para dueños de comercio
@@ -166,6 +170,7 @@ class RegisterActivity : AppCompatActivity() {
                 putExtra("provider", provider.name)
                 putExtra("name", name)
                 putExtra("lastname", lastname)
+                putExtra("profileImageUrl",imageUrl)
             }
             startActivity(homeIntent)
         } else {
@@ -175,6 +180,7 @@ class RegisterActivity : AppCompatActivity() {
                 putExtra("provider", provider.name)
                 putExtra("name", name)
                 putExtra("lastname", lastname)
+                putExtra("profileImageUrl", imageUrl)
             }
             startActivity(homeIntent)
         }
