@@ -1,14 +1,14 @@
 package com.appmoviles.utadeliciasapp
 
 data class NotificacionPedido(
+    val pedidoId: String = "",
     val clienteNombre: String = "",
     val clienteApellido: String = "",
-    val productos: List<ProductoPedido> = listOf(),
-    val fecha: Long = System.currentTimeMillis(),
-    var pedidoId: String = "",
+    val productos: List<ProductoPedido> = emptyList(),
+    val fecha: Long = 0,
+    val comercio_id: String = "",
     val userId: String = "",
-    val estado: String? = null  // Nuevo campo para el estado
-
+    val estado: String = "pendiente"
 )
 
 // ProductoPedido.kt

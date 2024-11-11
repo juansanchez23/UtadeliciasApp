@@ -22,3 +22,5 @@ object TokenManager {
         }
     }
 }
+
+val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""

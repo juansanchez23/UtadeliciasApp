@@ -8,21 +8,24 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-class NotificacionesAdapter : RecyclerView.Adapter<NotificacionesAdapter.NotificacionViewHolder>() {
-    private var notificaciones = mutableListOf<NotificacionPedido>()
+class NotificacionesAdapter(
+    private val onAccept: (NotificacionPedido) -> Unit,
+    private val onReject: (NotificacionPedido) -> Unit
+) : RecyclerView.Adapter<NotificacionesAdapter.NotificacionViewHolder>() {
 
-    class NotificacionViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val tvCliente: TextView = view.findViewById(R.id.tvCliente)
-        val tvProductos: TextView = view.findViewById(R.id.tvProductos)
-        val tvFecha: TextView = view.findViewById(R.id.tvFecha)
-        val tvTotal: TextView = view.findViewById(R.id.tvTotal)
-        val tvEstado: TextView = view.findViewById(R.id.tvEstado)
-        val btnAceptar: Button = view.findViewById(R.id.btnAceptar)
-        val btnRechazar: Button = view.findViewById(R.id.btnRechazar)
+    private val notificaciones = mutableListOf<NotificacionPedido>()
+    private var comercioId: String = "" // Añadimos variable para almacenar el ID del comercio
+
+    fun setData(newNotificaciones: List<NotificacionPedido>, comercioId: String) {
+        this.comercioId = comercioId
+        notificaciones.clear()
+        notificaciones.addAll(newNotificaciones)
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotificacionViewHolder {
@@ -32,86 +35,51 @@ class NotificacionesAdapter : RecyclerView.Adapter<NotificacionesAdapter.Notific
     }
 
     override fun onBindViewHolder(holder: NotificacionViewHolder, position: Int) {
-        val notificacion = notificaciones[position]
-        val context = holder.itemView.context
-
-        // Mostrar información del cliente
-        holder.tvCliente.text = buildString {
-            append("Cliente: ")
-            append(notificacion.clienteNombre)
-            append(" ")
-            append(notificacion.clienteApellido)
-        }
-
-        // Mostrar lista de productos con formato
-        val productosText = buildString {
-            append("Productos:\n")
-            notificacion.productos.forEach { producto ->
-                append("• ${producto.nombre}\n")
-                append("  Cantidad: ${producto.cantidad}\n")
-                append("  Precio unitario: $${producto.precio}\n")
-                append("  Subtotal: $${producto.cantidad * producto.precio}\n")
-            }
-        }
-        holder.tvProductos.text = productosText
-
-        // Calcular y mostrar el total
-        val total = notificacion.productos.sumOf { it.cantidad * it.precio }
-        holder.tvTotal.text = "Total: $${total}"
-
-        // Formatear y mostrar la fecha
-        val fecha = Date(notificacion.fecha)
-        val formatoFecha = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
-        holder.tvFecha.text = "Fecha: ${formatoFecha.format(fecha)}"
-
-        // Mostrar estado del pedido
-        holder.tvEstado.text = "Estado: ${notificacion.estado ?: "Pendiente"}"
-        holder.tvEstado.setTextColor(
-            when(notificacion.estado) {
-                "Aceptado" -> Color.GREEN
-                "Rechazado" -> Color.RED
-                else -> Color.GRAY
-            }
-        )
-
-        // Configurar botones de aceptar/rechazar
-        if (notificacion.estado == null || notificacion.estado == "Pendiente") {
-            holder.btnAceptar.visibility = View.VISIBLE
-            holder.btnRechazar.visibility = View.VISIBLE
-
-            holder.btnAceptar.setOnClickListener {
-                actualizarEstadoPedido(notificacion.pedidoId, "Aceptado", position)
-            }
-
-            holder.btnRechazar.setOnClickListener {
-                actualizarEstadoPedido(notificacion.pedidoId, "Rechazado", position)
-            }
-        } else {
-            holder.btnAceptar.visibility = View.GONE
-            holder.btnRechazar.visibility = View.GONE
-        }
+        holder.bind(notificaciones[position])
     }
 
-    private fun actualizarEstadoPedido(pedidoId: String, nuevoEstado: String, position: Int) {
-        FirebaseFirestore.getInstance()
-            .collection("pedidos")
-            .document(pedidoId)
-            .update("estado", nuevoEstado)
-            .addOnSuccessListener {
-                // Actualizar el estado en la lista local
-                notificaciones[position] = notificaciones[position].copy(estado = nuevoEstado)
-                notifyItemChanged(position)
-            }
-            .addOnFailureListener { e ->
-                Log.e("NotificacionesAdapter", "Error al actualizar estado", e)
-            }
-    }
+    override fun getItemCount(): Int = notificaciones.size
 
-    override fun getItemCount() = notificaciones.size
+    inner class NotificacionViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val tvCliente: TextView = itemView.findViewById(R.id.tvCliente)
+        private val tvFecha: TextView = itemView.findViewById(R.id.tvFecha)
+        private val tvProductos: TextView = itemView.findViewById(R.id.tvProductos)
+        private val tvTotal: TextView = itemView.findViewById(R.id.tvTotal)
+        private val tvEstado: TextView = itemView.findViewById(R.id.tvEstado)
+        private val btnAceptar: Button = itemView.findViewById(R.id.btnAceptar)
 
-    fun actualizarNotificaciones(nuevasNotificaciones: List<NotificacionPedido>) {
-        notificaciones.clear()
-        notificaciones.addAll(nuevasNotificaciones)
-        notifyDataSetChanged()
+        fun bind(notificacion: NotificacionPedido) {
+            tvCliente.text = "Cliente: ${notificacion.clienteNombre} ${notificacion.clienteApellido}"
+
+            val formatoFecha = SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault())
+            tvFecha.text = "Fecha: ${formatoFecha.format(Date(notificacion.fecha))}"
+            val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
+
+            // Filtramos los productos que pertenecen a este comercio
+            val productosFiltrados = notificacion.productos.filter { it.comercio_id == userId }
+
+            val productosText = productosFiltrados.joinToString("\n") {
+                " ${it.nombre} x${it.cantidad} = $${it.precio * it.cantidad}"
+            }
+            tvProductos.text = "Productos:\n$productosText"
+
+            // Calculamos el total solo de los productos filtrados
+            val total = productosFiltrados.sumOf { it.precio * it.cantidad }
+            tvTotal.text = "Total: $${String.format("%.2f", total)}"
+
+            tvEstado.text = "Estado: ${notificacion.estado}"
+
+            if (notificacion.estado == "pendiente") {
+                btnAceptar.visibility = View.VISIBLE
+            } else {
+                btnAceptar.visibility = View.GONE
+            }
+
+            btnAceptar.setOnClickListener {
+                onAccept(notificacion)
+            }
+
+            }
+
     }
 }

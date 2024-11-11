@@ -20,7 +20,7 @@ class NavCliente : AppCompatActivity() {
                 R.id.productos_cliente -> replaceFragment2(productos_cliente())
                 R.id.carrito -> replaceFragment2(CarritoCliente())
                 R.id.settings_cliente -> replaceFragment2(ajustes_cliente())
-                R.id.notification_cliente -> replaceFragment2(notificacion_cliente())
+                R.id.notification_cliente -> replaceFragment2(NotificacionesClienteFragment())
                 else ->{
 
                 }
