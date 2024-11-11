@@ -1,11 +1,13 @@
 package com.appmoviles.utadeliciasapp
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -13,6 +15,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import java.text.NumberFormat
 import java.util.Locale
+import kotlin.math.log
 
 class CarritoCliente : Fragment() {
 
@@ -43,35 +46,67 @@ class CarritoCliente : Fragment() {
 
         cargarCarrito() // Cargar el carrito desde Firestore
 
-        val btnConfirmarCompra: Button = view.findViewById(R.id.btnConfirmarCompra)
-        val cuponNoDisponible = CuponNoDisponible()  // Crear instancia del fragmento
-
-        // Dentro del OnClickListener del botón btnConfirmarCompra
         btnConfirmarCompra.setOnClickListener {
-            // Vaciar el carrito en Firestore
             val userId = auth.currentUser?.uid ?: return@setOnClickListener
-            val carritoRef = firestore.collection("user-info").document(userId)
-                .collection("carrito").document("carritoId")  // Cambia "carritoId" según tu lógica
 
-            // Eliminar todos los productos del carrito
-            carritoRef.update("items", emptyList<String>())
-                .addOnSuccessListener {
-                    carrito.items.clear() // Limpiar la lista del carrito
-                    carritoAdapter.notifyDataSetChanged()
-                    actualizarTotal()
+            firestore.collection("user-info").document(userId).get()
+                .addOnSuccessListener { userDoc ->
+                    val nombre = userDoc.getString("nombre") ?: ""
+                    val apellido = userDoc.getString("apellido") ?: ""
 
-                    val cuponNoDisponible = CuponNoDisponible()  // Crear instancia del fragmento
-                    parentFragmentManager.beginTransaction()
-                        .replace(R.id.navcliente, cuponNoDisponible) // Reemplazar el fragmento actual
-                        .addToBackStack(null) // Agregar al backstack para poder regresar
-                        .commit()
-                }
-                .addOnFailureListener { exception ->
-                    exception.printStackTrace()
-                }
+                    val productosPedido = carrito.items.map { item ->
+                        ProductoPedido(
+                            productoId = item.producto.id,
+                            nombre = item.producto.nombre,
+                            cantidad = item.selectedQuantity,
+                            precio = item.producto.precio,
+                            comercio_id = item.producto.comercio_id
+                        )
+                    }
+
+                            // Crea el objeto de NotificacionPedido con el userId del comercio
+                            val pedido = NotificacionPedido(
+                                clienteNombre = nombre,
+                                clienteApellido = apellido,
+                                productos = productosPedido,
+                                fecha = System.currentTimeMillis(),
+                                pedidoId = firestore.collection("pedidos").document().id,
+                                userId = userId  // Aquí usas el comercioId
+                            )
+
+                            // Guarda el pedido en Firestore
+                            firestore.collection("pedidos").document(pedido.pedidoId)
+                                .set(pedido)
+                                .addOnSuccessListener {
+                                    val carritoRef = firestore.collection("user-info").document(userId)
+                                        .collection("carrito").document("carritoId")
+
+                                    carritoRef.update("items", emptyList<String>())
+                                        .addOnSuccessListener {
+                                            carrito.items.clear()
+                                            carritoAdapter.notifyDataSetChanged()
+                                            actualizarTotal()
+
+                                            val cuponNoDisponible = CuponNoDisponible()
+                                            parentFragmentManager.beginTransaction()
+                                                .replace(R.id.navcliente, cuponNoDisponible)
+                                                .addToBackStack(null)
+                                                .commit()
+                                        }
+                                }
+                                .addOnFailureListener { exception ->
+                                    Toast.makeText(context, "Error al procesar el pedido", Toast.LENGTH_SHORT).show()
+                                    exception.printStackTrace()
+                                }
+                        }
+                        .addOnFailureListener { exception ->
+                            Toast.makeText(context, "Error al obtener información del usuario", Toast.LENGTH_SHORT).show()
+                            exception.printStackTrace()
+                        }
+
         }
-
     }
+
 
     private fun cargarCarrito() {
         val userId = auth.currentUser?.uid ?: return
