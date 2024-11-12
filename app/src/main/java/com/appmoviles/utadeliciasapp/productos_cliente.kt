@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
@@ -90,13 +91,11 @@ class productos_cliente : Fragment(), AdaptadorClienteProducto.OnItemClickListen
                     val nombre = document.getString("Nombre")
                     val descripcion = document.getString("Descripción")
                     val imagen = document.getString("ImagenUrl") ?: ""
-                    // Asegúrate de que los valores "Cantidad" y "Precio" no sean nulos
-                    val txtcantidad = document.getLong("Cantidad")?.toInt() ?: 0  // Valor predeterminado si es null
-                    val txtprecio = document.getLong("Precio")?.toDouble() ?: 0.0  // Valor predeterminado si es null
+                    val txtcantidad = document.getLong("Cantidad")?.toInt() ?: 0
+                    val txtprecio = document.getDouble("Precio")?.toDouble() ?: 0.0
                     val ID = document.id
 
-                    // Verificar que tanto nombre como descripcion sean no nulos antes de continuar
-                    if (!nombre.isNullOrEmpty() && !descripcion.isNullOrEmpty()) {
+                    if (nombre != null && descripcion != null) {
                         val producto = Products(ID, nombre, descripcion, imagen, txtcantidad, txtprecio)
                         listaProductos.add(producto)
                     }
@@ -104,7 +103,7 @@ class productos_cliente : Fragment(), AdaptadorClienteProducto.OnItemClickListen
                 adapter.setDatos(listaProductos)
             }
             .addOnFailureListener { e ->
-                // Manejar el error aquí (por ejemplo, mostrar un mensaje)
+                Toast.makeText(requireContext(), "Error al obtener los productos: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
             }
     }
 

@@ -57,20 +57,22 @@ class ProductosFragmentos : Fragment(), ProductsAdapter.OnItemClickListener {
                     val nombre = document.getString("Nombre")
                     val descripcion = document.getString("Descripción")
                     val imagen = document.getString("ImagenUrl") ?: ""
-                    val txtcantidad = document.getLong("Cantidad")?.toInt()
-                    val txtprecio = document.getLong("Precio")!!.toDouble()
+                    val txtcantidad = document.getLong("Cantidad")?.toInt() ?: 0 // Asignación segura para cantidad
+                    val txtprecio = document.getDouble("Precio") ?.toDouble()?: 0.0 // Asignación segura para precio
                     val ID = document.id
-                    if (nombre != null && descripcion != null && txtcantidad != null) {
-                        val producto = Products(ID, nombre, descripcion, imagen, txtcantidad,txtprecio)
+
+                    if (nombre != null && descripcion != null) {
+                        val producto = Products(ID, nombre, descripcion, imagen, txtcantidad, txtprecio)
                         listaProductos.add(producto)
                     }
                 }
                 adapter.setDatos(listaProductos)
             }
             .addOnFailureListener { e ->
-                // Manejar el error en caso de fallo
+                // Manejar el error aquí
             }
     }
+
 
     override fun onDeleteItemClick(productId: String) {
         // Diálogo de confirmación antes de eliminar
