@@ -9,5 +9,5 @@ data class Products(
     val cantidad: Int = 0,
     val precio: Double = 0.0,
     val userId: String = "",
-    val comercio_id: String = ""
+    var comercio_id: String = ""
 )
