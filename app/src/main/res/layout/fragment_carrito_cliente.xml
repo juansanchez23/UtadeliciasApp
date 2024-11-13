@@ -9,13 +9,14 @@
 
     <TextView
         android:id="@+id/tvTitleCarrito"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/colorSecondary"
         android:text="Carrito"
+        android:gravity="center"
+        android:textColor="@color/white"
         android:textSize="24sp"
-        android:layout_gravity="center_horizontal"
-        android:textStyle="bold"
-        android:paddingBottom="16dp" />
+        android:textStyle="bold" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvCarrito"
@@ -47,5 +48,5 @@
         android:text="Confirmar Compra"
         android:backgroundTint="@color/teal_200"
         android:textSize="18dp"
-        android:textColor="@android:color/white" />
+        android:textColor="@android:color/black" />
 </LinearLayout>

@@ -5,7 +5,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 class SwipeToDeleteCallback(
     private val adapter: RecyclerView.Adapter<*>,
-    private val onSwipe: (Int) -> Unit
+    private val onDelete: (Int) -> Unit
 ) : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
 
     override fun onMove(
@@ -15,6 +15,7 @@ class SwipeToDeleteCallback(
     ): Boolean = false
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-        onSwipe(viewHolder.adapterPosition)
+        val position = viewHolder.adapterPosition
+        onDelete(position)
     }
 }

@@ -70,12 +70,12 @@ class NotificacionesClienteAdapter(
 
 
     }
-    fun hideNotification(position: Int) {
+    fun removeNotification(position: Int) {
         if (position >= 0 && position < notificaciones.size) {
             val notification = notificaciones[position]
-            hiddenNotifications.add(notification.pedidoId)
             notificaciones.removeAt(position)
             notifyItemRemoved(position)
+            onDelete(notification.pedidoId)
         }
     }
 }

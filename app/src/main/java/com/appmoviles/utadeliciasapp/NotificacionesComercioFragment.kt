@@ -7,13 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.appmoviles.utadeliciasapp.NotificacionPedido
 import com.appmoviles.utadeliciasapp.NotificacionesAdapter
 import com.appmoviles.utadeliciasapp.R
-import com.appmoviles.utadeliciasapp.SwipeToDeleteCallback
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
@@ -25,6 +23,7 @@ class NotificacionesComercioFragment : Fragment() {
     private val firestore = FirebaseFirestore.getInstance()
     private lateinit var sharedPreferences: SharedPreferences // Cambio aquí
     private var notificacionesListener: ListenerRegistration? = null
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,43 +41,26 @@ class NotificacionesComercioFragment : Fragment() {
         rvNotificaciones.layoutManager = LinearLayoutManager(requireContext())
 
         setupAdapter()
-
-        setupSwipeToDelete()
-
         cargarNotificaciones()
     }
+
     private fun setupAdapter() {
         notificacionesAdapter = NotificacionesAdapter(
             onAccept = { pedido ->
                 aceptarPedido(pedido)
             },
             onReject = { pedido ->
-                // ... código existente ...
-            },
-            onDelete = { pedidoId ->
-                setupSwipeToDelete()
             }
         )
         rvNotificaciones.adapter = notificacionesAdapter
     }
-
-    private fun setupSwipeToDelete() {
-        val swipeHandler = SwipeToDeleteCallback(notificacionesAdapter) { position ->
-            notificacionesAdapter.hideNotification(position)
-        }
-        val itemTouchHelper = ItemTouchHelper(swipeHandler)
-        itemTouchHelper.attachToRecyclerView(rvNotificaciones)
-    }
-
-
 
     private fun cargarNotificaciones() {
         val usuarioActual = FirebaseAuth.getInstance().currentUser?.uid ?: return
 
         notificacionesListener = firestore.collection("pedidos")
             .addSnapshotListener { snapshot, exception ->
-                // Verificar si el Fragment todavía está adjunto
-                if (!isAdded) return@addSnapshotListener
+                if (!isAdded) return@addSnapshotListener  // Asegúrate de que el fragmento está adjunto
 
                 if (exception != null) {
                     mostrarMensaje("Error al cargar notificaciones")
@@ -105,24 +87,14 @@ class NotificacionesComercioFragment : Fragment() {
                 }
             }
     }
-
     private fun mostrarMensaje(mensaje: String) {
-        // Verificar si el Fragment está adjunto a una Activity
-        context?.let { ctx ->
-            if (isAdded) {
+        // Verificar si el Fragment está adjunto a una Activity y si es seguro mostrar el mensaje
+        if (isAdded) {
+            context?.let { ctx ->
                 Toast.makeText(ctx, mensaje, Toast.LENGTH_SHORT).show()
             }
         }
     }
-
-
-
-    override fun onDestroyView() {
-        // Remover el listener cuando el Fragment se destruye
-        notificacionesListener?.remove()
-        super.onDestroyView()
-    }
-
 
 
     private fun aceptarPedido(pedido: NotificacionPedido) {
@@ -136,6 +108,11 @@ class NotificacionesComercioFragment : Fragment() {
                 Toast.makeText(context, "Error al enviar el pedido", Toast.LENGTH_SHORT).show()
             }
     }
+    override fun onDestroyView() {
+        // Remover el listener cuando el Fragment se destruye
+        super.onDestroyView()
 
+        notificacionesListener?.remove()
+    }
 
 }

@@ -12,12 +12,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ListenerRegistration
 
 class NotificacionesClienteFragment : Fragment() {
     private lateinit var rvNotificaciones: RecyclerView
     private lateinit var notificacionesClienteAdapter: NotificacionesClienteAdapter
     private val firestore = FirebaseFirestore.getInstance()
-
+    private var notificacionesListener: ListenerRegistration? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -47,7 +48,7 @@ class NotificacionesClienteFragment : Fragment() {
 
     private fun setupSwipeToDelete() {
         val swipeHandler = SwipeToDeleteCallback(notificacionesClienteAdapter) { position ->
-            notificacionesClienteAdapter.hideNotification(position)
+            notificacionesClienteAdapter.removeNotification(position)
         }
         val itemTouchHelper = ItemTouchHelper(swipeHandler)
         itemTouchHelper.attachToRecyclerView(rvNotificaciones)
@@ -66,37 +67,41 @@ class NotificacionesClienteFragment : Fragment() {
     private fun cargarNotificacionesCliente() {
         val usuarioActual = FirebaseAuth.getInstance().currentUser?.uid ?: return
 
-        Log.d("NotificacionesCliente", "Usuario actual: $usuarioActual") // Verificar el usuario actual
-
-        firestore.collection("pedidos")
+        notificacionesListener = firestore.collection("pedidos")
             .whereEqualTo("userId", usuarioActual)
             .addSnapshotListener { snapshot, exception ->
+                if (!isAdded) return@addSnapshotListener
+
                 if (exception != null) {
-                    Log.e("FirestoreError", "Error al cargar notificaciones", exception)
-                    Toast.makeText(context, "Error al cargar notificaciones", Toast.LENGTH_SHORT).show()
+                    mostrarMensaje("Error al cargar notificaciones")
                     return@addSnapshotListener
                 }
 
                 if (snapshot != null && !snapshot.isEmpty) {
-                    Log.d("FirestoreSnapshot", "Documentos obtenidos: ${snapshot.size()}") // Verificar cantidad de documentos obtenidos
                     val notificaciones = snapshot.documents.mapNotNull { document ->
                         val pedido = document.toObject(NotificacionPedido::class.java)
-                        Log.d("FirestoreSnapshot", "Pedido obtenido: $pedido") // Log de cada pedido
-                        // Filtrar solo los pedidos con estado "enviado"
                         if (pedido?.estado == "enviado" || pedido?.estado == "pendiente") pedido else null
-
-
                     }
                     notificacionesClienteAdapter.setData(notificaciones)
                 } else {
-                    Log.d("FirestoreSnapshot", "No se encontraron pedidos para el usuario actual")
-                    Toast.makeText(context, "No tienes pedidos", Toast.LENGTH_SHORT).show()
+                    mostrarMensaje("No tienes pedidos")
                 }
             }
     }
 
-}
+    private fun mostrarMensaje(mensaje: String) {
+        context?.let { ctx ->
+            if (isAdded) {
+                Toast.makeText(ctx, mensaje, Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
 
+    override fun onDestroyView() {
+        notificacionesListener?.remove()
+        super.onDestroyView()
+    }
+}
 
 
 

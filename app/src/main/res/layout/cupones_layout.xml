@@ -48,8 +48,7 @@
                 android:text="Nombre del Cupón"
                 android:textColor="@android:color/black"
                 android:textSize="18sp"
-                android:layout_marginStart="20dp"
-                android:textStyle="bold" />
+                android:layout_marginStart="20dp" />
 
 
 
@@ -62,6 +61,7 @@
                 android:layout_marginTop="4dp"
                 android:text="Descripción del cupón aquí. Puede ser una descripción más larga que ocupe varias líneas."
                 android:textColor="@android:color/darker_gray"
+                android:visibility="gone"
                 android:textSize="14sp" />
         </LinearLayout>
 

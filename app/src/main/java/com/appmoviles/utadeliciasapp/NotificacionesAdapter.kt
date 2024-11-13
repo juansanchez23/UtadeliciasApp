@@ -15,22 +15,16 @@ import java.util.Date
 import java.util.Locale
 class NotificacionesAdapter(
     private val onAccept: (NotificacionPedido) -> Unit,
-    private val onReject: (NotificacionPedido) -> Unit,
-    private val onDelete: (String) -> Unit // Nuevo parámetro para manejar eliminación
-
-
+    private val onReject: (NotificacionPedido) -> Unit
 ) : RecyclerView.Adapter<NotificacionesAdapter.NotificacionViewHolder>() {
 
     private val notificaciones = mutableListOf<NotificacionPedido>()
-    private val hiddenNotifications = mutableSetOf<String>() // Para mantener track de notificaciones ocultadas
-
     private var comercioId: String = "" // Añadimos variable para almacenar el ID del comercio
 
     fun setData(newNotificaciones: List<NotificacionPedido>, comercioId: String) {
-        notificaciones.clear()
-        // Solo agregar notificaciones que no estén ocultas
-        notificaciones.addAll(newNotificaciones.filter { !hiddenNotifications.contains(it.pedidoId) })
         this.comercioId = comercioId
+        notificaciones.clear()
+        notificaciones.addAll(newNotificaciones)
         notifyDataSetChanged()
     }
 
@@ -85,18 +79,7 @@ class NotificacionesAdapter(
                 onAccept(notificacion)
             }
 
-            }
-
-
-
-    }
-
-    fun hideNotification(position: Int) {
-        if (position >= 0 && position < notificaciones.size) {
-            val notification = notificaciones[position]
-            hiddenNotifications.add(notification.pedidoId)
-            notificaciones.removeAt(position)
-            notifyItemRemoved(position)
         }
+
     }
 }

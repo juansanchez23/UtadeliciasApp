@@ -35,7 +35,6 @@
                 android:contentDescription="Imagen del producto" />
 
 
-            <!-- Imagen del cupón alineada a la derecha -->
 
         </LinearLayout>
 
