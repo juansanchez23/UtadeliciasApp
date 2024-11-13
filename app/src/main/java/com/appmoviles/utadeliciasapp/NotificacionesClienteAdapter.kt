@@ -10,15 +10,18 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class NotificacionesClienteAdapter : RecyclerView.Adapter<NotificacionesClienteAdapter.NotificacionClienteViewHolder>() {
+class NotificacionesClienteAdapter(
+    private val onDelete: (String) -> Unit // Nuevo parámetro
+
+) : RecyclerView.Adapter<NotificacionesClienteAdapter.NotificacionClienteViewHolder>() {
     private val notificaciones = mutableListOf<NotificacionPedido>()
+    private val hiddenNotifications = mutableSetOf<String>()
 
     fun setData(newNotificaciones: List<NotificacionPedido>) {
         notificaciones.clear()
-        notificaciones.addAll(newNotificaciones)
-        notifyDataSetChanged()  // Asegúrate de que la lista se refresque
+        notificaciones.addAll(newNotificaciones.filter { !hiddenNotifications.contains(it.pedidoId) })
+        notifyDataSetChanged()
     }
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotificacionClienteViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -63,6 +66,16 @@ class NotificacionesClienteAdapter : RecyclerView.Adapter<NotificacionesClienteA
                 "pendiente" -> Color.parseColor("#FFA000")  // Naranja
                 else -> Color.BLACK
             })
+        }
+
+
+    }
+    fun hideNotification(position: Int) {
+        if (position >= 0 && position < notificaciones.size) {
+            val notification = notificaciones[position]
+            hiddenNotifications.add(notification.pedidoId)
+            notificaciones.removeAt(position)
+            notifyItemRemoved(position)
         }
     }
 }

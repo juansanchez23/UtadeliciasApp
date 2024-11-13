@@ -7,13 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.appmoviles.utadeliciasapp.NotificacionPedido
 import com.appmoviles.utadeliciasapp.NotificacionesAdapter
 import com.appmoviles.utadeliciasapp.R
+import com.appmoviles.utadeliciasapp.SwipeToDeleteCallback
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ListenerRegistration
 
 class NotificacionesComercioFragment : Fragment() {
 
@@ -21,6 +24,7 @@ class NotificacionesComercioFragment : Fragment() {
     private lateinit var notificacionesAdapter: NotificacionesAdapter
     private val firestore = FirebaseFirestore.getInstance()
     private lateinit var sharedPreferences: SharedPreferences // Cambio aquí
+    private var notificacionesListener: ListenerRegistration? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,27 +42,46 @@ class NotificacionesComercioFragment : Fragment() {
         rvNotificaciones.layoutManager = LinearLayoutManager(requireContext())
 
         setupAdapter()
+
+        setupSwipeToDelete()
+
         cargarNotificaciones()
     }
-
     private fun setupAdapter() {
         notificacionesAdapter = NotificacionesAdapter(
             onAccept = { pedido ->
                 aceptarPedido(pedido)
             },
             onReject = { pedido ->
+                // ... código existente ...
+            },
+            onDelete = { pedidoId ->
+                setupSwipeToDelete()
             }
         )
         rvNotificaciones.adapter = notificacionesAdapter
     }
 
+    private fun setupSwipeToDelete() {
+        val swipeHandler = SwipeToDeleteCallback(notificacionesAdapter) { position ->
+            notificacionesAdapter.hideNotification(position)
+        }
+        val itemTouchHelper = ItemTouchHelper(swipeHandler)
+        itemTouchHelper.attachToRecyclerView(rvNotificaciones)
+    }
+
+
+
     private fun cargarNotificaciones() {
         val usuarioActual = FirebaseAuth.getInstance().currentUser?.uid ?: return
 
-        firestore.collection("pedidos")
+        notificacionesListener = firestore.collection("pedidos")
             .addSnapshotListener { snapshot, exception ->
+                // Verificar si el Fragment todavía está adjunto
+                if (!isAdded) return@addSnapshotListener
+
                 if (exception != null) {
-                    Toast.makeText(context, "Error al cargar notificaciones", Toast.LENGTH_SHORT).show()
+                    mostrarMensaje("Error al cargar notificaciones")
                     return@addSnapshotListener
                 }
 
@@ -66,7 +89,6 @@ class NotificacionesComercioFragment : Fragment() {
                     val notificaciones = mutableListOf<NotificacionPedido>()
                     for (document in snapshot.documents) {
                         document.toObject(NotificacionPedido::class.java)?.let { pedido ->
-                            // Verificamos si algún producto del pedido tiene el comercio_id del usuario actual
                             if (pedido.productos.any { it.comercio_id == usuarioActual }) {
                                 notificaciones.add(pedido)
                             }
@@ -76,13 +98,32 @@ class NotificacionesComercioFragment : Fragment() {
                     if (notificaciones.isNotEmpty()) {
                         notificacionesAdapter.setData(notificaciones, usuarioActual)
                     } else {
-                        Toast.makeText(context, "No se encontraron pedidos para este comercio", Toast.LENGTH_SHORT).show()
+                        mostrarMensaje("No se encontraron pedidos para este comercio")
                     }
                 } else {
-                    Toast.makeText(context, "No se encontraron pedidos", Toast.LENGTH_SHORT).show()
+                    mostrarMensaje("No se encontraron pedidos")
                 }
             }
     }
+
+    private fun mostrarMensaje(mensaje: String) {
+        // Verificar si el Fragment está adjunto a una Activity
+        context?.let { ctx ->
+            if (isAdded) {
+                Toast.makeText(ctx, mensaje, Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+
+
+    override fun onDestroyView() {
+        // Remover el listener cuando el Fragment se destruye
+        notificacionesListener?.remove()
+        super.onDestroyView()
+    }
+
+
 
     private fun aceptarPedido(pedido: NotificacionPedido) {
         firestore.collection("pedidos").document(pedido.pedidoId)
