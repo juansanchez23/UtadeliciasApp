@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
@@ -30,14 +31,38 @@ class NotificacionesClienteFragment : Fragment() {
         rvNotificaciones = view.findViewById(R.id.rvNotificacionesCliente)
         rvNotificaciones.layoutManager = LinearLayoutManager(requireContext())
         setupAdapter()
+        setupSwipeToDelete()
+
         cargarNotificacionesCliente()
     }
 
     private fun setupAdapter() {
-        notificacionesClienteAdapter = NotificacionesClienteAdapter()
+        notificacionesClienteAdapter = NotificacionesClienteAdapter(
+            onDelete = { pedidoId ->
+                eliminarNotificacion(pedidoId)
+            }
+        )
         rvNotificaciones.adapter = notificacionesClienteAdapter
     }
 
+    private fun setupSwipeToDelete() {
+        val swipeHandler = SwipeToDeleteCallback(notificacionesClienteAdapter) { position ->
+            notificacionesClienteAdapter.hideNotification(position)
+        }
+        val itemTouchHelper = ItemTouchHelper(swipeHandler)
+        itemTouchHelper.attachToRecyclerView(rvNotificaciones)
+    }
+
+    private fun eliminarNotificacion(pedidoId: String) {
+        firestore.collection("pedidos").document(pedidoId)
+            .delete()
+            .addOnSuccessListener {
+                Toast.makeText(context, "Notificación eliminada", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener {
+                Toast.makeText(context, "Error al eliminar la notificación", Toast.LENGTH_SHORT).show()
+            }
+    }
     private fun cargarNotificacionesCliente() {
         val usuarioActual = FirebaseAuth.getInstance().currentUser?.uid ?: return
 
