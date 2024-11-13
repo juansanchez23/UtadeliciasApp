@@ -16,8 +16,8 @@
 
         <TextView
             android:id="@+id/tvpruductos"
-            android:layout_width="348dp"
-            android:layout_height="39dp"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="@string/productsSale"
@@ -57,10 +57,10 @@
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.464"
+            app:layout_constraintHorizontal_bias="0.452"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.695" />
+            app:layout_constraintVertical_bias="0.822" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
