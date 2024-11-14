@@ -17,5 +17,7 @@
     <color name="redBtn">#D60035</color>
     <color name="blueBtn">#02EBB5</color>
     <color name="SecundaryBackground">#A1E8E5</color>
+    <color name="dark_blue">#00008B</color>
+    <color name="gray">#eeeeee</color>
 
 </resources>

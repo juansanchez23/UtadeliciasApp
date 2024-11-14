@@ -102,13 +102,14 @@
 
     <Button
         android:id="@+id/resetPasswordButton"
-        style="@style/ButtonSecondary"
-        android:layout_width="139dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="20dp"
+        android:layout_width="220dp"
+        android:layout_height="39dp"
+        android:background="@android:color/transparent"
         android:backgroundTint="@color/colorPrimaryDark"
-        android:text="Recuperar contraseña"
-        android:textSize="7dp"
+        android:text="¿̲P̲e̲r̲d̲i̲s̲t̲e̲ ̲l̲a̲ ̲c̲o̲n̲t̲r̲a̲s̲e̲ñ̲a̲?̲"
+        android:textColor="@color/dark_blue"
+        android:textSize="12dp"
+        android:textStyle="italic|bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signUpButton" />

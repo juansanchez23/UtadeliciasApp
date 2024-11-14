@@ -29,6 +29,8 @@ cronetEmbedded = "119.6045.31"
 identityJvm = "202408.1"
 firebaseMessaging = "24.0.3"
 firebaseMessagingKtx = "24.0.3"
+uiDesktop = "1.7.0"
+datastoreCoreAndroid = "1.1.1"
 
 [libraries]
 androidx-constraintlayout-v220 = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayoutVersion" }
@@ -61,6 +63,8 @@ cronet-embedded = { group = "org.chromium.net", name = "cronet-embedded", versio
 identity-jvm = { group = "com.android.identity", name = "identity-jvm", version.ref = "identityJvm" }
 firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging", version.ref = "firebaseMessaging" }
 firebase-messaging-ktx = { group = "com.google.firebase", name = "firebase-messaging-ktx", version.ref = "firebaseMessagingKtx" }
+androidx-ui-desktop = { group = "androidx.compose.ui", name = "ui-desktop", version.ref = "uiDesktop" }
+androidx-datastore-core-android = { group = "androidx.datastore", name = "datastore-core-android", version.ref = "datastoreCoreAndroid" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
