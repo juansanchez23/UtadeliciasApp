@@ -26,6 +26,11 @@ enum class ProviderType {
     BASIC
 }
 
+object FirebaseTokenManager {
+    var Token: String? = null
+}
+
+
 class AuthActivity : AppCompatActivity() {
     companion object {
         const val CHANNEL_ID = "my_channel_id"
@@ -77,6 +82,13 @@ class AuthActivity : AppCompatActivity() {
         val logInButton = findViewById<Button>(R.id.logInbutton)
         val emailEditText = findViewById<EditText>(R.id.emailEditText)
         val passwordEditText = findViewById<EditText>(R.id.passwordEditText)
+        val resetPasswordButton = findViewById<Button>(R.id.resetPasswordButton)
+
+        resetPasswordButton.setOnClickListener {
+            val intent = Intent(this, ResetPasswordActivity::class.java)
+            startActivity(intent)
+        }
+
 
         signUpButton.setOnClickListener {
             // Crear un Intent para ir a RegisterActivity
@@ -118,6 +130,7 @@ class AuthActivity : AppCompatActivity() {
 
                                             // Obtener el nuevo token de registro
                                             val token = task.result
+                                            FirebaseTokenManager.Token = task.result
                                             android.util.Log.d(TAG, "Token FCM: $token")
                                             // Enviar el token al servidor usando TokenManager
                                             TokenManager.sendRegistrationToServer(token)
