@@ -31,10 +31,12 @@
             android:textSize="50sp"
             android:textStyle="bold" />
 
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/ivUsuario"
             android:layout_width="200dp"
             android:layout_height="200dp"
+            android:scaleType="centerCrop"
+            app:shapeAppearanceOverlay="@style/RoundedImageView"
             android:layout_marginHorizontal="80dp"
             android:src="@drawable/logosinfondo" />
 

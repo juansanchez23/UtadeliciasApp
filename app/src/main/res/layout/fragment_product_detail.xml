@@ -110,8 +110,8 @@
             android:text="TextView"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.669"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.134"
+            app:layout_constraintStart_toEndOf="@+id/tvExistencias"
             app:layout_constraintTop_toBottomOf="@+id/tvDescription"
             app:layout_constraintVertical_bias="0.021" />
 
@@ -123,10 +123,10 @@
             android:text="TextView"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="0.188"
             app:layout_constraintStart_toEndOf="@+id/tvCosto"
             app:layout_constraintTop_toBottomOf="@+id/tvCantidad"
-            app:layout_constraintVertical_bias="0.018" />
+            app:layout_constraintVertical_bias="0.0" />
 
         <Button
             android:id="@+id/btnEdit"

@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
+import com.google.android.material.imageview.ShapeableImageView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -42,31 +44,42 @@ class ajustes_cliente : Fragment() {
                         val nombre = document.getString("nombre") ?: "Sin nombre"
                         val apellido = document.getString("apellido") ?: "Sin apellido"
                         val email = document.getString("email") ?: "Sin email"
+                        val foto_perfil = document.getString("profileImageUrl") ?:"Sin foto de perfil"
 
                         // Mostrar los datos en la interfaz
-                        setupCliente(view, email, nombre, apellido)
+                        setupCliente(view, email, nombre, apellido, foto_perfil)
                     } else {
-                        setupCliente(view, "Sin email", "Usuario no encontrado", "")
+                        setupCliente(view, "Sin email", "Usuario no encontrado", "", "Sin foto de perfil")
                     }
                 }
                 .addOnFailureListener {
-                    setupCliente(view, "Error", "Error al obtener datos", "")
+                    setupCliente(view, "Error", "Error al obtener datos", "", "Sin foto de perfil")
                 }
         } else {
-            setupCliente(view, "Sin usuario", "No hay sesión", "")
+            setupCliente(view, "Sin usuario", "No hay sesión", "","Sin foto de perfil")
         }
     }
 
-    private fun setupCliente(view: View, email: String, name: String, lastname: String) {
+    private fun setupCliente(view: View, email: String, name: String, lastname: String , foto_perfil: String) {
         val emailTextView = view.findViewById<TextView>(R.id.emailTextViewcl)
         val nameTextView = view.findViewById<TextView>(R.id.nameTextViewcl)
         val lastnameTextView = view.findViewById<TextView>(R.id.lastnameTextViewcl)
         val logOutButton = view.findViewById<TextView>(R.id.logOutbuttoncl)
+        var ivUsuario = view.findViewById<ShapeableImageView>(R.id.ivUsuario)
 
         // Mostrar el correo, nombre y apellido
         emailTextView.text = "Email:\n      $email"
         nameTextView.text = "Nombre:\n      $name"
         lastnameTextView.text = "Apellido:\n      $lastname"
+
+        if (foto_perfil.isNotEmpty() && foto_perfil != "Sin foto de perfil") {
+            Glide.with(this)
+                .load(foto_perfil)
+                .placeholder(R.drawable.cabitonormal) // Imagen por defecto mientras se carga
+                .into(ivUsuario)
+        } else {
+            ivUsuario.setImageResource(R.drawable.cabitonormal)
+        }
 
         // Cerrar sesión
         logOutButton.setOnClickListener {
