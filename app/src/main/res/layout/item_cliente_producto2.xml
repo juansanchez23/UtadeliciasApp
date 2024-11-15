@@ -23,17 +23,14 @@
             <!-- Contenedor del texto -->
 
 
-
-
             <ImageView
                 android:id="@+id/ivProducto"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_centerInParent="true"
-                android:scaleType="centerCrop"
                 android:layout_gravity="center"
-                android:contentDescription="Imagen del producto" />
-
+                android:contentDescription="Imagen del producto"
+                android:scaleType="centerCrop" />
 
 
         </LinearLayout>
