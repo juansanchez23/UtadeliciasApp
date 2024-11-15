@@ -2,6 +2,7 @@ package com.appmoviles.utadeliciasapp
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
@@ -48,12 +49,33 @@ class RegisterActivity : AppCompatActivity() {
         setup()
 
         ivUsuario.setOnClickListener {
-            val intent = Intent(Intent.ACTION_PICK)
-            intent.type = "image/*"
-            startActivityForResult(intent, PICK_IMAGE_REQUEST)
+            showImageSourceDialog()
         }
+        checkPermissions()
+    }
+    private fun showImageSourceDialog() {
+        val options = arrayOf("Abrir Galería", "Tomar Foto")
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Selecciona una opción")
+        builder.setItems(options) { dialog, which ->
+            when (which) {
+                0 -> openGallery()
+                1 -> openCamera()
+            }
+        }
+        builder.show()
     }
 
+    private fun openGallery() {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        startActivityForResult(intent, PICK_IMAGE_REQUEST)
+    }
+
+    private fun openCamera() {
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        startActivityForResult(intent, REQUEST_IMAGE_CAPTURE)
+    }
     @SuppressLint("UseSwitchCompatOrMaterialCode")
     private fun setup() {
         title = "Ingresar"
@@ -103,15 +125,32 @@ class RegisterActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == RESULT_OK) {
-            if (requestCode == PICK_IMAGE_REQUEST && data?.data != null) {
-                imageUri = data.data
-                ivUsuario.setImageURI(imageUri)
-                tvSeleccionaFoto.visibility = View.GONE
-            } else if (requestCode == REQUEST_IMAGE_CAPTURE && data?.extras != null) {
-                val imageBitmap = data.extras?.get("data") as? Bitmap
-                ivUsuario.setImageBitmap(imageBitmap)
-                tvSeleccionaFoto.visibility = View.GONE
+            when (requestCode) {
+                PICK_IMAGE_REQUEST -> {
+                    data?.data?.let {
+                        imageUri = it
+                        ivUsuario.setImageURI(imageUri)
+                        tvSeleccionaFoto.visibility = View.GONE
+                    }
+                }
+                REQUEST_IMAGE_CAPTURE -> {
+                    val imageBitmap = data?.extras?.get("data") as? Bitmap
+                    ivUsuario.setImageBitmap(imageBitmap)
+                    tvSeleccionaFoto.visibility = View.GONE
+
+                    // Guarda la imagen capturada en Firebase Storage
+                    imageUri = getImageUriFromBitmap(imageBitmap)
+                }
             }
+        }
+    }
+    private fun getImageUriFromBitmap(bitmap: Bitmap?): Uri? {
+        val path = MediaStore.Images.Media.insertImage(contentResolver, bitmap, "ProfilePic", null)
+        return Uri.parse(path)
+    }
+    private fun checkPermissions() {
+        if (checkSelfPermission(android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(arrayOf(android.Manifest.permission.CAMERA), REQUEST_IMAGE_CAPTURE)
         }
     }
 
