@@ -1,7 +1,6 @@
 package com.appmoviles.utadeliciasapp
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +12,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
+import androidx.core.app.NotificationCompat
 
 class NotificacionesClienteFragment : Fragment() {
     private lateinit var rvNotificaciones: RecyclerView
@@ -80,7 +83,13 @@ class NotificacionesClienteFragment : Fragment() {
                 if (snapshot != null && !snapshot.isEmpty) {
                     val notificaciones = snapshot.documents.mapNotNull { document ->
                         val pedido = document.toObject(NotificacionPedido::class.java)
-                        if (pedido?.estado == "enviado" || pedido?.estado == "pendiente") pedido else null
+                        if (pedido?.estado == "enviado" || pedido?.estado == "pendiente") {
+                            // Llamar a la notificación cuando hay un nuevo pedido o actualización
+                            mostrarNotificacionPedidoCliente(requireContext())
+                            pedido
+                        } else {
+                            null
+                        }
                     }
                     notificacionesClienteAdapter.setData(notificaciones)
                 } else {
@@ -88,6 +97,7 @@ class NotificacionesClienteFragment : Fragment() {
                 }
             }
     }
+
 
     private fun mostrarMensaje(mensaje: String) {
         context?.let { ctx ->
@@ -101,7 +111,31 @@ class NotificacionesClienteFragment : Fragment() {
         notificacionesListener?.remove()
         super.onDestroyView()
     }
+
+    private fun mostrarNotificacionPedidoCliente(context: Context) {
+        // ID único para el canal de notificación
+        val channelId = "pedido_cliente_channel"
+        val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+        // Crear canal de notificación (necesario en Android Oreo y versiones posteriores)
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                channelId,
+                "Pedidos Nuevos para Cliente",
+                NotificationManager.IMPORTANCE_DEFAULT
+            )
+            notificationManager.createNotificationChannel(channel)
+        }
+
+        // Construir la notificación
+        val notification = NotificationCompat.Builder(context, channelId)
+            .setSmallIcon(R.drawable.cabitonormal)  // Usa un icono de tu elección
+            .setContentTitle("Pedido Realizado")
+            .setContentText("El comercio recibió tu pedido")
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .build()
+
+        // Mostrar la notificación
+        notificationManager.notify(1, notification)
+    }
 }
-
-
-

@@ -104,7 +104,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:shapeAppearanceOverlay="@style/RoundedImageView"
-        app:srcCompat="@drawable/logosinfondo" />
+        app:srcCompat="@drawable/imagen_registro" />
 
     <TextView
         android:id="@+id/register_text"
