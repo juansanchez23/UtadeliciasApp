@@ -59,11 +59,12 @@
                 </LinearLayout>
 
                 <!-- Imagen del producto alineada a la derecha -->
-                <ImageView
+                <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/ivProducto"
                     android:layout_width="86dp"
                     android:layout_height="82dp"
                     android:layout_marginStart="8dp"
+                    app:shapeAppearanceOverlay="@style/LowRoundedImageView"
                     android:contentDescription="Imagen del producto"
                     android:scaleType="centerCrop" />
 

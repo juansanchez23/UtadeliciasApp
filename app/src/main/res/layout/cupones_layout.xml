@@ -52,9 +52,6 @@
                 android:textSize="18sp"
                 android:layout_marginStart="20dp" />
 
-
-
-
             <TextView
                 android:id="@+id/txtdescripcion"
                 android:layout_width="wrap_content"
@@ -68,11 +65,12 @@
         </LinearLayout>
 
         <!-- Imagen del cupón alineada a la derecha -->
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/imagenCupon"
             android:layout_width="100dp"
             android:layout_height="110dp"
             android:layout_marginStart="16dp"
+            app:shapeAppearanceOverlay="@style/LowRoundedImageView"
             android:scaleType="centerCrop"
             android:contentDescription="Imagen del cupón" />
 

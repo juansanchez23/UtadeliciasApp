@@ -14,23 +14,24 @@
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:layout_width="120dp"
-            android:layout_height="120dp"
+            android:layout_width="124dp"
+            android:layout_height="121dp"
             android:background="@drawable/gradiente"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:orientation="vertical">
 
             <!-- Contenedor del texto -->
 
 
-            <ImageView
+            <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/ivProducto"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="105dp"
+                android:layout_height="106dp"
                 android:layout_centerInParent="true"
                 android:layout_gravity="center"
+                android:layout_margin="5dp"
                 android:contentDescription="Imagen del producto"
-                android:scaleType="centerCrop" />
+                android:scaleType="centerCrop"
+                app:shapeAppearanceOverlay="@style/LowRoundedImageView" />
 
 
         </LinearLayout>
